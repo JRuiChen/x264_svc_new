@@ -67,6 +67,8 @@ extern const int  m_nDataNotAvailable;
 #define MSYS_INT_MAX          2147483647
 
 
+/*#define mv_threshold - BY MING*/
+#define MV_THRESHOLD 20
 /*return function with param - BY MING*/
 #define ROFRS(exp,retVal)\
 {\
@@ -118,6 +120,27 @@ extern const int  m_nDataNotAvailable;
    	  RERR();\
    	}\
 }
+
+
+
+#define AOF(exp)\
+{\
+  if(!(exp))\
+  	{\
+  	  assert(0);\
+  	}\
+}
+
+
+
+
+#define CHECKED_MALLOC_NO_FAIL( var, size )\
+do {\
+    var = x264_malloc( size );\
+    if( !var )\
+        return;\
+} while( 0 )
+
 
 #define CHECKED_MALLOC( var, size )\
 do {\
@@ -346,6 +369,8 @@ typedef union { x264_uint128_t i; uint64_t a[2]; uint32_t b[4]; uint16_t c[8]; u
  * 14       v V V V V
  * DY/DU/DV are for luma/chroma DC.
  */
+
+
 
 #define LUMA_DC   48
 #define CHROMA_DC 49
@@ -639,6 +664,10 @@ typedef struct
 	int b_default_motion_prediction_flag;
 	int b_adaptive_residual_prediction_flag;
 	int b_default_residual_prediction_flag;
+
+	/*b_scoeff_residual_pred_flag/b_tcoeff_level_pred_flag - BY MING*/ 
+	int b_scoeff_residual_pred_flag;
+	int b_tcoeff_level_pred_flag;
 
 	int i_scan_start;
 	int i_scan_end;
@@ -1237,7 +1266,7 @@ struct x264_t
         uint8_t (*sub_partition)[4];
 		uint8_t * intra16x16_pred_mode;
 		int* mb_mode;
-		int (*blk_moed)[4];
+		int (*blk_mode)[4];
         
 		/*extension mb variable - BY MING*/
         int b_in_crop_window_flag;

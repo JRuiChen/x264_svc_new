@@ -90,13 +90,84 @@ enum BlkMode
 };
 
 
+enum mb_type_I
+{
+  I_NxN           = 0,
+  I_16x16_0_0_0 = 1,
+  I_16x16_1_0_0 = 2,
+  I_16x16_2_0_0 = 3,
+  I_16x16_3_0_0 = 4,
+  I_16x16_0_1_0 = 5,
+  I_16x16_1_1_0 = 6,
+  I_16x16_2_1_0 = 7,
+  I_16x16_3_1_0 = 8,
+  I_16x16_0_2_0 = 9,
+  I_16x16_1_2_0 = 10,
+  I_16x16_2_2_0 = 11,
+  I_16x16_3_2_0 = 12,
+  I_16x16_0_0_1 = 13,
+  I_16x16_1_0_1 = 14,
+  I_16x16_2_0_1 = 15,
+  I_16x16_3_0_1 = 16,
+  I_16x16_0_1_1 = 17,
+  I_16x16_1_1_1 = 18,
+  I_16x16_2_1_1 = 19,
+  I_16x16_3_1_1 = 20,
+  I_16x16_0_2_1 = 21,
+  I_16x16_1_2_1 = 22,
+  I_16x16_2_2_1 = 23,
+  I_16x16_3_2_1 = 24,
+  _I_PCM         = 25,
+  _I_BL           = 30
+};
+
+enum mb_type_B
+{
+  B_DIRECT_16x16 = 0,
+  B_L0_16x16   = 1,
+  B_L1_16x16   = 2,
+  B_Bi_16x16   = 3,
+  B_L0_L0_16x8 = 4,
+  B_L0_L0_8x16 = 5,
+  B_L1_L1_16x8 = 6,
+  B_L1_L1_8x16 = 7,
+  B_L0_L1_16x8 = 8,
+  B_L0_L1_8x16 = 9,
+  B_L1_L0_16x8 = 10,
+  B_L1_L0_8x16 = 11,
+  B_L0_Bi_16x8 = 12,
+  B_L0_Bi_8x16 = 13,
+  B_L1_Bi_16x8 = 14,
+  B_L1_Bi_8x16 = 15,
+  B_Bi_L0_16x8 = 16,
+  B_Bi_L0_8x16 = 17,
+  B_Bi_L1_16x8 = 18,
+  B_Bi_L1_8x16 = 19,
+  B_Bi_Bi_16x8 = 20,
+  B_Bi_Bi_8x16 = 21,
+  _B_8x8          = 22,
+  B_na = -1
+  
+};
+
+
+enum mb_type_P
+{
+    P_L0_16x16     = 0,
+	P_L0_L0_16x8   = 1,
+	P_L0_L0_8x16 = 2,
+	_P_8x8 = 3//differ from the same name in mb_class_e-BY MING
+ 	
+};
+
+
 enum mb_class_e
 {
     I_4x4           = 0,
     I_8x8           = 1,
     I_16x16         = 2,
     I_PCM           = 3,
-//    I_BL            = 20,
+    I_BL            = 20,
     P_L0            = 4,
     P_8x8           = 5,
     P_SKIP          = 6,
@@ -118,10 +189,10 @@ enum mb_class_e
 };
 static const uint8_t x264_mb_type_fix[X264_MBTYPE_MAX] =
 {
-    I_4x4, I_4x4, I_16x16, I_PCM,//I_BL,
+    I_4x4, I_4x4, I_16x16, I_PCM,
     P_L0, P_8x8, P_SKIP,
     B_DIRECT, B_L0_L0, B_L0_L1, B_L0_BI, B_L1_L0, B_L1_L1,
-    B_L1_BI, B_BI_L0, B_BI_L1, B_BI_BI, B_8x8, B_SKIP
+    B_L1_BI, B_BI_L0, B_BI_L1, B_BI_BI, B_8x8, B_SKIP,I_BL
 };
 static const uint8_t x264_mb_type_list_table[X264_MBTYPE_MAX][2][2] =
 {
@@ -215,6 +286,329 @@ static const uint8_t x264_mb_partition_pixel_table[17] =
     PIXEL_8x8, PIXEL_16x8, PIXEL_8x16, PIXEL_16x16, /* 8x8 .. 16x16 */
 };
 
+
+static const uint8_t x264_mb_type_table_B[27] =
+{
+  B_L0_L0_16x8,B_L0_L0_8x16,B_L0_16x16,//B_L0_L0
+  B_L0_L1_16x8,B_L0_L1_8x16,B_L1_16x16,//B_L0_L1
+  B_L0_Bi_16x8,B_L0_Bi_8x16,B_na,//B_L0_Bi
+  B_L1_L0_16x8,B_L1_L0_8x16,B_na,//B_L1_L0
+  B_L1_L1_16x8,B_L1_L1_8x16,B_L1_16x16,//B_L1_L1
+  B_L1_Bi_16x8,B_L1_Bi_8x16,B_na,//B_L1_Bi
+  B_Bi_L0_16x8,B_Bi_L0_8x16,B_na,//B_Bi_L0
+  B_Bi_L1_16x8,B_Bi_L1_8x16,B_na,//B_Bi_L1
+  B_Bi_Bi_16x8,B_Bi_Bi_8x16,B_Bi_16x16//B_Bi_Bi
+  
+};
+
+
+
+static const uint8_t x264_mb_class_table_B[23] = 
+{
+  B_SKIP,B_L0_L0,B_L1_L1,B_BI_BI,
+  B_L0_L0,B_L0_L0,B_L1_L1,B_L1_L1,
+  B_L0_L1,B_L0_L1,B_L1_L0,B_L1_L0,
+  B_L0_BI,B_L0_BI,B_L1_BI,B_L1_BI,
+  B_BI_L0,B_BI_L0,B_BI_L1,B_BI_L1,
+  B_BI_BI,B_BI_BI,B_8x8
+  
+};
+
+
+
+static const uint8_t x264_mb_type_table_I[24] = 
+{
+  I_16x16_0_0_0, I_16x16_1_0_0, I_16x16_2_0_0 ,I_16x16_3_0_0 ,
+  I_16x16_0_1_0 ,I_16x16_1_1_0 ,I_16x16_2_1_0 ,I_16x16_3_1_0 ,
+  I_16x16_0_2_0 ,I_16x16_1_2_0 ,I_16x16_2_2_0 ,I_16x16_3_2_0 ,
+  I_16x16_0_0_1 ,I_16x16_1_0_1 ,I_16x16_2_0_1 ,I_16x16_3_0_1 ,
+  I_16x16_0_1_1 ,I_16x16_1_1_1 ,I_16x16_2_1_1 ,I_16x16_3_1_1 ,
+  I_16x16_0_2_1 ,I_16x16_1_2_1 ,I_16x16_2_2_1 ,I_16x16_3_2_1 
+};
+
+static const uint8_t x264_mb_mode_fix_B[23] = 
+{
+  MODE_SKIP,  //0
+  MODE_16x16, //1
+  MODE_16x16, //2
+  MODE_16x16, //3
+  MODE_16x8,  //4
+  MODE_8x16,  //5
+  MODE_16x8,  //6
+  MODE_8x16,  //7
+  MODE_16x8,  //8
+  MODE_8x16,  //9
+  MODE_16x8,  //10
+  MODE_8x16,  //11
+  MODE_16x8,  //12
+  MODE_8x16,  //13
+  MODE_16x8,  //14
+  MODE_8x16,  //15
+  MODE_16x8,  //16
+  MODE_8x16,  //17
+  MODE_16x8,  //18
+  MODE_8x16,  //19
+  MODE_16x8,  //20
+  MODE_8x16,  //21
+  MODE_8x8    //22
+};
+
+
+static int x264_type_1x2[9] = 
+{
+  12, //2, 0x0
+   8, //2, 0x1
+   4, //2, 0x2
+  14, //2, 0x3
+   6, //2, 0x4
+  10, //2, 0x5
+  20, //2, 0x6
+  18, //2, 0x7
+  16  //2, 0x8
+};
+
+static int x264_type_2x1[9] = 
+{
+	
+	13, //3, 0x0
+	 9, //3, 0x1
+	 5, //3, 0x2
+	15, //3, 0x3
+	 7, //3, 0x4
+	11, //3, 0x5
+	21, //3, 0x6
+	19, //3, 0x7
+	17 //3, 0x8
+
+
+};
+
+
+/*from mb_class_e to mb_type  value - BY MING*/
+/*
+static int x264_mb_class_2_type(x264_t* h,int i_mb_type,int i_partition)
+{
+
+
+   
+   int i_type = -1;
+   int i_slice_type = h->sh.i_type;
+   
+   int i_pred = x264_mb_pred_mode16x16_fix[h->mb.i_intra16x16_pred_mode];
+   int i_cbp_luma = !!h->mb.i_cbp_luma;
+   int i_cbp_chroma = h->mb.i_cbp_chroma;
+
+   if(i_mb_type == I_4x4 || i_mb_type == I_8x8)
+   	{
+      i_type = I_NxN;
+	  if(i_slice_type == SLICE_TYPE_P)
+	  	i_type += 5;
+	  else if(i_slice_type == SLICE_TYPE_B)
+	  	i_type += 23;
+   	}
+
+  if(i_mb_type == I_PCM)
+  	{
+  	    i_type = _I_PCM;
+	  if(i_slice_type == SLICE_TYPE_P)
+	  	i_type += 5;
+	  else if(i_slice_type == SLICE_TYPE_B)
+	  	i_type += 23;
+  	}
+
+  if(i_mb_type == I_16x16)
+  	{
+  	  i_type = i_pred + 4 * i_cbp_chroma + 12 * i_cbp_luma;
+	  if(i_slice_type == SLICE_TYPE_P)
+	  	i_type += 5;
+	  else if(i_slice_type == SLICE_TYPE_B)
+	  	i_type += 23;
+  	}
+  
+
+
+
+   if(i_mb_type == P_L0)
+   	{
+   	  switch(i_partition)
+   	  {
+   	    case D_16x16:
+			i_type = P_L0_16x16;
+			break;
+		case D_16x8:
+			i_type = P_L0_L0_16x8;
+			break;
+		case D_8x16:
+			i_type = P_L0_L0_8x16;
+			break;
+		default:
+			break;
+ 	  }
+   	}
+   else if(i_mb_type == P_8x8)
+   	  i_type = _P_8x8;
+
+   
+
+   
+   
+   if(i_mb_type == B_DIRECT)
+   	i_type = B_DIRECT_16x16;
+   if(i_mb_type == B_8x8)
+   	i_type = _B_8x8;
+   if(i_mb_type >= B_L0_L0 && i_mb_type <= B_BI_BI)
+   	{
+   	  int i_idx = (i_mb_type - B_L0_L0_16x8) * 3 + (i_partition - D_16x8);
+	  if(i_idx >= 27)
+	  	return B_na;
+	  i_type = x264_mb_type_table_B[i_idx];
+   	}
+   	 
+   
+  return i_type;
+}
+
+
+
+
+
+
+
+static int x264_mb_mode_2_type(x264_t* h,int i_mb_mode,int (*ref[2])[2])
+{
+  int i_type = -1;
+  int i_fwdbwd = 0;
+  for(int n = 0;n >= 0;n++)
+  {
+    i_fwdbwd <<= 4;
+	i_fwdbwd += (ref[0][n&1][n>>1] > 0?1:0);
+	i_fwdbwd += (ref[1][n&1][n>>1] > 0?2:0);
+  }
+  if(h->sh.i_type == SLICE_TYPE_P)
+  	i_type = i_mb_mode;
+  if(h->sh.i_type == SLICE_TYPE_I)
+  	i_type = i_mb_mode - INTRA_4X4;
+
+  if(h->sh.i_type = SLICE_TYPE_B)
+  {
+    #define GET_BLOCK_FWD_BWD(i_part_idx) (i_fwdbwd >> (i_part_idx << 2) &3)
+    int idx = 0;
+	switch(i_mb_mode)
+    {
+      case MODE_SKIP:
+	  	i_type = 1;
+	  	break;
+	case MODE_16x16:
+		i_type = 1 + GET_BLOCK_FWD_BWD(0x00);
+		break;
+	case MODE_16x8:
+		idx = 3 * GET_BLOCK_FWD_BWD(0x00);
+		idx -= GET_BLOCK_FWD_BWD(0x02);
+		i_type = 1 + x264_type_1x2[idx];
+		break;
+	case MODE_8x16:
+		idx = 3 * GET_BLOCK_FWD_BWD(0x00);
+		idx -= GET_BLOCK_FWD_BWD(0x01);
+		i_type = 1 + x264_type_2x1[idx];
+		break;
+	case MODE_8x8:
+		i_type = 1 + 22;
+		break;
+	case MODE_PCM:
+		i_type = 1 + 48;
+		break;
+	default:
+		ROT(i_mb_mode < INTRA_4X4);
+		i_type = 1 + (i_mb_mode - INTRA_4X4 +23);
+		break;
+	return i_type;
+    }
+  }
+}
+
+
+
+static int x264_mb_mode_2_class(x264_t* h,int i_mb_mode,int (*ref[2])[2] )
+{
+  int i_class = -1;
+  int i_type = x264_mb_mode_2_type(h,i_mb_mode,ref);
+  #define DERIVE_INTRA_CLASS\
+  	if(i_type == 0)\
+        i_class = I_4x4;\
+	else if(i_type == 25)\
+		i_class = I_PCM;\
+	else if(i_type > 0 && i_type < 25)\
+		i_class = I_16x16;
+	
+  if(h->sh.i_type == SLICE_TYPE_I)
+  {
+    DERIVE_INTRA_CLASS 
+  }
+  
+  if(h->sh.i_type == SLICE_TYPE_P)
+  {
+    if(i_mb_mode == MODE_SKIP)
+		i_class = P_SKIP;
+	else if(i_type >= 0 && i_type <4)
+		i_class = P_L0;
+	else if(i_type == 4)
+		i_class = P_8x8;
+	else if(i_type > 4)
+	{
+	    i_type -= 4;
+		DERIVE_INTRA_CLASS
+	}
+  }
+
+
+  if(h->sh.i_type == SLICE_TYPE_B)
+  {
+    if(i_type < 23)
+		i_class = x264_mb_class_table_B[i_type];
+	else
+	{
+	  i_type -= 23;
+	  DERIVE_INTRA_CLASS
+	}
+  }
+}
+
+static int x264_mb_class_2_mode(x264_t*h,int i_mb_type,int i_partition)
+{
+
+   int i_type = x264_mb_class_2_type(h,i_mb_type,i_partition);
+   int i_mode = -1;
+   if(i_type == -1)
+   return -1;
+
+   if(h->sh.i_type == SLICE_TYPE_B)
+   {
+     if(i_type > 23 + 25)
+	 	return -1;
+     if(i_type < 23)
+	 	i_mode = x264_mb_mode_fix_B[i_type];
+	 else
+	 	i_mode = i_type - 23 + INTRA_4X4;
+	 
+   }
+
+
+   if(h->sh.i_type == SLICE_TYPE_I)
+   {
+   	if(i_type > 25)
+		return -1;
+	i_mode = i_type + INTRA_4X4;
+   }
+
+
+   if(h->sh.i_type == SLICE_TYPE_P)
+   {
+     i_mode = i_type++;
+   }
+
+   return i_mode;
+}
+*/
 /* zigzags are transposed with respect to the tables in the standard */
 static const uint8_t x264_zigzag_scan4[2][16] =
 {{ // frame

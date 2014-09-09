@@ -84,6 +84,21 @@ typedef struct ResizeParameters{//26 p
 }ResizeParameters;
 
 ResizeParameters cRP;
+
+typedef struct PictureParameters
+{
+
+  int m_iScaledRefFrmWidth;
+  int m_iScaledRefFrmHeight;
+  int m_iLeftFrmOffset;
+  int m_iTopFrmOffset;
+  int m_iRefLayerChromaPhaseX;
+  int m_iRefLayerChromaPahseY;
+  
+}PictureParameters;
+
+PictureParameters cPP;
+
 typedef struct DownConvert{
   int         m_iImageStride;
   int*        m_paiImageBuffer;
@@ -95,6 +110,55 @@ typedef struct DownConvert{
   int*        m_paiTmp1dBufferOut;              
 }DownConvert;
 
+
+/*define a struct for motion upsampling - BY MING*/
+typedef struct PosCalcParam
+{
+  int m_bRSChangeFlag;
+  int m_iBaseMbAff;
+  int m_iCurrMbAff;
+  int m_iBaseField;
+  int m_iCurrField;
+  int m_iBaseBotField;
+  int m_iCurrBotField;
+  int m_iRefW;
+  int m_iRefH;
+  int m_iScaledW;
+  int m_iScaledH;
+  int m_iOffsetX;
+  int m_iOffsetY;
+  int m_iShiftX;
+  int m_iShiftY;
+  int m_iScaleX;
+  int m_iScaleY;
+  int m_iAddX;
+  int m_iAddY;
+}PosCalcParam;
+
+
+/*extended struct MvScaleParam -BY MING*/
+typedef struct MvScaleParam
+{
+  int m_bRSChangeFlag ;
+  int m_bCropChangeFlag;
+  int m_iCurrMbAff;
+  int m_iBaseField;
+  int m_iCurrField;
+  int m_iRefW;
+  int m_iRefH;
+  int m_iScaledW;
+  int m_iScaledH;
+  int m_iOffsetX;
+  int m_iOffsetY;
+  int m_iScaleX;
+  int m_iScaleY;
+  int m_aiNumActive[2];
+  int m_aaidOX[2][33];
+  int m_aaidOY[2][33];
+  int m_aaidSW[2][33];
+  int m_aaidSH[2][33];
+  
+}MvScaleParam;
 
 
 
@@ -114,7 +178,8 @@ typedef struct MOTIONUPSAMPLING
    int b_scoeff_pred;
    int b_tcoeff_pred;
    ResizeParameters* m_rc_resize_params;
-
+   PosCalcParam* m_cPosCalc;
+   MvScaleParam* m_cMvScale;
    int i_mb_x0_crop_frm;
    int i_mb_y0_crop_frm;
    int i_mb_x1_crop_frm;
@@ -166,17 +231,20 @@ int xSetPartIdcArray(MotionUpsampling*,x264_t*);
 
 int xSetPredMbData(MotionUpsampling*,x264_t*);
 
-int xMbdataClear(x264_t* h);
- 
+int xMbdataClear(x264_t* h,int,int,int,int,int);
+
+int xInitialMotionUpsampling(MotionUpsampling *mo_up,ResizeParameters* pcResizeParams,int b_field_resampling,
+                                                                        int b_residual_pred_check,int i_mv_threshold,x264_t* h);
 /*xGetRefLayerMb*/
 int xGetRefLayerMb(MotionUpsampling*,int,int,int*,int*,int*,x264_t*);
 
 /*xGetRefLayerPartIdc - BY MING*/
 int xGetRefLayerPartIdc(MotionUpsampling*,int,int,int*,x264_t* );
 
+int xDeriveMbMode(MotionUpsampling*,x264_t*);
 
 int xGetRefIdxAndInitialMvPred(MotionUpsampling*,int,x264_t* );
-int xGetInitialBaseRefIdxAndMv(MotionUpsampling*,int,int,int,int*,int*,x264_t*);
+int xGetInitialBaseRefIdxAndMv(MotionUpsampling*,int,int,int,int,int*,int*,x264_t*);
 int xDeriveBlockModeAndUpdateMv(MotionUpsampling*,int);
 
 int xGetMinRefIdx(int,int);
@@ -184,6 +252,10 @@ int xGetMinRefIdx(int,int);
 int xResampleMotion(MotionUpsampling*, int ,int ,x264_t*);
 
 int xUpsampleMotion(MotionUpsampling*,ResizeParameters*,int ,int ,int ,x264_t*);
+
+int xDeriveMbMode(MotionUpsampling* ,x264_t*);
+
+int x8x8BlocksHaveSameMotion(MotionUpsampling*,int,int,int);
 
 
 
@@ -284,6 +356,8 @@ typedef struct x264_frame
     uint8_t *fieldEL1;
     uint8_t *effective_qpEL1;
 
+ 	/*extentend params of struct type PictureParameters - BY MING*/
+	PictureParameters cPP;
 
     /* Stored as (lists_used << LOWRES_COST_SHIFT) + (cost).
      * Doesn't need special addressing for intra cost because
