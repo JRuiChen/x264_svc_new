@@ -1150,7 +1150,39 @@ int readColorComponent(pixel *p,pixel *src,int width,int height,int stride,int l
   }
   return 0;   
 }
-
+int readColorComponent1(pixel* p, FILE* file, int width, int height,int stride,int lines)
+{
+  int iMaxPadWidth  = gMin( stride, ( ( width  + 15 ) >> 4 ) << 4 );
+  int iMaxPadHeight = gMin( lines,  ( ( height + 31 ) >> 5 ) << 5 );
+  int i = 0;
+  for( ; i < height; i++ )
+  {
+    unsigned char* buffer = p + i * stride;
+    int            rsize  = (int)fread( buffer, sizeof(unsigned char), width, file );
+    if( rsize != width )
+    {
+      printf("---------return readColorComponent1---------\n");
+      return 1;
+    }
+    int xp = width; 
+    for( ;xp < iMaxPadWidth; xp++ )
+    {
+      buffer[xp] = buffer[xp-1];
+    }
+  }
+  int yp = height;
+  for( ; yp < iMaxPadHeight; yp++ )
+  {
+    unsigned char* buffer  = p + yp * stride;
+    unsigned char* bufferX = buffer - stride;
+    int xp = 0;
+    for( ; xp < stride; xp++ )
+    {
+      buffer[xp] = bufferX[xp];
+    }
+  }
+  return 0;
+}
 void xCopyToImageBuffer( unsigned char* pucSrc, int iWidth, int iHeight, int iStride,DownConvert* cDownConvert )
 {
   int* piDes = cDownConvert->m_paiImageBuffer;

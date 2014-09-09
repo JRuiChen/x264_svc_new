@@ -540,32 +540,32 @@ int x264_frame_copy_picture( x264_t *h, x264_frame_t *dst, x264_picture_t *src )
     {
         int v_shift = CHROMA_V_SHIFT;
 		//author:zhaowei
-		FILE *fileEL1;
-		FILE *fileEL2;
-		FILE *fileEL0;
+		//FILE *fileEL1;
+		//FILE *fileEL2;
+		//FILE *fileEL0;
 		if(b_Enable_SVC){
 			//printf("SVC\n");
 			//printf("----dst->stride[0]=%d  dst->strideEL1[0] = %d---dst->strideEL2[0] = %d\n",dst->i_stride[0],dst->i_strideEL1[0],dst->i_strideEL2[0]);
 			//FILE *file = fopen ("111aframe.yuv", "wb" );
 			//FILE *file1 = fopen ("111222aframe.yuv", "wb" );
-			fileEL2 = fopen ("1EL2.yuv", "ab+" );
-			fileEL1 = fopen ("1EL1.yuv", "ab+" );
-			fileEL0 = fopen ("1EL0.yuv", "ab+" );
+			//fileEL2 = fopen ("1EL2.yuv", "ab+" );
+			//fileEL1 = fopen ("1EL1.yuv", "ab+" );
+			//fileEL0 = fopen ("1EL0.yuv", "ab+" );
 			get_plane_ptr( h, src, &pixEL2[0], &strideEL2[0], 0, 0, 0 );
 			h->mc.plane_copy( dst->planeEL2[0], dst->i_strideEL2[0], (pixel*)pixEL2[0],
                           strideEL2[0]/sizeof(pixel), h->param.i_width, h->param.i_height );
-           	writeCsp1(dst->planeEL2[0],fileEL2,h->param.i_width,h->param.i_height, dst->i_strideEL2[0]/sizeof(pixel));
+           	//writeCsp1(dst->planeEL2[0],fileEL2,h->param.i_width,h->param.i_height, dst->i_strideEL2[0]/sizeof(pixel));
 			//x264_frame_expand_layers1(h->param.i_width,h->param.i_height,h->param.i_width/2,h->param.i_height/2);
 			x264_frame_expand_layers(h,dst->planeEL1[0],dst->i_strideEL1[0],
 				dst->planeEL2[0],dst->i_strideEL2[0],h->param.i_width,
 				h->param.i_height,h->param.i_width/2,
 				h->param.i_height/2);
-			writeCsp1(dst->planeEL1[0],fileEL1,h->param.i_width/2,h->param.i_height/2, dst->i_strideEL1[0]/sizeof(pixel));
+			//writeCsp1(dst->planeEL1[0],fileEL1,h->param.i_width/2,h->param.i_height/2, dst->i_strideEL1[0]/sizeof(pixel));
 			x264_frame_expand_layers(h,dst->plane[0],dst->i_stride[0],
 				dst->planeEL2[0],dst->i_strideEL2[0],h->param.i_width,
 				h->param.i_height,h->param.i_width/i_sample_width/i_sample_width,
 				h->param.i_height/i_sample_height/i_sample_height);
-			writeCsp1(dst->plane[0],fileEL0,h->param.i_width/4,h->param.i_height/4,dst->i_stride[0]/sizeof(pixel));
+			//writeCsp1(dst->plane[0],fileEL0,h->param.i_width/4,h->param.i_height/4,dst->i_stride[0]/sizeof(pixel));
 			//printf("writen over!!!\n");
 			//getchar();getchar();getchar();getchar();getchar();getchar();
 		}
@@ -588,18 +588,18 @@ int x264_frame_copy_picture( x264_t *h, x264_frame_t *dst, x264_picture_t *src )
         {
         	//author:zhaowei
      		if(b_Enable_SVC){
-				printf("v_shift = %d\n",v_shift);
-				getchar();
+				//printf("v_shift = %d\n",v_shift);
+				//getchar();
 				//FILE *file = fopen ("111aframe.yuv", "wb" );
-				fileEL1 = fopen ("1EL1.yuv", "ab+" );
+				//fileEL1 = fopen ("1EL1.yuv", "ab+" );
 				int uv_swap = i_csp == X264_CSP_YV12 || i_csp == X264_CSP_YV16;//UV¡ä?¡ä¡é?3D¨°¨º?¡¤?????
             	get_plane_ptr( h, src, &pixEL2[1], &strideEL2[1], uv_swap ? 2 : 1, 1, v_shift );
             	get_plane_ptr( h, src, &pixEL2[2], &strideEL2[2], uv_swap ? 1 : 2, 1, v_shift );
 					//printf("->>>>>>>strideEL2[2]= %d\n",strideEL2[2]);getchar();
-				fileEL2 = fopen ("1EL2.yuv", "ab+" );
-				writeCsp1(pixEL2[1], fileEL2,h->param.i_width>>1, h->param.i_height>>v_shift,h->param.i_width>>1);
-				fileEL2 = fopen ("1EL2.yuv", "ab+" );
-				writeCsp1(pixEL2[2], fileEL2,h->param.i_width>>1, h->param.i_height>>v_shift,h->param.i_width>>1);
+				//fileEL2 = fopen ("1EL2.yuv", "ab+" );
+				//writeCsp1(pixEL2[1], fileEL2,h->param.i_width>>1, h->param.i_height>>v_shift,h->param.i_width>>1);
+				//fileEL2 = fopen ("1EL2.yuv", "ab+" );
+				//writeCsp1(pixEL2[2], fileEL2,h->param.i_width>>1, h->param.i_height>>v_shift,h->param.i_width>>1);
 				h->mc.plane_copy_interleave( dst->planeEL2[1], dst->i_strideEL2[1],
                                          (pixel*)pixEL2[1], strideEL2[1]/sizeof(pixel),
                                          (pixel*)pixEL2[2], strideEL2[2]/sizeof(pixel),
@@ -611,14 +611,14 @@ int x264_frame_copy_picture( x264_t *h, x264_frame_t *dst, x264_picture_t *src )
 				pixEL2[1],strideEL2[1],h->param.i_width/i_sample_width,
 				h->param.i_height/i_sample_height,h->param.i_width/i_sample_width/i_sample_width,
 				h->param.i_height/i_sample_height/i_sample_height);
-				writeCsp1(pixU,fileEL1,h->param.i_width/i_sample_width/i_sample_width,h->param.i_height/i_sample_height/i_sample_height,h->param.i_width/i_sample_width/i_sample_width);
+				//writeCsp1(pixU,fileEL1,h->param.i_width/i_sample_width/i_sample_width,h->param.i_height/i_sample_height/i_sample_height,h->param.i_width/i_sample_width/i_sample_width);
 
 				x264_frame_expand_layers(h,pixV,h->param.i_width/i_sample_width/i_sample_width,
 				pixEL2[2],strideEL2[2],h->param.i_width/i_sample_width,
 				h->param.i_height/i_sample_height,h->param.i_width/i_sample_width/i_sample_width,
 				h->param.i_height/i_sample_width/i_sample_height);
-				fileEL1 = fopen("1EL1.yuv", "ab+");
-				writeCsp1(pixV,fileEL1,h->param.i_width/i_sample_width/i_sample_width,h->param.i_height/i_sample_height/i_sample_height,h->param.i_width/i_sample_width/i_sample_width);
+				//fileEL1 = fopen("1EL1.yuv", "ab+");
+				//writeCsp1(pixV,fileEL1,h->param.i_width/i_sample_width/i_sample_width,h->param.i_height/i_sample_height/i_sample_height,h->param.i_width/i_sample_width/i_sample_width);
 				h->mc.plane_copy_interleave( dst->planeEL1[1], dst->i_strideEL1[1],
                                          (pixel*)pixU, h->param.i_width/i_sample_width/i_sample_width,
                                          (pixel*)pixV, h->param.i_width/i_sample_width/i_sample_width,
@@ -626,28 +626,28 @@ int x264_frame_copy_picture( x264_t *h, x264_frame_t *dst, x264_picture_t *src )
 				free(pixU);
 				free(pixV);
 				//UV downsample
-				fileEL0 = fopen ("1EL0.yuv", "ab+" );
+				//fileEL0 = fopen ("1EL0.yuv", "ab+" );
 				pixU = malloc(sizeof(pixel)*(h->param.i_width/i_sample_width/i_sample_width/i_sample_width)*(h->param.i_height/i_sample_height/i_sample_height/i_sample_height));
 				pixV = malloc(sizeof(pixel)*(h->param.i_width/i_sample_width/i_sample_width/i_sample_width)*(h->param.i_height/i_sample_height/i_sample_height/i_sample_height));
 				x264_frame_expand_layers(h,pixU,h->param.i_width/i_sample_width/i_sample_width/i_sample_width,
 				pixEL2[1],strideEL2[1],h->param.i_width/i_sample_width,
 				h->param.i_height/i_sample_height,h->param.i_width/i_sample_width/i_sample_width/i_sample_width,
 				h->param.i_height/i_sample_height/i_sample_height/i_sample_height);
-				writeCsp1(pixU,fileEL0,h->param.i_width/i_sample_width/i_sample_width/i_sample_width,h->param.i_height/i_sample_height/i_sample_height/i_sample_height,h->param.i_width/i_sample_width/i_sample_width/i_sample_width);
+				//writeCsp1(pixU,fileEL0,h->param.i_width/i_sample_width/i_sample_width/i_sample_width,h->param.i_height/i_sample_height/i_sample_height/i_sample_height,h->param.i_width/i_sample_width/i_sample_width/i_sample_width);
 
 				x264_frame_expand_layers(h,pixV,h->param.i_width/i_sample_width/i_sample_width/i_sample_width,
 				pixEL2[2],strideEL2[2],h->param.i_width/i_sample_width,
 				h->param.i_height/i_sample_height,h->param.i_width/i_sample_width/i_sample_width/i_sample_width,
 				h->param.i_height/i_sample_height/i_sample_height/i_sample_height);
-				fileEL0 = fopen("1EL0.yuv", "ab+");
-				writeCsp1(pixV,fileEL0,h->param.i_width/i_sample_width/i_sample_width/i_sample_width,h->param.i_height/i_sample_height/i_sample_height/i_sample_height,h->param.i_width/i_sample_width/i_sample_width/i_sample_width);
+				//fileEL0 = fopen("1EL0.yuv", "ab+");
+				//writeCsp1(pixV,fileEL0,h->param.i_width/i_sample_width/i_sample_width/i_sample_width,h->param.i_height/i_sample_height/i_sample_height/i_sample_height,h->param.i_width/i_sample_width/i_sample_width/i_sample_width);
 				h->mc.plane_copy_interleave( dst->plane[1], dst->i_stride[1],
                                          (pixel*)pixU, h->param.i_width/i_sample_width/i_sample_width/i_sample_width,
                                          (pixel*)pixV, h->param.i_width/i_sample_width/i_sample_width/i_sample_width,
                                          h->param.i_width>>1>>1>>1, h->param.i_height>>v_shift>>v_shift>>v_shift );
 				free(pixU);
 				free(pixV);
-				getchar();getchar();getchar();getchar();getchar();getchar();
+				//getchar();getchar();getchar();getchar();getchar();getchar();
 				
           
 			}
