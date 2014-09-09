@@ -1528,7 +1528,9 @@ static int ALWAYS_INLINE x264_predictor_clip( int16_t (*dst)[2], int16_t (*mvc)[
 #endif
 
 #include "rectangle.h"
-
+extern int i_sample_width;
+extern int i_sample_height;
+extern int b_Enable_SVC;
 
 /* Add by chenjie */
 typedef struct x264_thread_up_sampling_arg_t
