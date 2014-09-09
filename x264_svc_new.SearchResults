@@ -1,7 +1,0 @@
----- h->mbBL.i_mb_width Matches (6 in 2 files) ----
-Macroblock.c (common):    h->mbBL.i_mb_stride = h->mbBL.i_mb_width;
-Macroblock.c (common):    h->mbBL.i_b8_stride = h->mbBL.i_mb_width * 2;
-Macroblock.c (common):    h->mbBL.i_b4_stride = h->mbBL.i_mb_width * 4;
-Encoder.c (encoder):    h->mbBL.i_mb_width = h->sps->i_mb_width;
-Encoder.c (encoder):    h->mbBL.i_mb_count = h->mbBL.i_mb_width * h->mbBL.i_mb_height;
-Encoder.c (encoder):  h->mbBL.i_mb_width = h->mb.i_mb_width;
