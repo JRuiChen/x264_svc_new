@@ -40,14 +40,17 @@
 #define  TMM_TABLE_SIZE          512
 #define false 0
 #define true 1
-#define ROTRS( exp, retVal )  \
-{                             \
-  if( ( exp ) )               \
-  {                           \
-    return retVal;            \
-  }                           \
-}
 //typedef  unsigned char pixel;
+
+
+
+enum RefIdxValues
+{
+  BLOCK_NOT_AVAILABLE = 0,
+  BLOCK_NOT_PREDICTED = -1
+};
+
+
 typedef int bool;
 typedef struct ResizeParameters{//26 p
   int   m_iExtendedSpatialScalability;
@@ -80,6 +83,7 @@ typedef struct ResizeParameters{//26 p
   int   m_iRefLayerHeightInSamples;      
 }ResizeParameters;
 
+ResizeParameters cRP;
 typedef struct DownConvert{
   int         m_iImageStride;
   int*        m_paiImageBuffer;
@@ -90,6 +94,98 @@ typedef struct DownConvert{
   int*        m_aiTmp1dBufferInQ3pel;
   int*        m_paiTmp1dBufferOut;              
 }DownConvert;
+
+
+
+
+
+/* an user-defined struct for motion upsampling - BY -MING*/
+
+typedef struct MOTIONUPSAMPLING
+{
+
+   int b_check_residual_pred;
+   int b_direct8x8_inference;
+   int i_mv_threshold;
+   int b_curr_field_mb;
+   int e_slice_type;
+   int i_ref_layer_dqid;
+   int i_max_list_idx;
+   int b_scoeff_pred;
+   int b_tcoeff_pred;
+   ResizeParameters* m_rc_resize_params;
+
+   int i_mb_x0_crop_frm;
+   int i_mb_y0_crop_frm;
+   int i_mb_x1_crop_frm;
+   int i_mb_y1_crop_frm;
+
+   int i_mbx_curr;
+   int i_mby_curr;
+
+   int b_in_crop_window;
+   int b_intraBL;
+   int i_aai_part_idc[4][4];
+   int i_aai_ref_idx_temp[2][2][2];
+   int i_aaai_ref_idx[2][2][2];
+   int i_aaac_mv[2][4][4][2];
+   int mb_mode;
+   int blk_mode[4];
+   
+   int i_fwd_bwd;
+   int b_aa_base_intra[2][2];
+   int b_res_pred_safe;
+   
+   
+   
+   
+}MotionUpsampling;
+
+
+
+
+/*xIsInCropWIndow - BY MING*/
+
+int xIsInCropWindow(MotionUpsampling*);
+
+/*init mb info before motion upsampling - BY MING*/
+int xInitMb(MotionUpsampling*,int,int,x264_t*);
+
+int xMvDiff(int*,int*);
+
+int* xAddMv(int*,int*);
+
+int xMvCopy(int*,int*);
+
+int xMvLeftShift(int*,short);
+
+int xMvRightShift(int*,short);
+
+/*xSetPartIdcArray(this function implements subclause G.8.6.1.1) - BY MING*/
+int xSetPartIdcArray(MotionUpsampling*,x264_t*);
+
+int xSetPredMbData(MotionUpsampling*,x264_t*);
+
+int xMbdataClear(x264_t* h);
+ 
+/*xGetRefLayerMb*/
+int xGetRefLayerMb(MotionUpsampling*,int,int,int*,int*,int*,x264_t*);
+
+/*xGetRefLayerPartIdc - BY MING*/
+int xGetRefLayerPartIdc(MotionUpsampling*,int,int,int*,x264_t* );
+
+
+int xGetRefIdxAndInitialMvPred(MotionUpsampling*,int,x264_t* );
+int xGetInitialBaseRefIdxAndMv(MotionUpsampling*,int,int,int,int*,int*,x264_t*);
+int xDeriveBlockModeAndUpdateMv(MotionUpsampling*,int);
+
+int xGetMinRefIdx(int,int);
+
+int xResampleMotion(MotionUpsampling*, int ,int ,x264_t*);
+
+int xUpsampleMotion(MotionUpsampling*,ResizeParameters*,int ,int ,int ,x264_t*);
+
+
 
 
 typedef struct x264_frame
@@ -184,6 +280,16 @@ typedef struct x264_frame
     int16_t (*lowres_mvs[2][X264_BFRAME_MAX+1])[2];
     uint8_t *field;
     uint8_t *effective_qp;
+
+	/*motion data in Enhance Layer - BY MING*/
+    int8_t  *mbEL1_type;
+    uint8_t *mbEL1_partition;
+    int16_t (*mvEL1[2])[2];
+    int16_t (*mvEL116x16)[2];
+    int16_t (*lowres_mvsEL1[2][X264_BFRAME_MAX+1])[2];
+    uint8_t *fieldEL1;
+    uint8_t *effective_qpEL1;
+
 
     /* Stored as (lists_used << LOWRES_COST_SHIFT) + (cost).
      * Doesn't need special addressing for intra cost because
@@ -347,7 +453,6 @@ int CeilLog2( int i );
 void writeCsp(pixel* src, pixel* dst, int width, int height,int stride);
 int readColorComponent(pixel *p,pixel *file,int width,int height,int stride,int lines,int src_stride);
 int readColorComponent1(pixel* p, FILE* file, int width, int height,int stride,int lines);
-
 void xCopyToImageBuffer( unsigned char* pucSrc, int iWidth, int iHeight, int iStride,DownConvert* cDownConvert );
 void xCopyFromImageBuffer( unsigned char* pucDes, int iWidth, int iHeight, int iStride,DownConvert* cDownConvert  );
 void xBasicIntraUpsampling( int  iBaseW,   int  iBaseH,   int  iCurrW,   int  iCurrH,
@@ -357,6 +462,13 @@ void xBasicIntraUpsampling( int  iBaseW,   int  iBaseH,   int  iCurrW,   int  iC
                                     int  iDeltaX,  int  iDeltaY,  int  iYBorder, bool bChromaFilter, int iMargin,DownConvert* cDownConvert);
 void xCompIntraUpsampling( ResizeParameters* pcParameters, bool bChroma, bool bBotFlag, bool bVerticalInterpolation, bool bFrameMb, int iMargin ,DownConvert* cDownConvert);
 void upsamplingSVC( pixel* pucBufferY,int iStrideY, ResizeParameters* pcParameters,int bBotCoincided,DownConvert* cDownConvert );
+
+
+
+
+
+
+
 void xBasicDownsampling(int iBaseW,   int iBaseH,   int iCurrW,   int iCurrH,
                                  int iLOffset, int iTOffset, int iROffset, int iBOffset,
                                  int iShiftX,  int iShiftY,  int iScaleX,  int iScaleY,
@@ -376,6 +488,5 @@ void x264_frame_expand_layers1(int win,int hin,int wout,int hout);
 
 void writeCsp1(pixel* p, FILE* file, int width, int height,int stride);
 void x264_layer_upsample(x264_t *h,x264_frame_t *f,int level);
-
 
 #endif
