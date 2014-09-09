@@ -2034,115 +2034,20 @@ void x264_frame_expand_layers1(int win,int hin,int wout,int hout){
 
   DownConvert *cDownConvert = (DownConvert*)malloc(sizeof(DownConvert));//
   {
-    int maxWidth  = gMax( cRP.m_iRefLayerFrmWidth,  cRP.m_iFrameWidth  );
-    int maxHeight = gMax( cRP.m_iRefLayerFrmHeight, cRP.m_iFrameHeight );
-    int minWidth  = gMin( cRP.m_iRefLayerFrmWidth,  cRP.m_iFrameWidth  );
-    int minHeight = gMin( cRP.m_iRefLayerFrmHeight, cRP.m_iFrameHeight );
-    int minWRnd16 = ( ( minWidth  + 15 ) >> 4 ) << 4;
-    int minHRnd32 = ( ( minHeight + 31 ) >> 5 ) << 5;
-    maxWidth      = ( ( maxWidth  * minWRnd16 + ( minWidth  << 4 ) - 1 ) / ( minWidth  << 4 ) ) << 4;
-    maxHeight     = ( ( maxHeight * minHRnd32 + ( minHeight << 4 ) - 1 ) / ( minHeight << 4 ) ) << 4;
-	cDownConvertInit(maxWidth, maxHeight,0,cDownConvert); 
-  } 
-   resampleFrame(p, cDownConvert, cRP, resamplingMethod, resamplingMode, resampling, upsampling, 1,stride );
-   //printf("caiyang hanshu zhong ::stride = %d\n",stride);
-   //getchar();
-   writeCsp1(p,outputFile,wout,hout,stride);
-   //getchar();
-   //writeCsp(pixel* src, pixel* dst, int width, int height,int stride)
-  // h->mc.plane_copy( dst->planeEL1[0], dst->i_strideEL1[0], (pixel*)p,
- //                         stride, wout, hout);
-}
-void writeCsp1(pixel* p, FILE* file, int width, int height,int stride)
-{
-  printf("in writeCsp1 --width = %d--height = %d----stride = %d---\n",width,height,stride);
-  int i = 0; 
-  for( ;i < height; i++ )
-  {
-    pixel* buffer = p + i * stride;
-    int            wsize  = (int)fwrite( buffer, sizeof(pixel), width, file );
-    if( wsize != width )
-    {
-      fprintf(stderr, "\nERROR: while writing to output file!\n\n");
-    }
+
+    int i_field_pic = (mo_up->m_rc_resize_params->m_bFieldPicFlag? 1 :0);
+	int i_bot_field = (mo_up->m_rc_resize_params->m_bBotFieldFlag?1:0);
+	int i_mbx_base = mo_up->i_mbx_curr - (mo_up->m_rc_resize_params->m_iLeftFrmOffset >> 4);
+	int i_mby_base = mo_up->i_mby_curr - ((mo_up->m_rc_resize_params->m_iLeftFrmOffset >> 4)>>i_field_pic);
+	int i_mb_stride_base = (mo_up->m_rc_resize_params->m_iRefLayerFrmWidth >> 4) << i_field_pic;
+	int i_mb_offset_base = (mo_up->m_rc_resize_params->m_iRefLayerFrmWidth >> 4) * i_bot_field;
+	int i_mb_idx_base = i_mb_offset_base + i_mby_base * i_mb_stride_base + i_mbx_base;
+ 
+	int b_field_mb_flag = h->mbBL.field[i_mb_idx_base];
+	
   }
-  fclose(file);
-}
-void x264_layer_upsample(x264_t *h,x264_frame_t *f,int level)
-{
-	//对重建帧进行上采样，并将上采样信息放到frame中对应的位置
-	//Y upsample
-	if(level==0){
-		x264_frame_expand_layers(h,f->planeUpsampleEL1[0],f->i_strideEL1[0],
-				f->plane[0],f->i_stride[0],h->param.i_width/i_sample_width/i_sample_width,
-				h->param.i_height/i_sample_height/i_sample_height,h->param.i_width/i_sample_width,
-				h->param.i_height/i_sample_height);
-		uint8_t *pixU = malloc(sizeof(pixel)*(h->param.i_width/i_sample_width/i_sample_width/i_sample_width)*(h->param.i_height/i_sample_height/i_sample_height/i_sample_height));
-		uint8_t *pixV = malloc(sizeof(pixel)*(h->param.i_width/i_sample_width/i_sample_width/i_sample_width)*(h->param.i_height/i_sample_height/i_sample_height/i_sample_height));
-		uint8_t *pixUUPsample = malloc(sizeof(pixel)*(h->param.i_width/i_sample_width/i_sample_width)*(h->param.i_height/i_sample_height/i_sample_height));
-		uint8_t *pixVUPsample = malloc(sizeof(pixel)*(h->param.i_width/i_sample_width/i_sample_width)*(h->param.i_height/i_sample_height/i_sample_height));
-		//get U , V
-		int height = h->param.i_height/i_sample_height/i_sample_height/i_sample_height;
-		int width = h->param.i_width/i_sample_width/i_sample_width/i_sample_width;
-		int stride = f->i_stride[1];
-		pixel *p = f->plane[1];
-		for(int y=0;y<height;y++,p+=stride)
-			for(int x=0;x<width;x++)
-			{
-				pixU[x] = p[2*x];
-				pixV[x] = p[2*x+1];
-			}
-		x264_frame_expand_layers(h,pixUUPsample,h->param.i_width/i_sample_width/i_sample_width,
-				pixU,h->param.i_width/i_sample_width/i_sample_width/i_sample_width,h->param.i_width/i_sample_width/i_sample_width/i_sample_width,
-				h->param.i_height/i_sample_height/i_sample_height/i_sample_height,h->param.i_width/i_sample_width/i_sample_width,
-				h->param.i_height/i_sample_height/i_sample_height);
-		x264_frame_expand_layers(h,pixVUPsample,h->param.i_width/i_sample_width/i_sample_width,
-				pixV,h->param.i_width/i_sample_width/i_sample_width/i_sample_width,h->param.i_width/i_sample_width/i_sample_width/i_sample_width,
-				h->param.i_height/i_sample_height/i_sample_height/i_sample_height,h->param.i_width/i_sample_width/i_sample_width,
-				h->param.i_height/i_sample_height/i_sample_height);
-		h->mc.plane_copy_interleave( f->planeUpsampleEL1[1], f->i_strideEL1[1],
-                                         (pixel*)pixUUPsample, h->param.i_width/i_sample_width/i_sample_width,
-                                         (pixel*)pixVUPsample, h->param.i_width/i_sample_width/i_sample_width,
-                                         h->param.i_width/i_sample_width/i_sample_width, h->param.i_height/i_sample_height/i_sample_height);
-				
-	}
-	else{
-		x264_frame_expand_layers(h,f->planeUpsampleEL2[0],f->i_strideEL2[0],
-				f->planeEL1[0],f->i_strideEL1[0],h->param.i_width/i_sample_width,
-				h->param.i_height/i_sample_height,h->param.i_width,
-				h->param.i_height);
-		uint8_t *pixU = malloc(sizeof(pixel)*(h->param.i_width/i_sample_width/i_sample_width)*(h->param.i_height/i_sample_height/i_sample_height));
-		uint8_t *pixV = malloc(sizeof(pixel)*(h->param.i_width/i_sample_width/i_sample_width)*(h->param.i_height/i_sample_height/i_sample_height));
-		uint8_t *pixUUPsample = malloc(sizeof(pixel)*(h->param.i_width/i_sample_width)*(h->param.i_height/i_sample_height));
-		uint8_t *pixVUPsample = malloc(sizeof(pixel)*(h->param.i_width/i_sample_width)*(h->param.i_height/i_sample_height));
-		//get U , V
-		int height = h->param.i_height/i_sample_height/i_sample_height;
-		int width = h->param.i_width/i_sample_width/i_sample_width;
-		int stride = f->i_strideEL1[1];
-		pixel *p = f->planeEL1[1];
-		for(int y=0;y<height;y++,p+=stride)
-			for(int x=0;x<width;x++)
-			{
-				pixU[x] = p[2*x];
-				pixV[x] = p[2*x+1];
-			}
-		x264_frame_expand_layers(h,pixUUPsample,h->param.i_width/i_sample_width,
-				pixU,h->param.i_width/i_sample_width/i_sample_width,h->param.i_width/i_sample_width/i_sample_width,
-				h->param.i_height/i_sample_height/i_sample_height,h->param.i_width/i_sample_width,
-				h->param.i_height/i_sample_height);
-		x264_frame_expand_layers(h,pixVUPsample,h->param.i_width/i_sample_width,
-				pixV,h->param.i_width/i_sample_width/i_sample_width,h->param.i_width/i_sample_width/i_sample_width,
-				h->param.i_height/i_sample_height/i_sample_height,h->param.i_width/i_sample_width,
-				h->param.i_height/i_sample_height);
-		h->mc.plane_copy_interleave( f->planeUpsampleEL1[1], f->i_strideEL1[1],
-                                         (pixel*)pixUUPsample, h->param.i_width/i_sample_width,
-                                         (pixel*)pixVUPsample, h->param.i_width/i_sample_width,
-                                         h->param.i_width/i_sample_width, h->param.i_height/i_sample_height);
 
-
-	}
-	
-	
+  return m_nOK;
 }
 
 
