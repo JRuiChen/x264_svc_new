@@ -40,6 +40,8 @@ checkasm
 *.temp
 *.pyc
 
+*.bak
+
 .digress_x264
 dataDec.txt
 log.dec
