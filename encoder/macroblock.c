@@ -608,6 +608,19 @@ static ALWAYS_INLINE void x264_macroblock_encode_internal( x264_t *h, int plane_
     for( int p = 0; p < plane_count; p++ )
         h->mb.cache.non_zero_count[x264_scan8[LUMA_DC+p]] = 0;
 
+
+/*sky 9.12
+	if(h->i_layer_id)
+		{
+			
+			h->mb.i_cbp_luma =  0;
+			h->mb.i_cbp_chroma = 0;
+		//	h->mb.i_type = I_
+		//printf("x264_macroblock_encode_internal will be return");
+		return;
+		}
+	*/
+
     if( h->mb.i_type == I_PCM )
     {
         /* if PCM is chosen, we need to store reconstructed frame data */

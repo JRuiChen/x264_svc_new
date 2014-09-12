@@ -1,0 +1,14 @@
+---- i_global_qp Matches (13 in 1 files) ----
+Encoder.c (encoder):static inline void x264_slice_init( x264_t *h, int i_nal_type, int i_global_qp )
+Encoder.c (encoder):        x264_slice_header_init( h, &h->sh,& h->sps[h->i_layer_id],& h->pps[h->i_layer_id], h->i_idr_pic_id, h->i_frame_num, i_global_qp );
+Encoder.c (encoder):        x264_slice_header_init( h, &h->sh, &h->sps[h->i_layer_id], &h->pps[h->i_layer_id], -1, h->i_frame_num, i_global_qp );
+Encoder.c (encoder):static inline void x264_slice_init_EL( x264_t *h, int i_nal_type, int i_global_qp )
+Encoder.c (encoder):       x264_slice_header_init( h, &h->sh,& h->sps[h->i_layer_id],& h->pps[h->i_layer_id], h->i_idr_pic_id, h->i_frame_num, i_global_qp );
+Encoder.c (encoder):        x264_slice_header_init( h, &h->sh, &h->sps[h->i_layer_id], &h->pps[h->i_layer_id], -1, h->i_frame_num, i_global_qp );
+Encoder.c (encoder):	x264_slice_init(x264_t * h, NAL_UNIT_CODED_SLICE_SCALABLE, int i_global_qp)
+Encoder.c (encoder):   //int i_global_qp = x264_ratecontrol_qp(h);
+Encoder.c (encoder):   //x264_slice_init(h,h->i_nal_type,int i_global_qp)
+Encoder.c (encoder):    int i_nal_type, i_nal_ref_idc, i_global_qp;
+Encoder.c (encoder):    i_global_qp = x264_ratecontrol_qp( h );
+Encoder.c (encoder):    h->fdec->i_qpplus1 = i_global_qp + 1;
+Encoder.c (encoder):    x264_slice_init( h, i_nal_type, i_global_qp );
