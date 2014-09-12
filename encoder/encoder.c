@@ -3785,21 +3785,21 @@ static void *	x264_slices_write( x264_t *h )
     
 	
 	/*write all slices of base layer - BY MING*/
-    
-	x264_copy_mb_info_before_encode(h,1);
+    /*
+	x264_copy_mb_info_before_encode(h,1);*/
 	h->mb.b_reencode_mb = 0;
     WRITE_ALL_SLICES
 
     h->i_layer_id += 1;   
 
     /*write all slices of enhance layer - BY MING*/
-	h->mb.b_reencode_mb = 0;
-    x264_copy_mb_info_before_encode(h,0);
+	//h->mb.b_reencode_mb = 0;
+   // x264_copy_mb_info_before_encode(h,0);
 	/*sky 9.11
     h->sh.i_first_mb = 0;
 	h->sh.i_last_mb = h->mb.i_mb_count - 1;*/
-	x264_slice_init( h,h->i_nal_type, x264_ratecontrol_qp( h ));
-    WRITE_ALL_SLICES
+//	x264_slice_init( h,h->i_nal_type, x264_ratecontrol_qp( h ));
+   // WRITE_ALL_SLICES
     return (void *)0;
 
 fail:
