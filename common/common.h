@@ -668,7 +668,7 @@ typedef struct
 	/*b_scoeff_residual_pred_flag/b_tcoeff_level_pred_flag - BY MING*/ 
 	int b_scoeff_residual_pred_flag;
 	int b_tcoeff_level_pred_flag;
-
+    int b_base_layer_flag;//标记是否是基本层，临时变量- BY MING
 	int i_scan_start;
 	int i_scan_end;
 	// sh扩展结束
@@ -992,7 +992,7 @@ struct x264_t
         int8_t  *skipbp;                    /* block pattern for SKIP or DIRECT (sub)mbs. B-frames + cabac only */
         int8_t  *mb_transform_size;         /* transform_size_8x8_flag of each mb */
         uint16_t *slice_table;              /* sh->first_mb of the slice that the indexed mb is part of
-                                             * NOTE: this will fail on resolutions above 2^16 MBs... */
+                                           * NOTE: this will fail on resolutions above 2^16 MBs... */
         uint8_t *field;
 
  
@@ -1001,7 +1001,7 @@ struct x264_t
         int8_t* BL_skip;                /*bl_skip - BY MING*/
 		int8_t* transform8x8_size;       /* BY MING*/
 		int8_t* intra16x16_pred_mode;/*BY MING*/
-		
+	    uint8_t (*sub_partition)[4];        /* sub_partition - BY MING*/
         
          /* buffer for weighted versions of the reference frames */
         pixel *p_weight_buf[X264_REF_MAX];
@@ -1069,7 +1069,10 @@ struct x264_t
             /* pointer over mb of the frame to be reconstructed  */
             pixel *p_fdec[3];
 
+            pixel *p_ref_BL[3];// BY MING
             /* pointer over mb of the references */
+
+
             int i_fref[2];
             /* [12]: yN, yH, yV, yHV, (NV12 ? uv : I444 ? (uN, uH, uV, uHV, vN, ...)) */
             pixel *p_fref[2][X264_REF_MAX*2][12];
@@ -1340,7 +1343,7 @@ struct x264_t
             /* pointer over mb of the frame to be reconstructed  */
             pixel *p_fdec[3];
 
-	     pixel *p_ref_BL[3];// Add by chenjie
+	        pixel *p_ref_BL[3];// Add by chenjie
 
 	     
 

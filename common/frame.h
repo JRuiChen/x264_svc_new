@@ -192,6 +192,12 @@ typedef struct MOTIONUPSAMPLING
    int i_aai_ref_idx_temp[2][2][2];
    int i_aaai_ref_idx[2][2][2];
    int i_aaac_mv[2][4][4][2];
+
+   int i_mb_type;
+   int i_partition;
+   int i_sub_partition[4];
+
+   
    int mb_mode;
    int blk_mode[4];
    

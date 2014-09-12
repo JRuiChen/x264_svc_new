@@ -3141,6 +3141,8 @@ static int x264_copy_mb_info_to_BL(x264_t* h)
    h->des_mb.field = h->src_mb.field;\
    h->des_mb.mb_mode = h->src_mb.mb_mode;\
    h->des_mb.blk_mode = h->src_mb.blk_mode;\
+   h->des_mb.pic = h->src_mb.pic;\
+   h->des_mb.cache = h->src_mb.pic;\
    }
 
 
@@ -3272,6 +3274,8 @@ else
         else
             x264_macroblock_cache_load_progressive( h, i_mb_x, i_mb_y );
 
+        /*only when it is base layer, do we have the macroblock analysed - BY MING*/
+        if(h->sh.b_base_layer_flag)
         x264_macroblock_analyse( h );
 
         /* encode this macroblock -> be careful it can change the mb type to P_SKIP if needed */
@@ -3801,9 +3805,8 @@ static void *x264_slices_write( x264_t *h )
    int i_slice_num = 0;
    int  last_thread_mb = h->sh.i_last_mb;
    memset( &h->stat.frame, 0, sizeof(h->stat.frame) );
-   h->mb.b_reencode_mb = 0;
 
-   #define WRITE_ALL_SLICES(BASE_LAYER_FLAG)\
+   #define WRITE_ALL_SLICES\
    while( h->sh.i_first_mb + SLICE_MBAFF*h->mb.i_mb_stride <= last_thread_mb )\
    	{\
    	   h->sh.i_last_mb = last_thread_mb;\
@@ -3837,16 +3840,8 @@ static void *x264_slices_write( x264_t *h )
 		   }\
 	   	}\
 	   h->sh.i_last_mb = X264_MIN(h->sh.i_last_mb,last_thread_mb);\
-	   if(BASE_LAYER_FLAG)\
-	   {\
-	     if(x264_stack_align(x264_slice_write,h))\
+	    if(x264_stack_align(x264_slice_write,h))\
 	   	   goto fail;\
-	   }\
-	   else\
-	   {\
-	   	 if(x264_stack_align(x264_slice_write_EL,h))\
-	   	   goto fail;\
-	   }\
 	   h->sh.i_first_mb = h->sh.i_last_mb + 1;\
 	   if(SLICE_MBAFF && h->sh.i_first_mb % h->mb.i_mb_width)\
 	   	  h->sh.i_first_mb -= h->mb.i_mb_stride;\
@@ -3855,18 +3850,23 @@ static void *x264_slices_write( x264_t *h )
 
 
 
-    x264_copy_mb_info_before_encode(h,BASE_LAYER);
-    
 
-    WRITE_ALL_SLICES(BASE_LAYER)
+    
+	
+	/*write all slices of base layer - BY MING*/
+    
+	x264_copy_mb_info_before_encode(h,BASE_LAYER);
+    h->sh.b_base_layer_flag = BASE_LAYER;
+	h->mb.b_reencode_mb = 0;
+    WRITE_ALL_SLICES
 
     void writeCsp(pixel* p, FILE* file, int width, int height,int stride);
 	FILE *file_dst2 = fopen ("tst352x288_ori.yuv", "ab+" );
 
-	//MotionUpsampling* mo_up  = NULL;
-	//CHECKED_MALLOC_NO_FAIL(mo_up,sizeof(MotionUpsampling));
+	MotionUpsampling* mo_up  = NULL;
+	CHECKED_MALLOC_NO_FAIL(mo_up,sizeof(MotionUpsampling));
 	//x264_log( NULL, X264_LOG_ERROR, "motionupsampling malloc finish '%s' \n","finish malloc" );
-	//memset(mo_up,0,sizeof(MotionUpsampling));
+	memset(mo_up,0,sizeof(MotionUpsampling));
 	writeCsp(h->fdec->plane[0], file_dst2, h->param.i_width, h->param.i_height, h->fdec->i_stride[0]);
 	if( h->param.b_sliced_threads )
 		x264_wait_up_sampling_finish(h->param.i_threads);
@@ -3874,14 +3874,20 @@ static void *x264_slices_write( x264_t *h )
 	{
 		printf (" Call up-sampling function!!!!!!!!!!!!!!!!!!!!\n");
 		x264_frame_expand_layers(h, file_dst2, dst_s, h->fdec->plane[0], h->fdec->i_stride[0], h->param.i_width, h->param.i_height, h->param.i_width<<1, h->param.i_height<<1);
-        //xUpsampleMotion(mo_up,&cRP, cRP.m_bFieldPicFlag,0,MV_THRESHOLD,h);
+        xUpsampleMotion(mo_up,&cRP, cRP.m_bFieldPicFlag,0,MV_THRESHOLD,h);
 		//x264_log( NULL, X264_LOG_ERROR, "motionupsampling  finish '%s' \n","finish motionupsampling" );
 	}
 	fclose(file_dst2);
 
 
 
-
+    /*write all slices of enhance layer - BY MING*/
+	h->mb.b_reencode_mb = 0;
+    x264_copy_mb_info_before_encode(h,ENHANCE_LAYER);
+	h->sh.b_base_layer_flag = ENHANCE_LAYER;
+    h->sh.i_first_mb = 0;
+	h->sh.i_last_mb = h->mb.i_mb_count - 1;
+    WRITE_ALL_SLICES
     return (void *)0;
 
 fail:

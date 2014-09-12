@@ -25,6 +25,18 @@ x264_config.h
 x264
 checkasm
 
+*.bak
+*.IAB
+*.IAD
+*.IMB
+*.IMD
+*.PFI
+*.PO
+*.PRI
+*.PS
+*.WK3
+*.SearchResults
+
 *.264
 *.h264
 *.2pass

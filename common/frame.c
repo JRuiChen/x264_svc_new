@@ -2165,6 +2165,13 @@ int xInitMb(MotionUpsampling* mo_up,int i_mbx_curr,int i_mby_curr,x264_t* h)
   mo_up->b_in_crop_window = xIsInCropWindow(mo_up);
   mo_up->b_intraBL = 0;
   //
+  mo_up->i_mb_type = h->sh.i_type == SLICE_TYPE_P?P_SKIP:B_SKIP;
+  mo_up->i_partition = -1;
+  mo_up->i_sub_partition[0] = D_L0_8x8;
+  mo_up->i_sub_partition[1] = D_L0_8x8;
+  mo_up->i_sub_partition[2] = D_L0_8x8;
+  mo_up->i_sub_partition[3] = D_L0_8x8;
+  
   mo_up->i_fwd_bwd = 0;
   mo_up->b_res_pred_safe = mo_up->b_in_crop_window;
   //
@@ -2174,14 +2181,14 @@ int xInitMb(MotionUpsampling* mo_up,int i_mbx_curr,int i_mby_curr,x264_t* h)
   mo_up->b_aa_base_intra[1][0] = 0;
   mo_up->b_aa_base_intra[1][1] = 0;
 
-  mo_up->i_aaai_ref_idx[0][0][0]  = BLOCK_NOT_PREDICTED;
-  mo_up->i_aaai_ref_idx[0][0][1]  = BLOCK_NOT_PREDICTED;
-  mo_up->i_aaai_ref_idx[0][1][0]  = BLOCK_NOT_PREDICTED;
-  mo_up->i_aaai_ref_idx[0][1][1]  = BLOCK_NOT_PREDICTED;
-  mo_up->i_aaai_ref_idx[1][0][0]  = BLOCK_NOT_PREDICTED;
-  mo_up->i_aaai_ref_idx[1][0][1]  = BLOCK_NOT_PREDICTED;
-  mo_up->i_aaai_ref_idx[1][1][0]  = BLOCK_NOT_PREDICTED;
-  mo_up->i_aaai_ref_idx[1][1][1]  = BLOCK_NOT_PREDICTED;
+  mo_up->i_aaai_ref_idx[0][0][0]  = -1;
+  mo_up->i_aaai_ref_idx[0][0][1]  = -1;
+  mo_up->i_aaai_ref_idx[0][1][0]  = -1;
+  mo_up->i_aaai_ref_idx[0][1][1]  = -1;
+  mo_up->i_aaai_ref_idx[1][0][0]  = -1;
+  mo_up->i_aaai_ref_idx[1][0][1]  = -1;
+  mo_up->i_aaai_ref_idx[1][1][0]  = -1;
+  mo_up->i_aaai_ref_idx[1][1][1]  = -1;
 
   /*set field mode for SNR scalability*/
   if(mo_up->b_in_crop_window && (mo_up->b_scoeff_pred || mo_up->b_tcoeff_pred))
@@ -2222,8 +2229,14 @@ int xGetRefLayerPartIdc(MotionUpsampling* mo_up,int iXInsideCurrMB,int iYInsideC
    int iB4x4IdxBase = ((( iYInsideBaseMb & 7 ) >> 2)  << 1) + (( iXInsideBaseMb & 7 ) >> 2);
    int eMbModeBase = h->mbBL.mb_mode[iBaseMbIdx];
    int eBlkModeBase = h->mbBL.blk_mode[iBaseMbIdx];
-   int b_skip_or_direct = (eMbModeBase == MODE_SKIP && h->sh.i_type == SLICE_TYPE_B);
 
+   int eMbType = h->mbBL.type[iBaseMbIdx];
+   int ePartition = h->mbBL.partition[iBaseMbIdx];
+   int eSubPartition = h->mbBL.sub_partition[iBaseMbIdx][iB8x8IdxBase];
+   int b_skip_or_direct = ((IS_DIRECT(eMbType) || IS_SKIP(eMbType)) && h->sh.i_type == SLICE_TYPE_B);
+   	                           
+   //int b_skip_or_direct = (eMbModeBase == MODE_SKIP && h->sh.i_type == SLICE_TYPE_B);
+   
 
    if(b_skip_or_direct)
    {  //===== determine macroblock and sub-macroblock partition index for B_Skip and B_Direct_16x16 =====
@@ -2238,17 +2251,31 @@ int xGetRefLayerPartIdc(MotionUpsampling* mo_up,int iXInsideCurrMB,int iYInsideC
       const uint16_t aauiNxNPartIdx[6][4] = 
       {
       	   	{0,0,0,0},// MODE_SKIP (P Slice)
-      	   	{0,0,0,0},// MODE_16x16     or    BLK_8x8
-      	   	{0,0,2,2},// MODE_16x8      or    BLK_8x4
-      	   	{0,1,0,1},// MODE_8x16      or    BLK_4x8
-      	   	{0,1,2,3},// MODE_8x8       or    BLK_4x4
-      	   	{0,1,2,3}// MODE_8x8ref0
+      	   	{0,1,2,3},// D_8x8       or    D_4x4
+      	   	{0,0,2,2},// D_16x8      or    D_8x4
+      	   	{0,1,0,1},// D_8x16      or    D_4x8
+      	   	{0,0,0,0},//D_16x16     or    D_8x8
+      	   	{0,1,2,3}// D_8x8ref0
       };
-
-
-	  iBase8x8MbPartIdx = aauiNxNPartIdx[eMbModeBase][iB8x8IdxBase];
-
-	  if(eMbModeBase == MODE_8x8 || eMbModeBase == MODE_8x8ref0)
+      
+      iBase8x8MbPartIdx = aauiNxNPartIdx[IS_SKIP(eMbType) && h->sh.i_type == SLICE_TYPE_P?0:ePartition - D_8x8 + 1][iB8x8IdxBase];
+	  //iBase8x8MbPartIdx = aauiNxNPartIdx[eMbModeBase][iB8x8IdxBase];
+      if(ePartition == D_8x8)
+      {
+        if(IS_SKIP(eMbType))
+        {
+          if(mo_up->i_ref_layer_dqid == 0)
+          {
+           iBase4x4SubMbPartIdx = iB4x4IdxBase;
+		   
+          }
+        }
+		else
+		{
+		  iBase4x4SubMbPartIdx = aauiNxNPartIdx[eSubPartition & 3][iB4x4IdxBase];
+		}
+      }
+	  /*if(eMbModeBase == MODE_8x8 || eMbModeBase == MODE_8x8ref0)
 	  {
 	    if(eBlkModeBase = BLK_SKIP)
 	    {
@@ -2262,7 +2289,7 @@ int xGetRefLayerPartIdc(MotionUpsampling* mo_up,int iXInsideCurrMB,int iYInsideC
 		{
 		  iBase4x4SubMbPartIdx = aauiNxNPartIdx[eBlkModeBase - BLK_8x8 + 1][iB4x4IdxBase];
 		}
-	  }
+	   }*/
    }
    
    //===== this function implements subclause G.8.6.1.1 =====
@@ -2609,7 +2636,7 @@ int xSetPartIdcArray(MotionUpsampling *mo_up,x264_t * h)
 
 		  if(b_intraBL)
 		  {
-
+           mo_up->i_mb_type = I_BL;
 		   mo_up->mb_mode = INTRA_BL;
 
 		  }	
@@ -2890,9 +2917,40 @@ int xDeriveMbMode(MotionUpsampling * mo_up,x264_t * h)
 	bVerMatch = bVerMatch && x8x8BlocksHaveSameMotion(mo_up,iListIdx,1,3);
   }
 
-  const int aiMbMode[4] = {MODE_8x8,MODE_16x8,MODE_8x16,MODE_16x16};
-  mo_up->mb_mode = aiMbMode[(bVerMatch?2:0) + (bHorMatch ? 1:0)];
+    
+  	#define partPredModeA \
+	   (mo_up->i_aaai_ref_idx[0][0][0] >= 0?2:0) +\ 
+	   (mo_up->i_aaai_ref_idx[0][0][1] >= 0?1:0\);
 
+
+    #define partPredModeB \
+		(mo_up->i_aaai_ref_idx[1][1][0] >= 0?2:0) +\ 
+		(mo_up->i_aaai_ref_idx[1][1][1] >= 0?1:0\);
+  
+
+  const int aiMbPartition[4] = {D_8x8,D_16x8,D_8x16,D_16x16};
+  int i_partition = aiMbPartition[(bVerMatch?2:0) + (bHorMatch?1:0)];
+
+  int i_mb_type = 3*(partPredModeA - 1) + (partPredModeB == 0?partPredModeB:partPredModeB - 1) + 8;
+
+  if(partPredModeA == 0&& partPredModeB == 0)
+  	{
+  	  if(i_partition == D_8x8 && h->sh.i_type == SLICE_TYPE_B)
+	  	i_mb_type = B_8x8;
+	  else if(i_partition == D_8x8 && h->sh.i_type == SLICE_TYPE_P)
+	  	i_mb_type = P_8x8;
+	  else
+	  	i_mb_type = P_L0;
+	  	
+  	}
+   
+  
+  const int aiMbMode[4] = {MODE_8x8,MODE_16x8,MODE_8x16,MODE_16x16};
+
+  mo_up->i_mb_type = i_mb_type;
+  mo_up->i_partition = i_partition;
+  mo_up->mb_mode = aiMbMode[(bVerMatch?2:0) + (bHorMatch ? 1:0)];
+  
   return m_nOK;
 }
 
@@ -2939,23 +2997,52 @@ int xDeriveBlockModeAndUpdateMv(MotionUpsampling *mo_up,int i8x8BlkIdx)
 		b_ver_match = b_ver_match && b_ver1_match && b_ver2_match;
 	  }
 
-	  const int aiBlkMode[4] = {BLK_4x4,BLK_8x4,BLK_4x8,BLK_8x8};
-	  mo_up->blk_mode[i8x8BlkIdx] = aiBlkMode[ b_8x8_match ? 3: b_hor_match? 1:b_ver_match?2:0];
+
+	  #define L0_AVALIABLE \
+	     (mo_up->i_aaai_ref_idx[0][0][0] >= 0 && mo_up->i_aaai_ref_idx[0][1][0] >= 0\
+	    &&mo_up->i_aaai_ref_idx[1][0][0] >= 0 && mo_up->i_aaai_ref_idx[1][1][0] >= 0);
+
+	  #define L1_AVALIABLE \
+	     (mo_up->i_aaai_ref_idx[0][0][1] >= 0 && mo_up->i_aaai_ref_idx[0][1][1] >= 0\
+	    &&mo_up->i_aaai_ref_idx[1][0][1] >= 0 && mo_up->i_aaai_ref_idx[1][1][1] >= 0);	  
+
+
+	  
+	 /* int b_L0 = (mo_up->i_aaai_ref_idx[0][0][0] != -1 && mo_up->i_aaai_ref_idx[0][1][0] != -1
+	  	          &&mo_up->i_aaai_ref_idx[1][0][0] != -1&& mo_up->i_aaai_ref_idx[1][1][0] != -1);
+	  int b_L1 = (mo_up->i_aaai_ref_idx[0][0][1] != -1 && mo_up->i_aaai_ref_idx[0][1][1] != -1
+	  	          &&mo_up->i_aaai_ref_idx[1][0][1] != -1&& mo_up->i_aaai_ref_idx[1][1][1] != -1);
+	  int b_Bi = b_L0 && b_L1;
+     */
+	  
+	  int b_L0 = L0_AVALIABLE && !L1_AVALIABLE;
+	  int b_L1 = !L0_AVALIABLE && L1_AVALIABLE;
+	  int b_Bi = L0_AVALIABLE && L1_AVALIABLE;
+	  int p = b_L0?0:b_L1?1:2;
+	  ROT(p < 0);
+      int i_sub_partition = b_8x8_match?D_L0_8x8:b_hor_match?D_L0_8x4:b_ver_match?D_L0_4x8:D_L0_4x4;
+	  mo_up->i_sub_partition[i8x8BlkIdx] = i_sub_partition + 4*p;
+	  //const int aiBlkMode[4] = {BLK_4x4,BLK_8x4,BLK_4x8,BLK_8x8};
+	  
+	  //mo_up->blk_mode[i8x8BlkIdx] = aiBlkMode[ b_8x8_match ? 3: b_hor_match? 1:b_ver_match?2:0];
    	}
 
-
+   ROTRS(IS_SUB4x4(mo_up->i_sub_partition[i8x8BlkIdx]);
    //ROTRS( m_cMvScale.m_bRSChangeFlag,          Err::m_nOK );
-   ROTRS(mo_up->blk_mode[i8x8BlkIdx] == BLK_4x4,m_nOK);
+  // ROTRS(mo_up->blk_mode[i8x8BlkIdx] == BLK_4x4,m_nOK);
    //===== combine motion vectors ===== //===== combine motion vectors =====
    {
      for(int iListIdx = 0;iListIdx < mo_up->i_max_list_idx;iListIdx++)
      {
         int* cNewMv = {0,0}, *cNewMvA = {0,0},*cNewMvB = {0,0},*mv0 = {0,0},*mv1 = {1,1};
-       switch(mo_up->blk_mode[i8x8BlkIdx])
+       switch(mo_up->i_sub_partition[i8x8BlkIdx])
        	{
-       	  case BLK_8x8:
+       	  //case BLK_8x8:
 		  	 //int cNewMv[2] = {0,0};
 			 //int mv0[2] = {2,2};
+			 case D_L0_8x8:
+			 case D_L1_8x8:
+			 case D_BI_8x8:
 			 cNewMv = xAddMv(mo_up->i_aaac_mv[iListIdx][iXO][iYO],mo_up->i_aaac_mv[iListIdx][iXO + 1][iYO]);
 			 cNewMv = xAddMv(cNewMv,mo_up->i_aaac_mv[iListIdx][iXO][iYO + 1]);
 			 cNewMv = xAddMv(cNewMv,mo_up->i_aaac_mv[iListIdx][iXO + 1][iYO + 1]);
@@ -2967,11 +3054,14 @@ int xDeriveBlockModeAndUpdateMv(MotionUpsampling *mo_up,int i8x8BlkIdx)
 			 xMvCopy(mo_up->i_aaac_mv[iListIdx][iXO + 1][iYO + 1],cNewMv);
 			 
 		  	break;
-		  case BLK_8x4:
+		//  case BLK_8x4:
 
 			//int cNewMvA[2] = {0,0};
 			//int cNewMvB[2] = {0,0};
 			//int mv0[2] = {1,1};
+			case D_L0_8x4:
+			case D_L1_8x4:
+			case D_BI_8x4:
 			cNewMvA = xAddMv(mo_up->i_aaac_mv[iListIdx][iXO][iYO],mo_up->i_aaac_mv[iListIdx][iXO + 1][iYO]);
 			cNewMvA = xAddMv(cNewMvA,mv1);
             xMvRightShift(cNewMvA,1);
@@ -2986,8 +3076,11 @@ int xDeriveBlockModeAndUpdateMv(MotionUpsampling *mo_up,int i8x8BlkIdx)
 			xMvCopy(mo_up->i_aaac_mv[iListIdx][iXO + 1][iYO + 1],cNewMvB);
 			
 		  	break;
-		  case BLK_4x8:
+		  //case BLK_4x8:
 		  //	int cNewMvA[2] = {0,0},cNewMvB[2] = {0,0},mv0[2] = {1,1};
+		  case D_L0_4x8:
+		  case D_L1_4x8:
+		  case D_BI_4x8:
 			cNewMvA = xAddMv(mo_up->i_aaac_mv[iListIdx][iXO][iYO],mo_up->i_aaac_mv[iListIdx][iXO][iYO + 1]);
 			cNewMvA = xAddMv(cNewMvA,mv1);
             xMvRightShift(cNewMvA,1);
@@ -3014,9 +3107,9 @@ int xDeriveBlockModeAndUpdateMv(MotionUpsampling *mo_up,int i8x8BlkIdx)
    
 }
 
-int xMbdataClear(x264_t * h,int iMbIdx,int iMb8x8Idx,int iMb4x4Idx,int s8x8,int s4x4)
+int xMbdataClear(x264_t * h,int iMbIdx,int iMb8x8Idx,int iMb4x4Idx,int s8x8,int s4x4,int availability)
 {
-  
+  h->mbEL1.type[iMbIdx] = h->sh.i_type == SLICE_TYPE_P? P_SKIP:B_SKIP;
   h->mbEL1.mb_mode[iMbIdx] = MODE_SKIP;
   //h->mb.b_BL_skip_flag = 0;
   //h->mbEL1.i_mb_mode = MODE_SKIP;
@@ -3026,9 +3119,21 @@ int xMbdataClear(x264_t * h,int iMbIdx,int iMb8x8Idx,int iMb4x4Idx,int s8x8,int 
   //h->mbEL1.b_residual_pred_flag = 0;
   h->mbEL1.mb_transform_size[iMbIdx] = 0;
   //h->mbEL1.b_in_crop_window_flag = 0;
-  h->mbEL1.blk_mode[iMbIdx][0] = h->mb.blk_mode[iMbIdx][1] = h->mb.blk_mode[iMbIdx][2]
-                             = h->mb.blk_mode[iMbIdx][3] = BLK_8x8;
 
+
+  
+
+
+
+
+
+  
+  h->mbEL1.i_sub_partition[iMbIdx][0] = h->mbEL1.i_sub_partition[iMbIdx][1]
+  	= h->mbEL1.i_sub_partition[iMbIdx][2] = h->mbEL1.i_sub_partition[iMbIdx][3]
+  	=  availability == 0?D_L0_8x8:availability == 1?D_L1_8x8:D_BI_8x8;
+ // h->mbEL1.blk_mode[iMbIdx][0] = h->mb.blk_mode[iMbIdx][1] = h->mb.blk_mode[iMbIdx][2]
+          //                   = h->mb.blk_mode[iMbIdx][3] = BLK_8x8;
+  
 /* foreach intra4x4_pred_mode, its value is I_PRED_4x4_DC - BY -MING*/
   for(int i = 0;i < 16; i++)
   {
@@ -3051,7 +3156,24 @@ int xSetPredMbData(MotionUpsampling *mo_up,x264_t * h)
   int iMb8x8Idx = 2*(mo_up->i_mby_curr * s8x8 + mo_up->i_mbx_curr);
   int iMb4x4Idx = 4*(mo_up->i_mby_curr * s4x4 + mo_up->i_mbx_curr);
 /*=== reset MbDataStruct data - BY MING*/
-  xMbdataClear(h,iMbIdx,iMb8x8Idx,iMb4x4Idx,s8x8,s4x4);
+
+
+#define L0_AVALIABLE \
+  (mo_up->i_aaai_ref_idx[0][0][0] >= 0 && mo_up->i_aaai_ref_idx[0][1][0] >= 0\
+  &&mo_up->i_aaai_ref_idx[1][0][0] >= 0 && mo_up->i_aaai_ref_idx[1][1][0] >= 0);
+
+#define L1_AVALIABLE \
+	     (mo_up->i_aaai_ref_idx[0][0][1] >= 0 && mo_up->i_aaai_ref_idx[0][1][1] >= 0\
+	    &&mo_up->i_aaai_ref_idx[1][0][1] >= 0 && mo_up->i_aaai_ref_idx[1][1][1] >= 0);	  
+	  
+	  int b_L0 = L0_AVALIABLE && !L1_AVALIABLE;
+	  int b_L1 = !L0_AVALIABLE && L1_AVALIABLE;
+	  int b_Bi = L0_AVALIABLE && L1_AVALIABLE;
+	  int p = b_L0?0:b_L1?1:2;
+
+
+
+  xMbdataClear(h,iMbIdx,iMb8x8Idx,iMb4x4Idx,s8x8,s4x4,p);
 
   /*=== set motion data(ref idx & motion vectors) == - BY MING*/
   if(! mo_up->b_in_crop_window || mo_up->b_intraBL)
@@ -3115,10 +3237,12 @@ int xSetPredMbData(MotionUpsampling *mo_up,x264_t * h)
   //rcMbData.setSafeResPred     ( m_bResPredSafe );
   if(mo_up->b_in_crop_window)
   {
+    h->mbEL1.type[iMbIdx] = mo_up->i_mb_type;
     h->mbEL1.mb_mode[iMbIdx] = mo_up->mb_mode;
 	//rcMbData.setFwdBwd( (UShort)m_uiFwdBwd );
 	for(int  blk = 0;blk < 4; blk++)
 	{
+	  h->mbEL1.sub_partition[iMbIdx][blk] = mo_up->i_sub_partition[blk];
 	  h->mbEL1.blk_mode[iMbIdx][blk] = mo_up->blk_mode[blk];
 	 // h->mb.i_blk_mode[blk] =  mo_up->blk_mode[blk];
 	}
@@ -3137,7 +3261,8 @@ int xSetPredMbData(MotionUpsampling *mo_up,x264_t * h)
 
    h->mbEL1.BL_skip[iMbIdx] = h->mbBL.BL_skip[iMbIdxBase];
    if(mo_up->b_intraBL)
-   {
+   { 
+     h->mbEL1.type[iMbIdx] = h->mbBL.type[iMbIdxBase];
      h->mbEL1.mb_mode[iMbIdx] = h->mbBL.mb_mode[iMbIdxBase];
    }
    if(mo_up->b_tcoeff_pred)
