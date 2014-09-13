@@ -1929,7 +1929,7 @@ static int encode( x264_param_t *param, cli_opt_t *opt )
 
         if( opt->qpfile )
             parse_qpfile( opt, &pic, i_frame + opt->i_seek );
-	printf ("encode i_frame = %d------------>\n", i_frame);
+		printf ("encode i_frame = %d------------>\n", i_frame);
         prev_dts = last_dts;
         i_frame_size = encode_frame( h, opt->hout, &pic, &last_dts );
         if( i_frame_size < 0 )

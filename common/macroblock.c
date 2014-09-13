@@ -290,7 +290,7 @@ int x264_macroblock_cache_allocate( x264_t *h )
 
     PREALLOC_INIT
 
-   PREALLOC( h->mb.qp, i_mb_count * sizeof(int8_t) );
+    PREALLOC( h->mb.qp, i_mb_count * sizeof(int8_t) );
     PREALLOC( h->mb.cbp, i_mb_count * sizeof(int16_t) );
     PREALLOC( h->mb.mb_transform_size, i_mb_count * sizeof(int8_t) );
     PREALLOC( h->mb.slice_table, i_mb_count * sizeof(uint16_t) );
@@ -346,9 +346,7 @@ int x264_macroblock_cache_allocate( x264_t *h )
     {
         PREALLOC( h->mb.skipbp, i_mb_count * sizeof(int8_t) );
         PREALLOC( h->mb.chroma_pred_mode, i_mb_count * sizeof(int8_t) );
-
-/*skytest0912*/
-	    PREALLOC( h->mb.mvd[0], i_mb_count * sizeof( **h->mb.mvd ) );
+        PREALLOC( h->mb.mvd[0], i_mb_count * sizeof( **h->mb.mvd ) );
 
         /* Add by chenjie */
         PREALLOC_BL( h->mbBL.skipbp, i_mbBL_count * sizeof(int8_t) );

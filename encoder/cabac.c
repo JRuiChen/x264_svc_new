@@ -965,9 +965,8 @@ do\
 
 static ALWAYS_INLINE void x264_macroblock_write_cabac_internal( x264_t *h, x264_cabac_t *cb, int plane_count, int chroma )
 {
-/*sky 0912 //const*/
-  //  const int i_mb_type = h->mb.i_type;
-int i_mb_type = h->mb.i_type;
+    const int i_mb_type = h->mb.i_type;
+
 #if !RDO_SKIP_BS
     const int i_mb_pos_start = x264_cabac_pos( cb );
     int       i_mb_pos_tex;
@@ -1025,14 +1024,6 @@ NumMbPart( mb_type ) = = 4 )*/
         return;
     }
 #endif
-/*skytest 9.12 add h->mb.i_mb_luma*/
-
-if(h->i_layer_id )
-{
-	h->mb.i_cbp_luma = 0;
-	h->mb.i_cbp_chroma = 0;
-	 i_mb_type = I_PCM ;
-}
 
     if( i_mb_type != I_16x16 )    // if( MbPartPredMode( mb_type, 0 ) != Intra_16x16 ) 
     {

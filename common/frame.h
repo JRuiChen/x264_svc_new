@@ -228,7 +228,7 @@ typedef struct x264_frame
     int     i_width[3];
     int     i_lines[3];
 	//author:zhaowei add *EL1,*EL2
-	int     i_stride_EL1[3];
+	int     i_strideEL1[3];
     int     i_widthEL1[3];
     int     i_linesEL1[3];
 	int     i_strideEL2[3];
@@ -246,6 +246,10 @@ typedef struct x264_frame
     pixel *filteredEL1[3][4];
 	pixel *planeEL2[3];
     pixel *filteredEL2[3][4];
+	pixel *planeUpsampleEL1[3];
+	pixel *filteredUpsampleEL1[3][4];
+	pixel *planeUpsampleEL2[3];
+	pixel *filteredUpsampleEL2[3][4];
 	
     pixel *filtered_fld[3][4];
     pixel *lowres[4]; /* half-size copy of input frame: Orig, H, V, HV */
@@ -257,6 +261,8 @@ typedef struct x264_frame
 	//author:zhaowei
 	pixel *bufferEL1[4];
 	pixel *bufferEL2[4];
+	pixel *bufferUpsampleEL1[4];
+	pixel *bufferUpsampleEL2[4];
 	
     pixel *buffer_fld[4];
     pixel *buffer_lowres[4];
@@ -444,8 +450,9 @@ x264_frame_t *x264_sync_frame_list_pop( x264_sync_frame_list_t *slist );
 //author:zhaowei
 int xClip( int iValue, int imin, int imax );
 int CeilLog2( int i );
-void writeCsp(pixel* p, FILE* file, int width, int height,int stride);
+void writeCsp(pixel* src, pixel* dst, int width, int height,int stride);
 int readColorComponent(pixel *p,pixel *file,int width,int height,int stride,int lines,int src_stride);
+int readColorComponent1(pixel* p, FILE* file, int width, int height,int stride,int lines);
 void xCopyToImageBuffer( unsigned char* pucSrc, int iWidth, int iHeight, int iStride,DownConvert* cDownConvert );
 void xCopyFromImageBuffer( unsigned char* pucDes, int iWidth, int iHeight, int iStride,DownConvert* cDownConvert  );
 void xBasicIntraUpsampling( int  iBaseW,   int  iBaseH,   int  iCurrW,   int  iCurrH,
@@ -476,7 +483,10 @@ void resampleFrame( pixel*         p,
                int               resampling,
                int               upsampling,
                int               bSecondInputFrame ,int stride);
-void x264_frame_expand_layers(x264_t *h,FILE *ouputfile,int dst_stride,pixel *src,int src_stride,int win,int hin,int wout,int hout);
+void x264_frame_expand_layers(x264_t *h,pixel *dst,int dst_stride,pixel *src,int src_stride,int win,int hin,int wout,int hout);
+void x264_frame_expand_layers1(int win,int hin,int wout,int hout);
 
+void writeCsp1(pixel* p, FILE* file, int width, int height,int stride);
+void x264_layer_upsample(x264_t *h,x264_frame_t *f,int level);
 
 #endif
