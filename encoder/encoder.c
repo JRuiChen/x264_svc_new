@@ -3790,7 +3790,7 @@ static void *	x264_slices_write( x264_t *h )
 	h->mb.b_reencode_mb = 0;
     WRITE_ALL_SLICES
 
-    h->i_layer_id += 1;   
+    ¡h//h->i_layer_id += 1;   
 
     /*write all slices of enhance layer - BY MING*/
 	//h->mb.b_reencode_mb = 0;

@@ -1,14 +1,51 @@
----- i_global_qp Matches (13 in 1 files) ----
-Encoder.c (encoder):static inline void x264_slice_init( x264_t *h, int i_nal_type, int i_global_qp )
-Encoder.c (encoder):        x264_slice_header_init( h, &h->sh,& h->sps[h->i_layer_id],& h->pps[h->i_layer_id], h->i_idr_pic_id, h->i_frame_num, i_global_qp );
-Encoder.c (encoder):        x264_slice_header_init( h, &h->sh, &h->sps[h->i_layer_id], &h->pps[h->i_layer_id], -1, h->i_frame_num, i_global_qp );
-Encoder.c (encoder):static inline void x264_slice_init_EL( x264_t *h, int i_nal_type, int i_global_qp )
-Encoder.c (encoder):       x264_slice_header_init( h, &h->sh,& h->sps[h->i_layer_id],& h->pps[h->i_layer_id], h->i_idr_pic_id, h->i_frame_num, i_global_qp );
-Encoder.c (encoder):        x264_slice_header_init( h, &h->sh, &h->sps[h->i_layer_id], &h->pps[h->i_layer_id], -1, h->i_frame_num, i_global_qp );
-Encoder.c (encoder):	x264_slice_init(x264_t * h, NAL_UNIT_CODED_SLICE_SCALABLE, int i_global_qp)
-Encoder.c (encoder):   //int i_global_qp = x264_ratecontrol_qp(h);
-Encoder.c (encoder):   //x264_slice_init(h,h->i_nal_type,int i_global_qp)
-Encoder.c (encoder):    int i_nal_type, i_nal_ref_idc, i_global_qp;
-Encoder.c (encoder):    i_global_qp = x264_ratecontrol_qp( h );
-Encoder.c (encoder):    h->fdec->i_qpplus1 = i_global_qp + 1;
-Encoder.c (encoder):    x264_slice_init( h, i_nal_type, i_global_qp );
+---- h->param.i_height Matches (51 in 6 files) ----
+Common.c (common):		x264_frame_expand_layers(up_sampling_arg.pH, file_dst, dst_s, up_sampling_arg.pH->fdec->plane[0], up_sampling_arg.pH->fdec->i_stride[0], up_sampling_arg.pH->param.i_width, up_sampling_arg.pH->param.i_height, up_sampling_arg.pH->param.i_width<<1, up_sampling_arg.pH->param.i_height<<1);
+Frame.c (common):    int height = h->param.i_height >> yshift;
+Frame.c (common):                                             (uint32_t *)pix[0], stride[0]/sizeof(uint32_t), h->param.i_width, h->param.i_height );
+Frame.c (common):             pix[0] += (h->param.i_height-1) * stride[0];
+Frame.c (common):                                            (pixel*)pix[0], stride[0]/sizeof(pixel), i_csp==X264_CSP_BGRA ? 4 : 3, h->param.i_width, h->param.i_height );
+Frame.c (common):                          stride[0]/sizeof(pixel), h->param.i_width, h->param.i_height );//¸´ÖÆÊý¾Ý
+Frame.c (common):                              stride[1]/sizeof(pixel), h->param.i_width, h->param.i_height>>v_shift );
+Frame.c (common):                                         h->param.i_width>>1, h->param.i_height>>v_shift );
+Frame.c (common):                              stride[1]/sizeof(pixel), h->param.i_width, h->param.i_height );
+Frame.c (common):                              stride[2]/sizeof(pixel), h->param.i_width, h->param.i_height );
+Frame.c (common):        int i_height = h->param.i_height >> v_shift;
+Frame.c (common):        int i_pady = (h->mb.i_mb_height * 16 - h->param.i_height) >> v_shift;
+Frame.c (common):        int height = h->param.i_height >> v_shift;
+Frame.c (common):        int pady = (h->mb.i_mb_height * 16 - h->param.i_height) >> v_shift;
+Pixel.c (common):    int mbpair_height = X264_MIN( h->param.i_height - mb_y * 16, 32 );
+Analyse.c (encoder):            if( HAVE_INTERLACED && !MB_INTERLACED && h->mb.i_mb_y * 16 >= h->param.i_height && !skip_invalid )
+Analyse.c (encoder):            if( HAVE_INTERLACED && !MB_INTERLACED && h->mb.i_mb_y * 16 >= h->param.i_height )
+Encoder.c (encoder):    int frame_size = FRAME_SIZE( h->param.i_height * h->param.i_width * sizeof(pixel) );
+Encoder.c (encoder):        for( int y = 0; y < h->param.i_height; y++ )
+Encoder.c (encoder):        int ch = h->param.i_height>>CHROMA_V_SHIFT;
+Encoder.c (encoder):    if( h->param.i_width <= 0 || h->param.i_height <= 0 )
+Encoder.c (encoder):                  h->param.i_width, h->param.i_height );
+Encoder.c (encoder):                  h->param.i_width, h->param.i_height );
+Encoder.c (encoder):    if( i_csp < X264_CSP_I422 && PARAM_INTERLACED && h->param.i_height % 4 )
+Encoder.c (encoder):                  h->param.i_width, h->param.i_height );
+Encoder.c (encoder):    if( (i_csp < X264_CSP_I422 || PARAM_INTERLACED) && h->param.i_height % 2 )
+Encoder.c (encoder):                  h->param.i_width, h->param.i_height );
+Encoder.c (encoder):        (h->param.crop_rect.i_top  + h->param.crop_rect.i_bottom) >= h->param.i_height )
+Encoder.c (encoder):    int max_sliced_threads = X264_MAX( 1, (h->param.i_height+15)/16 / 4 );
+Encoder.c (encoder):        if( h->param.i_width < 32 || h->param.i_height < 32 )
+Encoder.c (encoder):            if(      h->param.i_width == 1920 && h->param.i_height == 1080 ) res =  1;
+Encoder.c (encoder):            else if( h->param.i_width == 1280 && h->param.i_height ==  720 ) res =  0;
+Encoder.c (encoder):            if(      h->param.i_width == 1440 && h->param.i_height == 1080 ) res =  1;
+Encoder.c (encoder):            else if( h->param.i_width ==  960 && h->param.i_height ==  720 ) res =  0;
+Encoder.c (encoder):                      h->param.i_width, h->param.i_height, type ? "100" : "50" );
+Encoder.c (encoder):        h->param.i_slice_max_mbs = ((h->param.i_width + 15) / 16) * ((h->param.i_height + 15) / 16) / 10;
+Encoder.c (encoder):    int max_slices = (h->param.i_height+((16<<PARAM_INTERLACED)-1))/(16<<PARAM_INTERLACED);
+Encoder.c (encoder):            h->param.i_lookahead_threads = X264_MIN( h->param.i_lookahead_threads, h->param.i_height / 128 );
+Encoder.c (encoder):            int max_range = (h->param.i_height + X264_THREAD_HEIGHT) / h->i_thread_frames - X264_THREAD_HEIGHT;
+Encoder.c (encoder):    h->out.i_bitstream = X264_MAX( 1000000, h->param.i_width * h->param.i_height * 4
+Encoder.c (encoder):        maxpix_y = X264_MIN( maxpix_y, h->param.i_height );
+Encoder.c (encoder)://	writeCsp(h->fdec->plane[0], file_dst2, h->param.i_width, h->param.i_height, h->fdec->i_stride[0]);
+Encoder.c (encoder):		x264_frame_expand_layers(h, file_dst2, dst_s, h->fdec->plane[0], h->fdec->i_stride[0], h->param.i_width, h->param.i_height, h->param.i_width<<1, h->param.i_height<<1);
+Encoder.c (encoder):            h->param.i_height != 16 * h->mb.i_mb_height )
+Encoder.c (encoder):        if( h->param.i_height == 1080 )
+Encoder.c (encoder):        int luma_size = h->param.i_width * h->param.i_height;
+Encoder.c (encoder):    int64_t i_yuv_size = FRAME_SIZE( h->param.i_width * h->param.i_height );
+Ratecontrol.c (encoder):    float dstdim[2] = {    h->param.i_width / 16.f,    h->param.i_height / 16.f};
+Ratecontrol.c (encoder):            res_factor = (float)h->param.i_width * h->param.i_height / (i*j);
+Ratecontrol.c (encoder):            rc->mbtree.srcdim[1] = h->param.i_height;
