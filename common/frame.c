@@ -101,9 +101,9 @@ static x264_frame_t *x264_frame_new( x264_t *h, int b_fdec )
     i_stride = align_stride( i_width + 2*PADH, align, disalign );
 	//author:zhaowei 6  
 	if(b_Enable_SVC){
-		i_width= h->mb.i_mb_width*16/i_sample_width/i_sample_width;
-    	i_lines  = h->mb.i_mb_height*16/i_sample_height/i_sample_height;
-    	i_stride = align_stride( i_width + 2*PADH, align, disalign );
+		//i_width= h->mb.i_mb_width*16/i_sample_width/i_sample_width;
+    	//i_lines  = h->mb.i_mb_height*16/i_sample_height/i_sample_height;
+    	//i_stride = align_stride( i_width + 2*PADH, align, disalign );
 		i_widthEL1= h->mb.i_mb_width*16/i_sample_width;
     	i_linesEL1= h->mb.i_mb_height*16/i_sample_height;
     	i_strideEL1= align_stride( i_widthEL1 + 2*PADH, align, disalign );
