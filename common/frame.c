@@ -849,12 +849,12 @@ void x264_frame_expand_border_mod16( x264_t *h, x264_frame_t *frame )
 		for( int i = 0; i < frame->i_plane; i++ )
     	{
     	/*BY MING*/
-        	int i_width = h->param.i_widthEL2;
+        	int i_width = h->param.i_width;
         	int h_shift = i && CHROMA_H_SHIFT;
         	int v_shift = i && CHROMA_V_SHIFT;
-        	int i_height = (h->param.i_heightEL2)>> v_shift;
-        	int i_padx = (h->mbEL2.i_mb_width * 16- i_width);
-        	int i_pady = (h->mbEL2.i_mb_height * 16- i_height) >> v_shift;
+        	int i_height = (h->param.i_height)>> v_shift;
+        	int i_padx = (h->mb.i_mb_width * 16- i_width);
+        	int i_pady = (h->mb.i_mb_height * 16- i_height) >> v_shift;
         	if( i_padx )
         	{
             	for( int y = 0; y < i_height; y++ )
