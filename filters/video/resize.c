@@ -566,7 +566,8 @@ static int init( hnd_t *handle, cli_vid_filter_t *filter, video_info_t *info, x2
     }
 
     /* pass if nothing needs to be done, otherwise fail */
-    FAIL_IF_ERROR( ret, "not compiled with swscale support\n" )
+	
+    //FAIL_IF_ERROR( ret, "not compiled with swscale support\n" )
     return 0;
 }
 

@@ -559,8 +559,8 @@ void resampleFrame( pixel*         p,
 void x264_frame_expand_layers(x264_t *h,pixel *dst,int dst_stride,pixel *src,int src_stride,int win,int hin,int wout,int hout);
 void x264_frame_expand_layers1(int win,int hin,int wout,int hout);
 
+
 void writeCsp1(pixel* p, FILE* file, int width, int height,int stride);
 void x264_layer_upsample(x264_t *h,x264_frame_t *f,int level);
-
 
 #endif

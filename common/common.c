@@ -49,6 +49,9 @@ x264_pthread_t *thread_handle_up_sampling;
 x264_pthread_mutex_t mutex_slice_encode_sleeped_threads = X264_PTHREAD_MUTEX_INITIALIZER;
 int dst_s = 0;
 
+int i_sample_width = 2;
+int i_sample_height = 2;
+int b_Enable_SVC = 1;
 const int x264_bit_depth = BIT_DEPTH;
 
 const int x264_chroma_format = X264_CHROMA_FORMAT;
