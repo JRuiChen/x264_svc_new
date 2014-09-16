@@ -1708,7 +1708,7 @@ x264_t *x264_encoder_open( x264_param_t *param )
     h->mbBL.b_adaptive_mbaff = PARAM_INTERLACED && h->param.analyse.i_subpel_refine;
 
 
-    h->mbEL1.i_mb_width = h->sps->i_mb_width&2;
+    h->mbEL1.i_mb_width = h->sps->i_mb_width*2;
     h->mbEL1.i_mb_height = h->sps->i_mb_height*2;
     h->mbEL1.i_mb_count = h->mbEL1.i_mb_width * h->mbEL1.i_mb_height;
 
@@ -3098,7 +3098,7 @@ static int x264_copy_mb_info_to_BL(x264_t* h)
    h->des_mb.left_b8[0] = h->src_mb.left_b8[0];\
    h->des_mb.left_b8[1] = h->src_mb.left_b8[1];\
    h->des_mb.left_b4[0] = h->src_mb.left_b4[0];\
-   h->des_mb.left_b4[0] = h->src_mb.left_b4[1];\
+   h->des_mb.left_b4[1] = h->src_mb.left_b4[1];\
    h->des_mb.mv_min[0] = h->src_mb.mv_min[0];\
    h->des_mb.mv_min[1] = h->src_mb.mv_min[1];\
    h->des_mb.mv_max[0] = h->src_mb.mv_max[0];\
@@ -3141,8 +3141,6 @@ static int x264_copy_mb_info_to_BL(x264_t* h)
    h->des_mb.field = h->src_mb.field;\
    h->des_mb.mb_mode = h->src_mb.mb_mode;\
    h->des_mb.blk_mode = h->src_mb.blk_mode;\
-   h->des_mb.pic = h->src_mb.pic;\
-   h->des_mb.cache = h->src_mb.pic;\
    }
 
 
@@ -3275,7 +3273,7 @@ else
             x264_macroblock_cache_load_progressive( h, i_mb_x, i_mb_y );
 
         /*only when it is base layer, do we have the macroblock analysed - BY MING*/
-        if(h->sh.b_base_layer_flag)
+        if(h->i_layer_id == 0)
         x264_macroblock_analyse( h );
 
         /* encode this macroblock -> be careful it can change the mb type to P_SKIP if needed */
@@ -3855,39 +3853,43 @@ static void *x264_slices_write( x264_t *h )
 	
 	/*write all slices of base layer - BY MING*/
     
-	x264_copy_mb_info_before_encode(h,BASE_LAYER);
+	//x264_copy_mb_info_before_encode(h,BASE_LAYER);
+	//memcpy(&(h->mb),&(h->mbBL),sizeof(x264_mb_t));
+	//printf("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh sizeof(x264_mb_t) % d \ n" , sizeof(x264_mb_t));
     h->sh.b_base_layer_flag = BASE_LAYER;
 	h->mb.b_reencode_mb = 0;
+	h->i_layer_id = 0;
+
     WRITE_ALL_SLICES
 
-    void writeCsp(pixel* p, FILE* file, int width, int height,int stride);
-	FILE *file_dst2 = fopen ("tst352x288_ori.yuv", "ab+" );
+    //void writeCsp(pixel* p, FILE* file, int width, int height,int stride);
+	//FILE *file_dst2 = fopen ("tst352x288_ori.yuv", "ab+" );
 
-	MotionUpsampling* mo_up  = NULL;
-	CHECKED_MALLOC_NO_FAIL(mo_up,sizeof(MotionUpsampling));
+	//MotionUpsampling* mo_up  = NULL;
+	//CHECKED_MALLOC_NO_FAIL(mo_up,sizeof(MotionUpsampling));
 	//x264_log( NULL, X264_LOG_ERROR, "motionupsampling malloc finish '%s' \n","finish malloc" );
-	memset(mo_up,0,sizeof(MotionUpsampling));
-	writeCsp(h->fdec->plane[0], file_dst2, h->param.i_width, h->param.i_height, h->fdec->i_stride[0]);
-	if( h->param.b_sliced_threads )
-		x264_wait_up_sampling_finish(h->param.i_threads);
-	else
-	{
-		printf (" Call up-sampling function!!!!!!!!!!!!!!!!!!!!\n");
-		x264_frame_expand_layers(h, file_dst2, dst_s, h->fdec->plane[0], h->fdec->i_stride[0], h->param.i_width, h->param.i_height, h->param.i_width<<1, h->param.i_height<<1);
-        xUpsampleMotion(mo_up,&cRP, cRP.m_bFieldPicFlag,0,MV_THRESHOLD,h);
+	//memset(mo_up,0,sizeof(MotionUpsampling));
+	//writeCsp(h->fdec->plane[0], file_dst2, h->param.i_width, h->param.i_height, h->fdec->i_stride[0]);
+	//if( h->param.b_sliced_threads )
+		//x264_wait_up_sampling_finish(h->param.i_threads);
+	//else
+	//{
+	//	printf (" Call up-sampling function!!!!!!!!!!!!!!!!!!!!\n");
+		//x264_frame_expand_layers(h, file_dst2, dst_s, h->fdec->plane[0], h->fdec->i_stride[0], h->param.i_width, h->param.i_height, h->param.i_width<<1, h->param.i_height<<1);
+        //xUpsampleMotion(mo_up,&cRP, cRP.m_bFieldPicFlag,0,MV_THRESHOLD,h);
 		//x264_log( NULL, X264_LOG_ERROR, "motionupsampling  finish '%s' \n","finish motionupsampling" );
-	}
-	fclose(file_dst2);
+	//}
+	//fclose(file_dst2);
 
 
 
     /*write all slices of enhance layer - BY MING*/
-	h->mb.b_reencode_mb = 0;
+	/*h->mb.b_reencode_mb = 0;
     x264_copy_mb_info_before_encode(h,ENHANCE_LAYER);
 	h->sh.b_base_layer_flag = ENHANCE_LAYER;
     h->sh.i_first_mb = 0;
 	h->sh.i_last_mb = h->mb.i_mb_count - 1;
-    WRITE_ALL_SLICES
+    WRITE_ALL_SLICES*/
     return (void *)0;
 
 fail:

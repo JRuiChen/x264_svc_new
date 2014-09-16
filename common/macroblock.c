@@ -569,14 +569,14 @@ void x264_macroblock_thread_free( x264_t *h, int b_lookahead )
 
 void x264_macroblock_slice_init( x264_t *h )
 {
-   /* h->mb.mv[0] = h->fdec->mv[0];
+    h->mb.mv[0] = h->fdec->mv[0];
     h->mb.mv[1] = h->fdec->mv[1];
     h->mb.mvr[0][0] = h->fdec->mv16x16;
     h->mb.ref[0] = h->fdec->ref[0];
     h->mb.ref[1] = h->fdec->ref[1];
     h->mb.type = h->fdec->mb_type;
     h->mb.partition = h->fdec->mb_partition;
-    h->mb.field = h->fdec->field;*/
+    h->mb.field = h->fdec->field;
 
     /* Add by chenjie */
     h->mbBL.mv[0] = h->fdec->mv[0];
@@ -587,7 +587,7 @@ void x264_macroblock_slice_init( x264_t *h )
     h->mbBL.type = h->fdec->mb_type;
     h->mbBL.partition = h->fdec->mb_partition;
     h->mbBL.field = h->fdec->field;
-/*
+
 
     h->mbEL1.mv[0] = h->fdec->mv[0];
     h->mbEL1.mv[1] = h->fdec->mv[1];
@@ -607,7 +607,7 @@ void x264_macroblock_slice_init( x264_t *h )
     h->mbEL2.partition = h->fdec->mb_partition;
     h->mbEL2.field = h->fdec->field;
 
-	*/
+	
 
 	
     h->fdec->i_ref[0] = h->i_ref[0];
@@ -682,7 +682,7 @@ void x264_macroblock_slice_init( x264_t *h )
     h->mb.i_neighbour8[3] = MB_LEFT|MB_TOP|MB_TOPLEFT;
 
     /* Add by chenjie */
-   /* h->mbBL.i_neighbour4[6] =
+    h->mbBL.i_neighbour4[6] =
     h->mbBL.i_neighbour4[9] =
     h->mbBL.i_neighbour4[12] =
     h->mbBL.i_neighbour4[14] = MB_LEFT|MB_TOP|MB_TOPLEFT|MB_TOPRIGHT;
@@ -713,7 +713,7 @@ void x264_macroblock_slice_init( x264_t *h )
     h->mbEL2.i_neighbour4[11] =
     h->mbEL2.i_neighbour4[13] =
     h->mbEL2.i_neighbour4[15] =
-    h->mbEL2.i_neighbour8[3] = MB_LEFT|MB_TOP|MB_TOPLEFT;*/
+    h->mbEL2.i_neighbour8[3] = MB_LEFT|MB_TOP|MB_TOPLEFT;
 }
 
 
@@ -1034,12 +1034,12 @@ static void ALWAYS_INLINE x264_macroblock_load_pic_pointers( x264_t *h, int mb_x
 {
     int mb_interlaced = b_mbaff && MB_INTERLACED;
     int height = b_chroma ? 16 >> CHROMA_V_SHIFT : 16;
-    int i_stride = h->sh.b_base_layer_flag?h->fdec->i_stride[i]:h->fdec->i_strideEL1[i];
+    int i_stride = h->i_layer_id == 0?h->fdec->i_stride[i]:h->fdec->i_strideEL1[i];
     int i_stride2 = i_stride << mb_interlaced;
     int i_pix_offset = mb_interlaced
                      ? 16 * mb_x + height * (mb_y&~1) * i_stride + (mb_y&1) * i_stride
                      : 16 * mb_x + height * mb_y * i_stride;
-    pixel *plane_fdec = h->sh.b_base_layer_flag?(&h->fdec->plane[i][i_pix_offset]):(&h->fdec->planeEL1[i][i_pix_offset]);
+    pixel *plane_fdec = h->i_layer_id == 0?(&h->fdec->plane[i][i_pix_offset]):(&h->fdec->planeEL1[i][i_pix_offset]);
     int fdec_idx = b_mbaff ? (mb_interlaced ? (3 + (mb_y&1)) : (mb_y&1) ? 2 : 4) : !(mb_y&1);
     pixel *intra_fdec = &h->intra_border_backup[fdec_idx][i][mb_x*16];
     int ref_pix_offset[2] = { i_pix_offset, i_pix_offset };
@@ -1047,7 +1047,7 @@ static void ALWAYS_INLINE x264_macroblock_load_pic_pointers( x264_t *h, int mb_x
     if( mb_interlaced )
         ref_pix_offset[1] += (1-2*(mb_y&1)) * i_stride;
     h->mb.pic.i_stride[i] = i_stride2;
-    h->mb.pic.p_fenc_plane[i] = h->sh.b_base_layer_flag?(&h->fenc->plane[i][i_pix_offset]):(&h->fenc->planeEL1[i][i_pix_offset]);
+    h->mb.pic.p_fenc_plane[i] = h->i_layer_id == 0?(&h->fenc->plane[i][i_pix_offset]):(&h->fenc->planeEL1[i][i_pix_offset]);
 
 		
 	if( b_chroma )
@@ -1081,13 +1081,13 @@ static void ALWAYS_INLINE x264_macroblock_load_pic_pointers( x264_t *h, int mb_x
         // Interpolate between pixels in same field.
         if( mb_interlaced )
         {
-            plane_src = h->sh.b_base_layer_flag?h->fref[0][j>>1]->plane_fld[i]:h->fref[0][j>>1]->plane_fldEL1[i];
+            plane_src = h->i_layer_id == 0?h->fref[0][j>>1]->plane_fld[i]:h->fref[0][j>>1]->plane_fldEL1[i];
             filtered_src = h->fref[0][j>>1]->filtered_fld[i];
         }
         else
         {
-            plane_src = h->sh.b_base_layer_flag?h->fref[0][j]->plane[i]:h->fref[0][j]->planeEL1[i];
-            filtered_src = h->sh.b_base_layer_flag?h->fref[0][j]->filtered[i]:h->fref[0][j]->filtered[i];
+            plane_src = h->i_layer_id == 0?h->fref[0][j]->plane[i]:h->fref[0][j]->planeEL1[i];
+            filtered_src = h->i_layer_id == 0?h->fref[0][j]->filtered[i]:h->fref[0][j]->filtered[i];
         }
         h->mb.pic.p_fref[0][j][i*4] = plane_src + ref_pix_offset[j&1];
 
@@ -1114,7 +1114,7 @@ static void ALWAYS_INLINE x264_macroblock_load_pic_pointers( x264_t *h, int mb_x
             }
             else
             {
-                plane_src = h->sh.b_base_layer_flag?h->fref[1][j]->plane[i]:h->fref[1][j]->planeEL1[i];
+                plane_src = h->i_layer_id == 0?h->fref[1][j]->plane[i]:h->fref[1][j]->planeEL1[i];
                 filtered_src = h->fref[1][j]->filtered[i];
             }
             h->mb.pic.p_fref[1][j][i*4] = plane_src + ref_pix_offset[j&1];
@@ -1125,10 +1125,10 @@ static void ALWAYS_INLINE x264_macroblock_load_pic_pointers( x264_t *h, int mb_x
         }
 
     /*if it is enhance layer,then copy the p_ref_BL to fdec - BY MING*/
-    if(!h->sh.b_base_layer_flag)
+    if(!h->i_layer_id)
     {
-      h->mb.pic.p_ref_BL[i] = &h->fdec->planeUpsampleEL1[i][i_pix_offset]);
-	  h->mc.copy[PIXEL_16x16]( h->mb.pic.p_dec[i], FENC_STRIDE,  h->mb.pic.p_ref_BL[i], i_stride2, 16 );
+      h->mb.pic.p_ref_BL[i] = &h->fdec->planeUpsampleEL1[i][i_pix_offset];
+	  h->mc.copy[PIXEL_16x16]( h->mb.pic.p_fdec[i], FENC_STRIDE,  h->mb.pic.p_ref_BL[i], i_stride2, 16 );
     }
 }
 
@@ -1951,7 +1951,7 @@ static void ALWAYS_INLINE x264_macroblock_cache_load( x264_t *h, int mb_x, int m
 
 void x264_macroblock_cache_load_progressive( x264_t *h, int mb_x, int mb_y )
 {
-    if(h->sh.b_base_layer_flag)
+    if(h->i_layer_id == 0)
     x264_macroblock_cache_load( h, mb_x, mb_y, 0 );
 	else
 	x264_macroblock_cache_load_EL(h,mb_x,mb_y,0);
@@ -1959,7 +1959,7 @@ void x264_macroblock_cache_load_progressive( x264_t *h, int mb_x, int mb_y )
 
 void x264_macroblock_cache_load_interlaced( x264_t *h, int mb_x, int mb_y )
 {
-    if(h->sh.b_base_layer_flag)
+    if(h->i_layer_id == 0)
     x264_macroblock_cache_load( h, mb_x, mb_y, 1 );
 	else
 	x264_macroblock_cache_load_EL( h, mb_x, mb_y, 1 );

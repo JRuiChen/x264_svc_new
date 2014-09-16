@@ -111,8 +111,8 @@ void x264_sps_init( x264_sps_t *sps, int i_id, x264_param_t *param )
 		}
 	else if(sps->i_nal_type == NAL_UNIT_SUBSET_SPS)
 		{
-			sps->i_mb_width = ( param->i_width+ 15 ) / 16 * 2 * (sps->i_id + 1);
-    			sps->i_mb_height= ( param->i_height + 15 ) / 16 * 2 * (sps->i_id + 1);
+			sps->i_mb_width = ( param->i_width  * 2 * (sps->i_id + 1) + 15 ) / 16;
+    		sps->i_mb_height= ( param->i_height * 2 * (sps->i_id + 1) + 15 ) / 16 ;
 		}
     sps->i_chroma_format_idc = csp >= X264_CSP_I444 ? CHROMA_444 :
                                csp >= X264_CSP_I422 ? CHROMA_422 : CHROMA_420;

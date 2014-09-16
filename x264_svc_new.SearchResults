@@ -1,119 +1,14 @@
----- h->param.i_width Matches (131 in 5 files) ----
-Common.c (common):		x264_frame_expand_layers(up_sampling_arg.pH, file_dst, dst_s, up_sampling_arg.pH->fdec->plane[0], up_sampling_arg.pH->fdec->i_stride[0], up_sampling_arg.pH->param.i_width, up_sampling_arg.pH->param.i_height, up_sampling_arg.pH->param.i_width<<1, up_sampling_arg.pH->param.i_height<<1);
-Encoder.c (encoder):    int frame_size = FRAME_SIZE( h->param.i_height * h->param.i_width * sizeof(pixel) );
-Encoder.c (encoder):            fwrite( &h->fdec->plane[p][y*h->fdec->i_stride[p]], sizeof(pixel), h->param.i_width, f );
-Encoder.c (encoder):        int cw = h->param.i_width>>1;
-Encoder.c (encoder):    if( h->param.i_width <= 0 || h->param.i_height <= 0 )
-Encoder.c (encoder):                  h->param.i_width, h->param.i_height );
-Encoder.c (encoder):    if( i_csp < X264_CSP_I444 && h->param.i_width % 2 )
-Encoder.c (encoder):                  h->param.i_width, h->param.i_height );
-Encoder.c (encoder):                  h->param.i_width, h->param.i_height );
-Encoder.c (encoder):                  h->param.i_width, h->param.i_height );
-Encoder.c (encoder):    if( (h->param.crop_rect.i_left + h->param.crop_rect.i_right ) >= h->param.i_width ||
-Encoder.c (encoder):        if( h->param.i_width < 32 || h->param.i_height < 32 )
-Encoder.c (encoder):            if(      h->param.i_width == 1920 && h->param.i_height == 1080 ) res =  1;
-Encoder.c (encoder):            else if( h->param.i_width == 1280 && h->param.i_height ==  720 ) res =  0;
-Encoder.c (encoder):            if(      h->param.i_width == 1440 && h->param.i_height == 1080 ) res =  1;
-Encoder.c (encoder):            else if( h->param.i_width ==  960 && h->param.i_height ==  720 ) res =  0;
-Encoder.c (encoder):                      h->param.i_width, h->param.i_height, type ? "100" : "50" );
-Encoder.c (encoder):        h->param.i_slice_max_mbs = ((h->param.i_width + 15) / 16) * ((h->param.i_height + 15) / 16) / 10;
-Encoder.c (encoder):    int mb_width = (h->param.i_width+15)/16;
-Encoder.c (encoder):    h->out.i_bitstream = X264_MAX( 1000000, h->param.i_width * h->param.i_height * 4
-Encoder.c (encoder):                    h->param.i_width, maxpix_y-minpix_y );
-Encoder.c (encoder):                    h->param.i_width>>1, (maxpix_y-minpix_y)>>v_shift, &ssd_u, &ssd_v );
-Encoder.c (encoder):                    h->param.i_width-2, maxpix_y-minpix_y, h->scratch_buffer, &ssim_cnt );
-Encoder.c (encoder)://	writeCsp(h->fdec->plane[0], file_dst2, h->param.i_width, h->param.i_height, h->fdec->i_stride[0]);
-Encoder.c (encoder):		x264_frame_expand_layers(h, file_dst2, dst_s, h->fdec->plane[0], h->fdec->i_stride[0], h->param.i_width, h->param.i_height, h->param.i_width<<1, h->param.i_height<<1);
-Encoder.c (encoder):		printf("i_width-%d---%d-",h->param.i_width/4,16 * h->mb.i_mb_width/4);
-Encoder.c (encoder):        if( h->param.i_width != 16 * h->mb.i_mb_width ||
-Encoder.c (encoder):        int luma_size = h->param.i_width * h->param.i_height;
-Encoder.c (encoder):    int64_t i_yuv_size = FRAME_SIZE( h->param.i_width * h->param.i_height );
-Frame.c (common)://	writeCsp1(frame->planeEL2[0],file,h->param.i_width,h->param.i_height, frame->i_strideEL2[0]/sizeof(pixel));
-Frame.c (common):    int width = h->param.i_widthEL2 >> xshift;
-Frame.c (common):                                             (uint32_t *)pix[0], stride[0]/sizeof(uint32_t), h->param.i_width, h->param.i_height );
-Frame.c (common):                                            (pixel*)pix[0], stride[0]/sizeof(pixel), i_csp==X264_CSP_BGRA ? 4 : 3, h->param.i_width, h->param.i_height );
-Frame.c (common):                          strideEL2[0]/sizeof(pixel), h->param.i_widthEL2, h->param.i_heightEL2 );
-Frame.c (common):           	//writeCsp1(dst->planeEL2[0],fileEL2,h->param.i_width,h->param.i_height, dst->i_strideEL2[0]/sizeof(pixel));
-Frame.c (common):			//x264_frame_expand_layers1(h->param.i_width,h->param.i_height,h->param.i_width/2,h->param.i_height/2);
-Frame.c (common):				dst->planeEL2[0],dst->i_strideEL2[0],h->param.i_widthEL2,
-Frame.c (common):				h->param.i_heightEL2,h->param.i_widthEL1,
-Frame.c (common):			printf("ssssssssssssssssssttttttttttttttt param.i_width %d \n",h->param.i_widthEL2);
-Frame.c (common):			//writeCsp1(dst->planeEL1[0],fileEL1,h->param.i_width/2,h->param.i_height/2, dst->i_strideEL1[0]/sizeof(pixel));
-Frame.c (common):				dst->planeEL2[0],dst->i_strideEL2[0],h->param.i_widthEL2,
-Frame.c (common):				h->param.i_heightEL2,h->param.i_width,
-Frame.c (common):			writeCsp1(dst->plane[0],fileEL0,h->param.i_width,h->param.i_height,dst->i_stride[0]/sizeof(pixel));
-Frame.c (common):                          stride[0]/sizeof(pixel), h->param.i_widthEL2, h->param.i_heightEL2 );//?¡ä??¨ºy?Y
-Frame.c (common):                              stride[1]/sizeof(pixel), h->param.i_widthEL2, h->param.i_heightEL2>>v_shift );
-Frame.c (common):				//writeCsp1(pixEL2[1], fileEL2,h->param.i_width>>1, h->param.i_height>>v_shift,h->param.i_width>>1);
-Frame.c (common):				//writeCsp1(pixEL2[2], fileEL2,h->param.i_width>>1, h->param.i_height>>v_shift,h->param.i_width>>1);
-Frame.c (common):                                         h->param.i_widthEL2>>1, h->param.i_heightEL2>>v_shift );
-Frame.c (common):				pixU = malloc(sizeof(pixel)*(h->param.i_width)*(h->param.i_height));
-Frame.c (common):				pixV = malloc(sizeof(pixel)*(h->param.i_width)*(h->param.i_height));
-Frame.c (common):				x264_frame_expand_layers(h,pixU,h->param.i_width,
-Frame.c (common):				pixEL2[1],strideEL2[1],h->param.i_widthEL2/2,
-Frame.c (common):				h->param.i_heightEL2/2,h->param.i_width,
-Frame.c (common):				//writeCsp1(pixU,fileEL1,h->param.i_width/i_sample_width/i_sample_width,h->param.i_height/i_sample_height/i_sample_height,h->param.i_width/i_sample_width/i_sample_width);
-Frame.c (common):				x264_frame_expand_layers(h,pixV,h->param.i_width,
-Frame.c (common):				pixEL2[2],strideEL2[2],h->param.i_widthEL2/2,
-Frame.c (common):				h->param.i_heightEL2/2,h->param.i_width,
-Frame.c (common):				//writeCsp1(pixV,fileEL1,h->param.i_width/i_sample_width/i_sample_width,h->param.i_height/i_sample_height/i_sample_height,h->param.i_width/i_sample_width/i_sample_width);
-Frame.c (common):                                         (pixel*)pixU, h->param.i_width,
-Frame.c (common):                                         (pixel*)pixV, h->param.i_width,
-Frame.c (common):                                         h->param.i_widthEL2>>1>>1, h->param.i_heightEL2>>v_shift>>v_shift );
-Frame.c (common):				pixU = malloc(sizeof(pixel)*(h->param.i_width/2)*(h->param.i_height/2));
-Frame.c (common):				pixV = malloc(sizeof(pixel)*(h->param.i_width/2)*(h->param.i_height/2));
-Frame.c (common):				x264_frame_expand_layers(h,pixU,h->param.i_width/2,
-Frame.c (common):				pixEL2[1],strideEL2[1],h->param.i_widthEL2/2,
-Frame.c (common):				h->param.i_heightEL2/2,h->param.i_width/2,
-Frame.c (common):				writeCsp1(pixU,fileEL0,h->param.i_width/2,h->param.i_height/2,h->param.i_width/2);
-Frame.c (common):				x264_frame_expand_layers(h,pixV,h->param.i_width/2,
-Frame.c (common):				pixEL2[2],strideEL2[2],h->param.i_widthEL2/2,
-Frame.c (common):				h->param.i_heightEL2/2,h->param.i_width/2,
-Frame.c (common):				writeCsp1(pixV,fileEL0,h->param.i_width/2,h->param.i_height/2,h->param.i_width/2);
-Frame.c (common):                                         (pixel*)pixU, h->param.i_width/2,
-Frame.c (common):                                         (pixel*)pixV, h->param.i_width/2,
-Frame.c (common):                                         h->param.i_widthEL2>>1>>1>>1, h->param.i_heightEL2>>v_shift>>v_shift>>v_shift );
-Frame.c (common):                                         h->param.i_widthEL2>>1, h->param.i_heightEL2>>v_shift );
-Frame.c (common):                              stride[1]/sizeof(pixel), h->param.i_widthEL2, h->param.i_heightEL2 );
-Frame.c (common):                              stride[2]/sizeof(pixel), h->param.i_widthEL2, h->param.i_heightEL2 );
-Frame.c (common):        	int i_width = h->param.i_widthEL2;
-Frame.c (common):        	int i_width = h->param.i_widthEL1;
-Frame.c (common):        	int i_width = h->param.i_widthEL2;
-Frame.c (common):        	int i_width = h->param.i_width;
-Frame.c (common):        	int i_padx = (h->mb.i_mb_width * 16 - h->param.i_width);
-Frame.c (common):				f->plane[0],f->i_stride[0],h->param.i_width/i_sample_width/i_sample_width,
-Frame.c (common):				h->param.i_height/i_sample_height/i_sample_height,h->param.i_width/i_sample_width,
-Frame.c (common):		uint8_t *pixU = malloc(sizeof(pixel)*(h->param.i_width/i_sample_width/i_sample_width/i_sample_width)*(h->param.i_height/i_sample_height/i_sample_height/i_sample_height));
-Frame.c (common):		uint8_t *pixV = malloc(sizeof(pixel)*(h->param.i_width/i_sample_width/i_sample_width/i_sample_width)*(h->param.i_height/i_sample_height/i_sample_height/i_sample_height));
-Frame.c (common):		uint8_t *pixUUPsample = malloc(sizeof(pixel)*(h->param.i_width/i_sample_width/i_sample_width)*(h->param.i_height/i_sample_height/i_sample_height));
-Frame.c (common):		uint8_t *pixVUPsample = malloc(sizeof(pixel)*(h->param.i_width/i_sample_width/i_sample_width)*(h->param.i_height/i_sample_height/i_sample_height));
-Frame.c (common):		int width = h->param.i_width/i_sample_width/i_sample_width/i_sample_width;
-Frame.c (common):		x264_frame_expand_layers(h,pixUUPsample,h->param.i_width/i_sample_width/i_sample_width,
-Frame.c (common):				pixU,h->param.i_width/i_sample_width/i_sample_width/i_sample_width,h->param.i_width/i_sample_width/i_sample_width/i_sample_width,
-Frame.c (common):				h->param.i_height/i_sample_height/i_sample_height/i_sample_height,h->param.i_width/i_sample_width/i_sample_width,
-Frame.c (common):		x264_frame_expand_layers(h,pixVUPsample,h->param.i_width/i_sample_width/i_sample_width,
-Frame.c (common):				pixV,h->param.i_width/i_sample_width/i_sample_width/i_sample_width,h->param.i_width/i_sample_width/i_sample_width/i_sample_width,
-Frame.c (common):				h->param.i_height/i_sample_height/i_sample_height/i_sample_height,h->param.i_width/i_sample_width/i_sample_width,
-Frame.c (common):                                         (pixel*)pixUUPsample, h->param.i_width/i_sample_width/i_sample_width,
-Frame.c (common):                                         (pixel*)pixVUPsample, h->param.i_width/i_sample_width/i_sample_width,
-Frame.c (common):                                         h->param.i_width/i_sample_width/i_sample_width, h->param.i_height/i_sample_height/i_sample_height);
-Frame.c (common):				f->planeEL1[0],f->i_strideEL1[0],h->param.i_width/i_sample_width,
-Frame.c (common):				h->param.i_height/i_sample_height,h->param.i_width,
-Frame.c (common):		uint8_t *pixU = malloc(sizeof(pixel)*(h->param.i_width/i_sample_width/i_sample_width)*(h->param.i_height/i_sample_height/i_sample_height));
-Frame.c (common):		uint8_t *pixV = malloc(sizeof(pixel)*(h->param.i_width/i_sample_width/i_sample_width)*(h->param.i_height/i_sample_height/i_sample_height));
-Frame.c (common):		uint8_t *pixUUPsample = malloc(sizeof(pixel)*(h->param.i_width/i_sample_width)*(h->param.i_height/i_sample_height));
-Frame.c (common):		uint8_t *pixVUPsample = malloc(sizeof(pixel)*(h->param.i_width/i_sample_width)*(h->param.i_height/i_sample_height));
-Frame.c (common):		int width = h->param.i_width/i_sample_width/i_sample_width;
-Frame.c (common):		x264_frame_expand_layers(h,pixUUPsample,h->param.i_width/i_sample_width,
-Frame.c (common):				pixU,h->param.i_width/i_sample_width/i_sample_width,h->param.i_width/i_sample_width/i_sample_width,
-Frame.c (common):				h->param.i_height/i_sample_height/i_sample_height,h->param.i_width/i_sample_width,
-Frame.c (common):		x264_frame_expand_layers(h,pixVUPsample,h->param.i_width/i_sample_width,
-Frame.c (common):				pixV,h->param.i_width/i_sample_width/i_sample_width,h->param.i_width/i_sample_width/i_sample_width,
-Frame.c (common):				h->param.i_height/i_sample_height/i_sample_height,h->param.i_width/i_sample_width,
-Frame.c (common):                                         (pixel*)pixUUPsample, h->param.i_width/i_sample_width,
-Frame.c (common):                                         (pixel*)pixVUPsample, h->param.i_width/i_sample_width,
-Frame.c (common):                                         h->param.i_width/i_sample_width, h->param.i_height/i_sample_height);
-Macroblock.c (common):        int buf_ssim = h->param.analyse.b_ssim * 8 * (h->param.i_width/4+3) * sizeof(int);
-Ratecontrol.c (encoder):    float dstdim[2] = {    h->param.i_width / 16.f,    h->param.i_height / 16.f};
-Ratecontrol.c (encoder):            res_factor = (float)h->param.i_width * h->param.i_height / (i*j);
-Ratecontrol.c (encoder):            rc->mbtree.srcdim[0] = h->param.i_width;
+---- h->sh.b_base_layer_flag Matches (13 in 2 files) ----
+Encoder.c (encoder):        if(h->sh.b_base_layer_flag)
+Encoder.c (encoder):    h->sh.b_base_layer_flag = BASE_LAYER;
+Encoder.c (encoder):	h->sh.b_base_layer_flag = ENHANCE_LAYER;
+Macroblock.c (common):    int i_stride = h->sh.b_base_layer_flag?h->fdec->i_stride[i]:h->fdec->i_strideEL1[i];
+Macroblock.c (common):    pixel *plane_fdec = h->sh.b_base_layer_flag?(&h->fdec->plane[i][i_pix_offset]):(&h->fdec->planeEL1[i][i_pix_offset]);
+Macroblock.c (common):    h->mb.pic.p_fenc_plane[i] = h->sh.b_base_layer_flag?(&h->fenc->plane[i][i_pix_offset]):(&h->fenc->planeEL1[i][i_pix_offset]);
+Macroblock.c (common):            plane_src = h->sh.b_base_layer_flag?h->fref[0][j>>1]->plane_fld[i]:h->fref[0][j>>1]->plane_fldEL1[i];
+Macroblock.c (common):            plane_src = h->sh.b_base_layer_flag?h->fref[0][j]->plane[i]:h->fref[0][j]->planeEL1[i];
+Macroblock.c (common):            filtered_src = h->sh.b_base_layer_flag?h->fref[0][j]->filtered[i]:h->fref[0][j]->filtered[i];
+Macroblock.c (common):                plane_src = h->sh.b_base_layer_flag?h->fref[1][j]->plane[i]:h->fref[1][j]->planeEL1[i];
+Macroblock.c (common):    if(!h->sh.b_base_layer_flag)
+Macroblock.c (common):    if(h->sh.b_base_layer_flag)
+Macroblock.c (common):    if(h->sh.b_base_layer_flag)

@@ -235,7 +235,7 @@ int xSetPartIdcArray(MotionUpsampling*,x264_t*);
 
 int xSetPredMbData(MotionUpsampling*,x264_t*);
 
-int xMbdataClear(x264_t* h,int,int,int,int,int);
+int xMbdataClear(x264_t* h,int,int,int,int,int,int);
 
 int xInitialMotionUpsampling(MotionUpsampling *mo_up,ResizeParameters* pcResizeParams,int b_field_resampling,
                                                                         int b_residual_pred_check,int i_mv_threshold,x264_t* h);
@@ -320,8 +320,10 @@ typedef struct x264_frame
     pixel *filtered[3][4]; /* plane[0], H, V, HV */
 	//author:zhaowei
 	pixel *planeEL1[3];
+	pixel *plane_fldEL1[3];
     pixel *filteredEL1[3][4];
 	pixel *planeEL2[3];
+	pixel *plane_fldEL2[3];
     pixel *filteredEL2[3][4];
 	pixel *planeUpsampleEL1[3];
 	pixel *filteredUpsampleEL1[3][4];

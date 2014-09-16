@@ -126,14 +126,14 @@ static ALWAYS_INLINE int array_non_zero( dctcoef *v, int i_count )
 /*encode the I_BL macroblock -  BY MING*/
 static void x264_mb_encode_iBL(x264_t* h ,int p,int i_qp)
 {
-  for(int i = (p == 0 && h->mb.i_skip_intra)15:0;i < 16;i++)
+  for(int i = (p == 0 && h->mb.i_skip_intra)?15:0;i < 16;i++)
   {   int nz;
       pixel *p_src = &h->mb.pic.p_fenc[p][block_idx_xy_fenc[i]];
 
 	  /*the value of p_fdec has been the upsampling value from base layer at the function
 	      x264_load_pic_pointers() - BY MING*/
       pixel *p_dst = &h->mb.pic.p_fdec[p][block_idx_xy_fdec[i]];
-      ALIGNED_ARRAY_N( dctcoef, dct_dc4x4,[16] );
+      ALIGNED_ARRAY_N( dctcoef, dct4x4,[16] );
  
 
 	  if(h->mb.b_lossless)
@@ -646,7 +646,7 @@ static ALWAYS_INLINE void x264_macroblock_encode_internal_EL(x264_t* h, int plan
   h->mb.i_cbp_luma = 0;
   for(int p = 0; p < plane_count;p++)
   {
-    h->mb.cache.non_zero[x264_scan8[LUMA_DC + p]] = 0;
+    h->mb.cache.non_zero_count[x264_scan8[LUMA_DC + p]] = 0;
   }
 
 
@@ -654,12 +654,12 @@ static ALWAYS_INLINE void x264_macroblock_encode_internal_EL(x264_t* h, int plan
   {
     for(int p = 0; p < plane_count;p++)
     {
-      h->mc.copy[PIXEL_16x16](h->mb.pic.p_fdec[p],FDEC_STRIDE,h->mb.pic.p_fenc[p],16);
+      h->mc.copy[PIXEL_16x16](h->mb.pic.p_fdec[p],FDEC_STRIDE,h->mb.pic.p_fenc[p],FENC_STRIDE,16);
 	  if(chroma)
 	  {
 	    int height = 16 >> CHROMA_V_SHIFT;
-		h->mc.copy[PIXEL_8x8](h->mb.pic.p_fdec[1],FDEC_STRIDE,h->mb.pic.p_fenc[1],height);
-		h->mc.copy[PIXEL_8x8](h->mb.pic.p_fdec[2],FDEC_STRIDE,h->mb.pic.p_fenc[2],height);
+		h->mc.copy[PIXEL_8x8](h->mb.pic.p_fdec[1],FDEC_STRIDE,h->mb.pic.p_fenc[1],FENC_STRIDE,height);
+		h->mc.copy[PIXEL_8x8](h->mb.pic.p_fdec[2],FDEC_STRIDE,h->mb.pic.p_fenc[2],FENC_STRIDE,height);
 	  }
 
 	  return;
