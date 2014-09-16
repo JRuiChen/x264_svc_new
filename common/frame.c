@@ -552,7 +552,7 @@ int x264_frame_copy_picture( x264_t *h, x264_frame_t *dst, x264_picture_t *src )
 			//FILE *file1 = fopen ("111222aframe.yuv", "wb" );
 			//fileEL2 = fopen ("1EL2.yuv", "ab+" );
 			//fileEL1 = fopen ("1EL1.yuv", "ab+" );
-			fileEL0 = fopen ("1EL0.yuv", "ab+" );
+			//fileEL0 = fopen ("1EL0.yuv", "ab+" );
 			get_plane_ptr( h, src, &pixEL2[0], &strideEL2[0], 0, 0, 0 );
 			h->mc.plane_copy( dst->planeEL2[0], dst->i_strideEL2[0], (pixel*)pixEL2[0],
                           strideEL2[0]/sizeof(pixel), h->param.i_widthEL2, h->param.i_heightEL2 );
@@ -569,7 +569,7 @@ int x264_frame_copy_picture( x264_t *h, x264_frame_t *dst, x264_picture_t *src )
 				dst->planeEL2[0],dst->i_strideEL2[0],h->param.i_widthEL2,
 				h->param.i_heightEL2,h->param.i_width,
 				h->param.i_height);
-			writeCsp1(dst->plane[0],fileEL0,h->param.i_width,h->param.i_height,dst->i_stride[0]/sizeof(pixel));
+			//writeCsp1(dst->plane[0],fileEL0,h->param.i_width,h->param.i_height,dst->i_stride[0]/sizeof(pixel));
 			//printf("writen over!!!\n");
 			//getchar();getchar();getchar();getchar();getchar();getchar();
 		}
@@ -630,25 +630,25 @@ int x264_frame_copy_picture( x264_t *h, x264_frame_t *dst, x264_picture_t *src )
 				free(pixU);
 				free(pixV);
 				//UV downsample
-				fileEL0 = fopen ("1EL0.yuv", "ab+" );
+				//fileEL0 = fopen ("1EL0.yuv", "ab+" );
 				pixU = malloc(sizeof(pixel)*(h->param.i_width/2)*(h->param.i_height/2));
 				pixV = malloc(sizeof(pixel)*(h->param.i_width/2)*(h->param.i_height/2));
 				x264_frame_expand_layers(h,pixU,h->param.i_width/2,
 				pixEL2[1],strideEL2[1],h->param.i_widthEL2/2,
 				h->param.i_heightEL2/2,h->param.i_width/2,
 				h->param.i_height/2);
-				writeCsp1(pixU,fileEL0,h->param.i_width/2,h->param.i_height/2,h->param.i_width/2);
+				//writeCsp1(pixU,fileEL0,h->param.i_width/2,h->param.i_height/2,h->param.i_width/2);
 
 				x264_frame_expand_layers(h,pixV,h->param.i_width/2,
 				pixEL2[2],strideEL2[2],h->param.i_widthEL2/2,
 				h->param.i_heightEL2/2,h->param.i_width/2,
 				h->param.i_height/2);
-				fileEL0 = fopen("1EL0.yuv", "ab+");
-				writeCsp1(pixV,fileEL0,h->param.i_width/2,h->param.i_height/2,h->param.i_width/2);
+				//fileEL0 = fopen("1EL0.yuv", "ab+");
+				//writeCsp1(pixV,fileEL0,h->param.i_width/2,h->param.i_height/2,h->param.i_width/2);
 				h->mc.plane_copy_interleave( dst->plane[1], dst->i_stride[1],
                                          (pixel*)pixU, h->param.i_width/2,
                                          (pixel*)pixV, h->param.i_width/2,
-                                         h->param.i_widthEL2>>1>>1>>1, h->param.i_heightEL2>>v_shift>>v_shift>>v_shift );
+                                         h->param.i_widthEL2>>1>>1, h->param.i_heightEL2>>v_shift>>v_shift );
 				free(pixU);
 				free(pixV);
 				//getchar();getchar();getchar();getchar();getchar();getchar();
@@ -849,12 +849,12 @@ void x264_frame_expand_border_mod16( x264_t *h, x264_frame_t *frame )
 		for( int i = 0; i < frame->i_plane; i++ )
     	{
     	/*BY MING*/
-        	int i_width = h->param.i_widthEL2;
+        	int i_width = h->param.i_width;
         	int h_shift = i && CHROMA_H_SHIFT;
         	int v_shift = i && CHROMA_V_SHIFT;
-        	int i_height = (h->param.i_heightEL2)>> v_shift;
-        	int i_padx = (h->mbEL2.i_mb_width * 16- i_width);
-        	int i_pady = (h->mbEL2.i_mb_height * 16- i_height) >> v_shift;
+        	int i_height = (h->param.i_height)>> v_shift;
+        	int i_padx = (h->mb.i_mb_width * 16- i_width);
+        	int i_pady = (h->mb.i_mb_height * 16- i_height) >> v_shift;
         	if( i_padx )
         	{
             	for( int y = 0; y < i_height; y++ )
