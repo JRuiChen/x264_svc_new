@@ -101,14 +101,15 @@ static x264_frame_t *x264_frame_new( x264_t *h, int b_fdec )
     i_stride = align_stride( i_width + 2*PADH, align, disalign );
 	//author:zhaowei 6  
 	if(b_Enable_SVC){
-		i_width= h->mb.i_mb_width*16/i_sample_width/i_sample_width;
-    	i_lines  = h->mb.i_mb_height*16/i_sample_height/i_sample_height;
+		/* BY MING*/
+		i_width= h->mb.i_mb_width*16;
+    	i_lines  = h->mb.i_mb_height*16;
     	i_stride = align_stride( i_width + 2*PADH, align, disalign );
-		i_widthEL1= h->mb.i_mb_width*16/i_sample_width;
-    	i_linesEL1= h->mb.i_mb_height*16/i_sample_height;
+		i_widthEL1= h->mbEL1.i_mb_width*16;
+    	i_linesEL1= h->mbEL1.i_mb_height*16;
     	i_strideEL1= align_stride( i_widthEL1 + 2*PADH, align, disalign );
-		i_widthEL2= h->mb.i_mb_width*16;
-    	i_linesEL2= h->mb.i_mb_height*16;
+		i_widthEL2= h->mbEL2.i_mb_width*16;
+    	i_linesEL2= h->mbEL2.i_mb_height*16;
     	i_strideEL2= align_stride( i_widthEL2 + 2*PADH, align, disalign );
 	}
     dst_s = align_stride( i_width*2 + 2*PADH, align, disalign );  //add by chenjie
@@ -442,8 +443,8 @@ void x264_frame_delete( x264_frame_t *frame )
 
 static int get_plane_ptr( x264_t *h, x264_picture_t *src, uint8_t **pix, int *stride, int plane, int xshift, int yshift )
 {
-    int width = h->param.i_width >> xshift;
-    int height = h->param.i_height >> yshift;
+    int width = h->param.i_widthEL2 >> xshift;
+    int height = h->param.i_heightEL2 >> yshift;
     *pix = src->img.plane[plane];
     *stride = src->img.i_stride[plane];
     if( src->img.i_csp & X264_CSP_VFLIP )
@@ -554,19 +555,21 @@ int x264_frame_copy_picture( x264_t *h, x264_frame_t *dst, x264_picture_t *src )
 			fileEL0 = fopen ("1EL0.yuv", "ab+" );
 			get_plane_ptr( h, src, &pixEL2[0], &strideEL2[0], 0, 0, 0 );
 			h->mc.plane_copy( dst->planeEL2[0], dst->i_strideEL2[0], (pixel*)pixEL2[0],
-                          strideEL2[0]/sizeof(pixel), h->param.i_width, h->param.i_height );
+                          strideEL2[0]/sizeof(pixel), h->param.i_widthEL2, h->param.i_heightEL2 );
            	//writeCsp1(dst->planeEL2[0],fileEL2,h->param.i_width,h->param.i_height, dst->i_strideEL2[0]/sizeof(pixel));
 			//x264_frame_expand_layers1(h->param.i_width,h->param.i_height,h->param.i_width/2,h->param.i_height/2);
 			x264_frame_expand_layers(h,dst->planeEL1[0],dst->i_strideEL1[0],
-				dst->planeEL2[0],dst->i_strideEL2[0],h->param.i_width,
-				h->param.i_height,h->param.i_width/2,
-				h->param.i_height/2);
+				dst->planeEL2[0],dst->i_strideEL2[0],h->param.i_widthEL2,
+				h->param.i_heightEL2,h->param.i_widthEL1,
+				h->param.i_heightEL1);
+
+			printf("ssssssssssssssssssttttttttttttttt param.i_width %d \n",h->param.i_widthEL2);
 			//writeCsp1(dst->planeEL1[0],fileEL1,h->param.i_width/2,h->param.i_height/2, dst->i_strideEL1[0]/sizeof(pixel));
 			x264_frame_expand_layers(h,dst->plane[0],dst->i_stride[0],
-				dst->planeEL2[0],dst->i_strideEL2[0],h->param.i_width,
-				h->param.i_height,h->param.i_width/i_sample_width/i_sample_width,
-				h->param.i_height/i_sample_height/i_sample_height);
-			writeCsp1(dst->plane[0],fileEL0,h->param.i_width/4,h->param.i_height/4,dst->i_stride[0]/sizeof(pixel));
+				dst->planeEL2[0],dst->i_strideEL2[0],h->param.i_widthEL2,
+				h->param.i_heightEL2,h->param.i_width,
+				h->param.i_height);
+			writeCsp1(dst->plane[0],fileEL0,h->param.i_width,h->param.i_height,dst->i_stride[0]/sizeof(pixel));
 			//printf("writen over!!!\n");
 			//getchar();getchar();getchar();getchar();getchar();getchar();
 		}
@@ -574,7 +577,7 @@ int x264_frame_copy_picture( x264_t *h, x264_frame_t *dst, x264_picture_t *src )
 		else{
         	get_plane_ptr( h, src, &pix[0], &stride[0], 0, 0, 0 );//??¦Ì?Y¡¤?¨¢?????
         	h->mc.plane_copy( dst->plane[0], dst->i_stride[0], (pixel*)pix[0],
-                          stride[0]/sizeof(pixel), h->param.i_width, h->param.i_height );//?¡ä??¨ºy?Y
+                          stride[0]/sizeof(pixel), h->param.i_widthEL2, h->param.i_heightEL2 );//?¡ä??¨ºy?Y
 			
 		}
 		
@@ -583,7 +586,7 @@ int x264_frame_copy_picture( x264_t *h, x264_frame_t *dst, x264_picture_t *src )
         {
             get_plane_ptr( h, src, &pix[1], &stride[1], 1, 0, v_shift );
             h->mc.plane_copy( dst->plane[1], dst->i_stride[1], (pixel*)pix[1],
-                              stride[1]/sizeof(pixel), h->param.i_width, h->param.i_height>>v_shift );
+                              stride[1]/sizeof(pixel), h->param.i_widthEL2, h->param.i_heightEL2>>v_shift );
         }
         else if( i_csp == X264_CSP_I420 || i_csp == X264_CSP_I422 || i_csp == X264_CSP_YV12 || i_csp == X264_CSP_YV16 )
         {
@@ -604,48 +607,48 @@ int x264_frame_copy_picture( x264_t *h, x264_frame_t *dst, x264_picture_t *src )
 				h->mc.plane_copy_interleave( dst->planeEL2[1], dst->i_strideEL2[1],
                                          (pixel*)pixEL2[1], strideEL2[1]/sizeof(pixel),
                                          (pixel*)pixEL2[2], strideEL2[2]/sizeof(pixel),
-                                         h->param.i_width>>1, h->param.i_height>>v_shift );
+                                         h->param.i_widthEL2>>1, h->param.i_heightEL2>>v_shift );
 				//UV downsample
-				pixU = malloc(sizeof(pixel)*(h->param.i_width/i_sample_width/i_sample_width)*(h->param.i_height/i_sample_height/i_sample_height));
-				pixV = malloc(sizeof(pixel)*(h->param.i_width/i_sample_width/i_sample_width)*(h->param.i_height/i_sample_height/i_sample_height));
-				x264_frame_expand_layers(h,pixU,h->param.i_width/i_sample_width/i_sample_width,
-				pixEL2[1],strideEL2[1],h->param.i_width/i_sample_width,
-				h->param.i_height/i_sample_height,h->param.i_width/i_sample_width/i_sample_width,
-				h->param.i_height/i_sample_height/i_sample_height);
+				pixU = malloc(sizeof(pixel)*(h->param.i_width)*(h->param.i_height));
+				pixV = malloc(sizeof(pixel)*(h->param.i_width)*(h->param.i_height));
+				x264_frame_expand_layers(h,pixU,h->param.i_width,
+				pixEL2[1],strideEL2[1],h->param.i_widthEL2/2,
+				h->param.i_heightEL2/2,h->param.i_width,
+				h->param.i_height);
 				//writeCsp1(pixU,fileEL1,h->param.i_width/i_sample_width/i_sample_width,h->param.i_height/i_sample_height/i_sample_height,h->param.i_width/i_sample_width/i_sample_width);
 
-				x264_frame_expand_layers(h,pixV,h->param.i_width/i_sample_width/i_sample_width,
-				pixEL2[2],strideEL2[2],h->param.i_width/i_sample_width,
-				h->param.i_height/i_sample_height,h->param.i_width/i_sample_width/i_sample_width,
-				h->param.i_height/i_sample_width/i_sample_height);
+				x264_frame_expand_layers(h,pixV,h->param.i_width,
+				pixEL2[2],strideEL2[2],h->param.i_widthEL2/2,
+				h->param.i_heightEL2/2,h->param.i_width,
+				h->param.i_height);
 				//fileEL1 = fopen("1EL1.yuv", "ab+");
 				//writeCsp1(pixV,fileEL1,h->param.i_width/i_sample_width/i_sample_width,h->param.i_height/i_sample_height/i_sample_height,h->param.i_width/i_sample_width/i_sample_width);
 				h->mc.plane_copy_interleave( dst->planeEL1[1], dst->i_strideEL1[1],
-                                         (pixel*)pixU, h->param.i_width/i_sample_width/i_sample_width,
-                                         (pixel*)pixV, h->param.i_width/i_sample_width/i_sample_width,
-                                         h->param.i_width>>1>>1, h->param.i_height>>v_shift>>v_shift );
+                                         (pixel*)pixU, h->param.i_width,
+                                         (pixel*)pixV, h->param.i_width,
+                                         h->param.i_widthEL2>>1>>1, h->param.i_heightEL2>>v_shift>>v_shift );
 				free(pixU);
 				free(pixV);
 				//UV downsample
 				fileEL0 = fopen ("1EL0.yuv", "ab+" );
-				pixU = malloc(sizeof(pixel)*(h->param.i_width/i_sample_width/i_sample_width/i_sample_width)*(h->param.i_height/i_sample_height/i_sample_height/i_sample_height));
-				pixV = malloc(sizeof(pixel)*(h->param.i_width/i_sample_width/i_sample_width/i_sample_width)*(h->param.i_height/i_sample_height/i_sample_height/i_sample_height));
-				x264_frame_expand_layers(h,pixU,h->param.i_width/i_sample_width/i_sample_width/i_sample_width,
-				pixEL2[1],strideEL2[1],h->param.i_width/i_sample_width,
-				h->param.i_height/i_sample_height,h->param.i_width/i_sample_width/i_sample_width/i_sample_width,
-				h->param.i_height/i_sample_height/i_sample_height/i_sample_height);
-				writeCsp1(pixU,fileEL0,h->param.i_width/i_sample_width/i_sample_width/i_sample_width,h->param.i_height/i_sample_height/i_sample_height/i_sample_height,h->param.i_width/i_sample_width/i_sample_width/i_sample_width);
+				pixU = malloc(sizeof(pixel)*(h->param.i_width/2)*(h->param.i_height/2));
+				pixV = malloc(sizeof(pixel)*(h->param.i_width/2)*(h->param.i_height/2));
+				x264_frame_expand_layers(h,pixU,h->param.i_width/2,
+				pixEL2[1],strideEL2[1],h->param.i_widthEL2/2,
+				h->param.i_heightEL2/2,h->param.i_width/2,
+				h->param.i_height/2);
+				writeCsp1(pixU,fileEL0,h->param.i_width/2,h->param.i_height/2,h->param.i_width/2);
 
-				x264_frame_expand_layers(h,pixV,h->param.i_width/i_sample_width/i_sample_width/i_sample_width,
-				pixEL2[2],strideEL2[2],h->param.i_width/i_sample_width,
-				h->param.i_height/i_sample_height,h->param.i_width/i_sample_width/i_sample_width/i_sample_width,
-				h->param.i_height/i_sample_height/i_sample_height/i_sample_height);
+				x264_frame_expand_layers(h,pixV,h->param.i_width/2,
+				pixEL2[2],strideEL2[2],h->param.i_widthEL2/2,
+				h->param.i_heightEL2/2,h->param.i_width/2,
+				h->param.i_height/2);
 				fileEL0 = fopen("1EL0.yuv", "ab+");
-				writeCsp1(pixV,fileEL0,h->param.i_width/i_sample_width/i_sample_width/i_sample_width,h->param.i_height/i_sample_height/i_sample_height/i_sample_height,h->param.i_width/i_sample_width/i_sample_width/i_sample_width);
+				writeCsp1(pixV,fileEL0,h->param.i_width/2,h->param.i_height/2,h->param.i_width/2);
 				h->mc.plane_copy_interleave( dst->plane[1], dst->i_stride[1],
-                                         (pixel*)pixU, h->param.i_width/i_sample_width/i_sample_width/i_sample_width,
-                                         (pixel*)pixV, h->param.i_width/i_sample_width/i_sample_width/i_sample_width,
-                                         h->param.i_width>>1>>1>>1, h->param.i_height>>v_shift>>v_shift>>v_shift );
+                                         (pixel*)pixU, h->param.i_width/2,
+                                         (pixel*)pixV, h->param.i_width/2,
+                                         h->param.i_widthEL2>>1>>1>>1, h->param.i_heightEL2>>v_shift>>v_shift>>v_shift );
 				free(pixU);
 				free(pixV);
 				//getchar();getchar();getchar();getchar();getchar();getchar();
@@ -659,7 +662,7 @@ int x264_frame_copy_picture( x264_t *h, x264_frame_t *dst, x264_picture_t *src )
             	h->mc.plane_copy_interleave( dst->plane[1], dst->i_stride[1],
                                          (pixel*)pix[1], stride[1]/sizeof(pixel),
                                          (pixel*)pix[2], stride[2]/sizeof(pixel),
-                                         h->param.i_width>>1, h->param.i_height>>v_shift );
+                                         h->param.i_widthEL2>>1, h->param.i_heightEL2>>v_shift );
 			}
         }
         else //if( i_csp == X264_CSP_I444 || i_csp == X264_CSP_YV24 )
@@ -667,9 +670,9 @@ int x264_frame_copy_picture( x264_t *h, x264_frame_t *dst, x264_picture_t *src )
             get_plane_ptr( h, src, &pix[1], &stride[1], i_csp==X264_CSP_I444 ? 1 : 2, 0, 0 );
             get_plane_ptr( h, src, &pix[2], &stride[2], i_csp==X264_CSP_I444 ? 2 : 1, 0, 0 );
             h->mc.plane_copy( dst->plane[1], dst->i_stride[1], (pixel*)pix[1],
-                              stride[1]/sizeof(pixel), h->param.i_width, h->param.i_height );
+                              stride[1]/sizeof(pixel), h->param.i_widthEL2, h->param.i_heightEL2 );
             h->mc.plane_copy( dst->plane[2], dst->i_stride[2], (pixel*)pix[2],
-                              stride[2]/sizeof(pixel), h->param.i_width, h->param.i_height );
+                              stride[2]/sizeof(pixel), h->param.i_widthEL2, h->param.i_heightEL2 );
         }
     }
 	printf("copy end!\n");
@@ -841,16 +844,17 @@ void x264_frame_expand_border_chroma( x264_t *h, x264_frame_t *frame, int plane 
 
 void x264_frame_expand_border_mod16( x264_t *h, x264_frame_t *frame )
 {	printf("x264_frame_expand_border_mod16\n");
-	b_Enable_SVC = 0;
+	//b_Enable_SVC = 0;
 	if(b_Enable_SVC){
 		for( int i = 0; i < frame->i_plane; i++ )
     	{
-        	int i_width = h->param.i_width/i_sample_width/i_sample_width;
+    	/*BY MING*/
+        	int i_width = h->param.i_widthEL2;
         	int h_shift = i && CHROMA_H_SHIFT;
         	int v_shift = i && CHROMA_V_SHIFT;
-        	int i_height = (h->param.i_height/i_sample_height/i_sample_height)>> v_shift;
-        	int i_padx = (h->mb.i_mb_width * 16/i_sample_width/i_sample_width- i_width);
-        	int i_pady = (h->mb.i_mb_height * 16/i_sample_height/i_sample_height- i_height) >> v_shift;
+        	int i_height = (h->param.i_heightEL2)>> v_shift;
+        	int i_padx = (h->mbEL2.i_mb_width * 16- i_width);
+        	int i_pady = (h->mbEL2.i_mb_height * 16- i_height) >> v_shift;
         	if( i_padx )
         	{
             	for( int y = 0; y < i_height; y++ )
@@ -870,12 +874,12 @@ void x264_frame_expand_border_mod16( x264_t *h, x264_frame_t *frame )
 
 		for( int i = 0; i < frame->i_plane; i++ )
     	{
-        	int i_width = h->param.i_width/i_sample_width;
+        	int i_width = h->param.i_widthEL1;
         	int h_shift = i && CHROMA_H_SHIFT;
         	int v_shift = i && CHROMA_V_SHIFT;
-        	int i_height = (h->param.i_height/i_sample_height)>> v_shift;
-        	int i_padx = (h->mb.i_mb_width * 16/i_sample_width - i_width);
-        	int i_pady = (h->mb.i_mb_height * 16/i_sample_height - i_height) >> v_shift;
+        	int i_height = (h->param.i_heightEL1)>> v_shift;
+        	int i_padx = (h->mbEL2.i_mb_width * 16 - i_width);
+        	int i_pady = (h->mbEL2.i_mb_height * 16 - i_height) >> v_shift;
         	if( i_padx )
         	{
             	for( int y = 0; y < i_height; y++ )
@@ -895,12 +899,12 @@ void x264_frame_expand_border_mod16( x264_t *h, x264_frame_t *frame )
 
 		for( int i = 0; i < frame->i_plane; i++ )
     	{
-        	int i_width = h->param.i_width;
+        	int i_width = h->param.i_widthEL2;
         	int h_shift = i && CHROMA_H_SHIFT;
         	int v_shift = i && CHROMA_V_SHIFT;
-        	int i_height = (h->param.i_height)>> v_shift;
-        	int i_padx = (h->mb.i_mb_width * 16- i_width);
-        	int i_pady = (h->mb.i_mb_height * 16- i_height) >> v_shift;
+        	int i_height = (h->param.i_heightEL2)>> v_shift;
+        	int i_padx = (h->mbEL2.i_mb_width * 16- i_width);
+        	int i_pady = (h->mbEL2.i_mb_height * 16- i_height) >> v_shift;
         	if( i_padx )
         	{
             	for( int y = 0; y < i_height; y++ )
@@ -959,17 +963,18 @@ void x264_expand_border_mbpair( x264_t *h, int mb_x, int mb_y )
         	int v_shift = i && CHROMA_V_SHIFT;
         	int stride = h->fenc->i_stride[i];
         	int height = h->param.i_height >> v_shift;
-        	int pady = (h->mb.i_mb_height * 16 - h->param.i_height) >> v_shift;
+        	int pady = (h->mbEL2.i_mb_height * 16 - h->param.i_heightEL2) >> v_shift;
         	pixel *fenc = h->fenc->plane[i] + 16*mb_x;
         	for( int y = height; y < height + pady; y++ )
             	memcpy( fenc + y*stride, fenc + (height-1)*stride, 16*sizeof(pixel) );
     	}
 		for( int i = 0; i < h->fenc->i_plane; i++ )
     	{
+    	/*BY MING*/
         	int v_shift = i && CHROMA_V_SHIFT;
         	int stride = h->fenc->i_strideEL1[i];
-        	int height = (h->param.i_height/i_sample_height) >> v_shift;
-        	int pady = (h->mb.i_mb_height * 16 - h->param.i_height) >> v_shift;
+        	int height = (h->param.i_heightEL1) >> v_shift;
+        	int pady = (h->mbEL2.i_mb_height * 16 - h->param.i_heightEL2) >> v_shift;
         	pixel *fenc = h->fenc->plane[i] + 16*mb_x;
         	for( int y = height; y < height + pady; y++ )
             	memcpy( fenc + y*stride, fenc + (height-1)*stride, 16*sizeof(pixel) );
@@ -978,8 +983,8 @@ void x264_expand_border_mbpair( x264_t *h, int mb_x, int mb_y )
     	{
         	int v_shift = i && CHROMA_V_SHIFT;
         	int stride = h->fenc->i_stride[i];
-        	int height = h->param.i_height >> v_shift;
-        	int pady = (h->mb.i_mb_height * 16 - h->param.i_height) >> v_shift;
+        	int height = h->param.i_heightEL2 >> v_shift;
+        	int pady = (h->mbEL2.i_mb_height * 16 - h->param.i_heightEL2) >> v_shift;
         	pixel *fenc = h->fenc->plane[i] + 16*mb_x;
         	for( int y = height; y < height + pady; y++ )
             	memcpy( fenc + y*stride, fenc + (height-1)*stride, 16*sizeof(pixel) );

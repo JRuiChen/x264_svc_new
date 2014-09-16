@@ -296,6 +296,12 @@ typedef struct x264_param_t
     /* Video Properties */
     int         i_width;
     int         i_height;
+
+	/*extended BY MING*/
+	int i_widthEL1;
+	int i_heightEL1;
+	int i_widthEL2;
+	int i_heightEL2;
     int         i_csp;         /* CSP of encoded bitstream */
     int         i_level_idc;
     int         i_frame_total; /* number of frames to encode if known, else 0 */

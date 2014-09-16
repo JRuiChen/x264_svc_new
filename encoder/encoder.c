@@ -1708,8 +1708,8 @@ x264_t *x264_encoder_open( x264_param_t *param )
     h->mbBL.b_adaptive_mbaff = PARAM_INTERLACED && h->param.analyse.i_subpel_refine;
 
 
-    h->mbEL1.i_mb_width = h->sps->i_mb_width;
-    h->mbEL1.i_mb_height = h->sps->i_mb_height;
+    h->mbEL1.i_mb_width = h->sps->i_mb_width&2;
+    h->mbEL1.i_mb_height = h->sps->i_mb_height*2;
     h->mbEL1.i_mb_count = h->mbEL1.i_mb_width * h->mbEL1.i_mb_height;
 
     h->mbEL1.chroma_h_shift = CHROMA_FORMAT == CHROMA_420 || CHROMA_FORMAT == CHROMA_422;
@@ -1720,8 +1720,8 @@ x264_t *x264_encoder_open( x264_param_t *param )
      * The chosen solution is to make MBAFF non-adaptive in this case. */
     h->mbEL1.b_adaptive_mbaff = PARAM_INTERLACED && h->param.analyse.i_subpel_refine;
 
-    h->mbEL2.i_mb_width = h->sps->i_mb_width;
-    h->mbEL2.i_mb_height = h->sps->i_mb_height;
+    h->mbEL2.i_mb_width = h->sps->i_mb_width*4;
+    h->mbEL2.i_mb_height = h->sps->i_mb_height*4;
     h->mbEL2.i_mb_count = h->mbEL2.i_mb_width * h->mbEL2.i_mb_height;
 
     h->mbEL2.chroma_h_shift = CHROMA_FORMAT == CHROMA_420 || CHROMA_FORMAT == CHROMA_422;

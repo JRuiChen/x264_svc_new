@@ -360,7 +360,7 @@ int main( int argc, char **argv )
     /* Parse command line */
     if( parse( argc, argv, &param, &opt ) < 0 )
         ret = -1;
-
+    
 #ifdef _WIN32
     /* Restore title; it can be changed by input modules */
     SetConsoleTitleW( org_console_title );
@@ -1276,7 +1276,15 @@ static int init_vid_filters( char *sequence, hnd_t *handle, video_info_t *info, 
     {
         param->i_height = info->height;
         param->i_width  = info->width;
-    }
+			/*BY MING*/
+			param->i_widthEL2 = param->i_width;
+			param->i_heightEL2 = param->i_height;
+			param->i_widthEL1 = param->i_width/2;
+			param->i_heightEL1 = param->i_height/2;
+			param->i_width /= 4;
+			param->i_height /= 4;
+
+	}
     /* force the output csp to what the user specified (or the default) */
     param->i_csp = info->csp;
     int csp = info->csp & X264_CSP_MASK;
@@ -1828,6 +1836,7 @@ if( cond )\
 
 static int encode( x264_param_t *param, cli_opt_t *opt )
 {
+
     x264_t *h = NULL;
     x264_picture_t pic;
     cli_pic_t cli_pic;
@@ -1849,6 +1858,8 @@ static int encode( x264_param_t *param, cli_opt_t *opt )
     double  duration;
     double  pulldown_pts = 0;
     int     retval = 0;
+
+    
 
     opt->b_progress &= param->i_log_level < X264_LOG_DEBUG;
 
@@ -1891,6 +1902,7 @@ static int encode( x264_param_t *param, cli_opt_t *opt )
     if( opt->tcfile_out )
         fprintf( opt->tcfile_out, "# timecode format v2\n" );
 
+
     /* Encode frames */
     for( ; !b_ctrl_c && (i_frame < param->i_frame_total || !param->i_frame_total); i_frame++ )
     {
@@ -1931,6 +1943,9 @@ static int encode( x264_param_t *param, cli_opt_t *opt )
             parse_qpfile( opt, &pic, i_frame + opt->i_seek );
 		printf ("encode i_frame = %d------------>\n", i_frame);
         prev_dts = last_dts;
+
+
+		
         i_frame_size = encode_frame( h, opt->hout, &pic, &last_dts );
         if( i_frame_size < 0 )
         {
