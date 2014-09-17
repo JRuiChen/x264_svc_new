@@ -1,15 +1,1 @@
----- planeEL2 Matches (14 in 2 files) ----
-Frame.c (common):			frame->planeEL2[1] = frame->bufferEL2[1] + frame->i_strideEL2[1] * chroma_padv + PADH;
-Frame.c (common):				frame->planeEL2[p] = frame->filteredEL2[p][0];
-Frame.c (common):				frame->filteredEL2[p][0] = frame->planeEL2[p] = frame->bufferEL2[p] + frame->i_strideEL2[p] * i_padv + PADH;
-Frame.c (common)://	writeCsp1(frame->planeEL2[0],file,h->param.i_width,h->param.i_height, frame->i_strideEL2[0]/sizeof(pixel));
-Frame.c (common):			h->mc.plane_copy( dst->planeEL2[0], dst->i_strideEL2[0], (pixel*)pixEL2[0],
-Frame.c (common):           	//writeCsp1(dst->planeEL2[0],fileEL2,h->param.i_width,h->param.i_height, dst->i_strideEL2[0]/sizeof(pixel));
-Frame.c (common):				dst->planeEL2[0],dst->i_strideEL2[0],h->param.i_widthEL2,
-Frame.c (common):				dst->planeEL2[0],dst->i_strideEL2[0],h->param.i_widthEL2,
-Frame.c (common):				h->mc.plane_copy_interleave( dst->planeEL2[1], dst->i_strideEL2[1],
-Frame.c (common):                	pixel_memset( &frame->planeEL2[i][y*frame->i_strideEL2[i] + i_width],
-Frame.c (common):                              &frame->planeEL2[i][y*frame->i_strideEL2[i] + i_width - 1-h_shift],
-Frame.c (common):                	memcpy( &frame->planeEL2[i][y*frame->i_strideEL2[i]],
-Frame.c (common):                        &frame->planeEL2[i][(i_height-(~y&PARAM_INTERLACED)-1)*frame->i_strideEL2[i]],
-Frame.h (common):	pixel *planeEL2[3];
+---- x264_copy_mb_info_before_encode Matches (0 in 0 files) ----

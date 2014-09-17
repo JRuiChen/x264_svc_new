@@ -1004,13 +1004,16 @@ NumMbPart( mb_type ) = = 4 )*/
 
     if( i_mb_type == I_PCM )
     {
+    
         bs_t s;
         bs_init( &s, cb->p, cb->p_end - cb->p );
-
+	
         for( int p = 0; p < plane_count; p++ )
             for( int i = 0; i < 256; i++ )
-                bs_write( &s, BIT_DEPTH, h->mb.pic.p_fenc[p][i] );
-        if( chroma )
+            	{
+            	  bs_write( &s, BIT_DEPTH, h->mb.pic.p_fenc[p][i] );
+            	}
+		if( chroma )
             for( int ch = 1; ch < 3; ch++ )
                 for( int i = 0; i < 16>>CHROMA_V_SHIFT; i++ )
                     for( int j = 0; j < 8; j++ )
@@ -1027,9 +1030,23 @@ NumMbPart( mb_type ) = = 4 )*/
 
     if( i_mb_type != I_16x16 )    // if( MbPartPredMode( mb_type, 0 ) != Intra_16x16 ) 
     {
-        x264_cabac_cbp_luma( h, cb );  // 这个写入 他的后四位其实就写入了 coded_block_pattern余16的	情况
-        if( chroma )
-            x264_cabac_cbp_chroma( h, cb ); // 这个地方应该就是除16了 
+    /*skytest0916 ifesle
+	if(h->i_layer_id)
+		{	
+			h->mb.i_cbp_luma = 0;
+			h->mb.i_cbp_chroma = 0;
+			h->mb.cache.i_cbp_left = 0;
+			h->mb.cache.i_cbp_top = 0;
+			x264_cabac_cbp_luma( h, cb );  // 这个写入 他的后四位其实就写入了 coded_block_pattern余16的	情况
+      			  if( chroma )
+      			      x264_cabac_cbp_chroma( h, cb );
+		}
+	else*/
+		{
+			x264_cabac_cbp_luma( h, cb );  // 这个写入 他的后四位其实就写入了 coded_block_pattern余16的	情况
+      			  if( chroma )
+      			      x264_cabac_cbp_chroma( h, cb ); // 这个地方应该就是除16了 
+		}
     }
 
     if( x264_mb_transform_8x8_allowed( h ) && h->mb.i_cbp_luma )
@@ -1050,7 +1067,13 @@ MbPartPredMode( mb_type, 0 ) = = Intra_16x16 ) */
             /* DC Luma */
             for( int p = 0; p < plane_count; p++ )
             {
-                x264_cabac_block_residual_dc_cbf( h, cb, ctx_cat_plane[DCT_LUMA_DC][p], LUMA_DC+p, h->dct.luma16x16_dc[p], 1 );
+             /*skytest0916 ifesle*/
+		/*if(h->i_layer_id)
+		{	
+			x264_cabac_block_residual_dc_cbf( h, cb, ctx_cat_plane[DCT_LUMA_DC][p], LUMA_DC+p, 0, 1 );
+		}
+		else*/
+			x264_cabac_block_residual_dc_cbf( h, cb, ctx_cat_plane[DCT_LUMA_DC][p], LUMA_DC+p, h->dct.luma16x16_dc[p], 1 );
 
                 /* AC Luma */
                 if( h->mb.i_cbp_luma )  

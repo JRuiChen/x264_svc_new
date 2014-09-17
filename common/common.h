@@ -1237,7 +1237,7 @@ struct x264_t
         uint8_t (*sub_partition)[4];
 		uint8_t * intra16x16_pred_mode;
 		int* mb_mode;
-		int (*blk_moed)[4];
+		int (*blk_mode)[4];
         
 		/*extension mb variable - BY MING*/
         int b_in_crop_window_flag;

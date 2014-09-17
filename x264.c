@@ -1281,8 +1281,12 @@ static int init_vid_filters( char *sequence, hnd_t *handle, video_info_t *info, 
 			param->i_heightEL2 = param->i_height;
 			param->i_widthEL1 = param->i_width/2;
 			param->i_heightEL1 = param->i_height/2;
-			param->i_width /= 2;
-			param->i_height /= 2;
+			if(b_Enable_SVC)
+				{
+					param->i_width /= 2;
+					param->i_height /= 2;
+				}
+		
 
 	}
     /* force the output csp to what the user specified (or the default) */

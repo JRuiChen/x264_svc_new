@@ -675,6 +675,7 @@ int x264_frame_copy_picture( x264_t *h, x264_frame_t *dst, x264_picture_t *src )
                               stride[2]/sizeof(pixel), h->param.i_widthEL2, h->param.i_heightEL2 );
         }
     }
+	printf("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk%d\n",h->mb.i_mb_width);
 	printf("copy end!\n");
     return 0;
 }
@@ -1041,8 +1042,10 @@ void x264_threadslice_cond_wait( x264_t *h, int pass )
 
 int x264_frame_new_slice( x264_t *h, x264_frame_t *frame )
 {
+printf("eeeeeeeeeeeeeeeeee h->param.i_slice_count_max : %d\n", h->param.i_slice_count_max );
     if( h->param.i_slice_count_max )
     {
+    
         int slice_count;
         if( h->param.b_sliced_threads )
             slice_count = x264_pthread_fetch_and_add( &frame->i_slice_count, 1, &frame->mutex );
