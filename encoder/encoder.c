@@ -3585,6 +3585,7 @@ static void *x264_slices_write( x264_t *h )
     int i_slice_num = 0;
     int last_thread_mb = h->sh.i_last_mb;
 
+    memcpy(&(h->mb),&(h->mbBL),sizeof(h->mb));
     /* init stats */
     memset( &h->stat.frame, 0, sizeof(h->stat.frame) );
     h->mb.b_reencode_mb = 0;

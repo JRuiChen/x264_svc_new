@@ -692,7 +692,42 @@ encode_frame()***************
 x264_encoder_encode()-------------
 x264_frame_pop_unused end 
 ssssssssssssssssssttttttttttttttt param.i_width 352 
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 in writeCsp1 --width = 88--height = 72----stride = 160---
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 in writeCsp1 --width = 44--height = 36----stride = 44---
 in writeCsp1 --width = 44--height = 36----stride = 44---
 copy end!
@@ -710,22 +745,43 @@ encode i_frame = 46------------>
 encode_frame()***************
 x264_encoder_encode()-------------
 x264_frame_pop_unused end 
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 ssssssssssssssssssttttttttttttttt param.i_width 352 
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 in writeCsp1 --width = 88--height = 72----stride = 160---
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 in writeCsp1 --width = 44--height = 36----stride = 44---
 in writeCsp1 --width = 44--height = 36----stride = 44---
 copy end!
@@ -778,64 +834,8 @@ x264_frame_expand_border_filtered
 plane_expand_border
 plane_expand_border
 plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 ssssssssssssssssssttttttttttttttt param.i_width 352 
 in writeCsp1 --width = 88--height = 72----stride = 160---
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 in writeCsp1 --width = 44--height = 36----stride = 44---
 in writeCsp1 --width = 44--height = 36----stride = 44---
 copy end!
@@ -973,6 +973,7 @@ x264_frame_expand_border_filtered
 plane_expand_border
 plane_expand_border
 plane_expand_border
+ssssssssssssssssssttttttttttttttt param.i_width 352 
 x264_frame_expand_border
 plane_expand_border
 plane_expand_border
@@ -980,7 +981,6 @@ x264_frame_expand_border_filtered
 plane_expand_border
 plane_expand_border
 plane_expand_border
-ssssssssssssssssssttttttttttttttt param.i_width 352 
 in writeCsp1 --width = 88--height = 72----stride = 160---
 in writeCsp1 --width = 44--height = 36----stride = 44---
 in writeCsp1 --width = 44--height = 36----stride = 44---
@@ -1027,7 +1027,6 @@ x264_frame_expand_border_filtered
 plane_expand_border
 plane_expand_border
 plane_expand_border
-ssssssssssssssssssttttttttttttttt param.i_width 352 
 x264_frame_expand_border
 plane_expand_border
 plane_expand_border
@@ -1035,6 +1034,7 @@ x264_frame_expand_border_filtered
 plane_expand_border
 plane_expand_border
 plane_expand_border
+ssssssssssssssssssttttttttttttttt param.i_width 352 
 in writeCsp1 --width = 88--height = 72----stride = 160---
 in writeCsp1 --width = 44--height = 36----stride = 44---
 in writeCsp1 --width = 44--height = 36----stride = 44---
@@ -1225,36 +1225,36 @@ x264_frame_expand_border_filtered
 plane_expand_border
 plane_expand_border
 plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 ssssssssssssssssssttttttttttttttt param.i_width 352 
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 in writeCsp1 --width = 88--height = 72----stride = 160---
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 in writeCsp1 --width = 44--height = 36----stride = 44---
 in writeCsp1 --width = 44--height = 36----stride = 44---
 copy end!
@@ -1293,21 +1293,21 @@ x264_frame_expand_border_filtered
 plane_expand_border
 plane_expand_border
 plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 ssssssssssssssssssttttttttttttttt param.i_width 352 
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 in writeCsp1 --width = 88--height = 72----stride = 160---
 in writeCsp1 --width = 44--height = 36----stride = 44---
 in writeCsp1 --width = 44--height = 36----stride = 44---
@@ -1408,6 +1408,7 @@ x264_frame_expand_border_filtered
 plane_expand_border
 plane_expand_border
 plane_expand_border
+ssssssssssssssssssttttttttttttttt param.i_width 352 
 x264_frame_expand_border
 plane_expand_border
 plane_expand_border
@@ -1415,7 +1416,6 @@ x264_frame_expand_border_filtered
 plane_expand_border
 plane_expand_border
 plane_expand_border
-ssssssssssssssssssttttttttttttttt param.i_width 352 
 in writeCsp1 --width = 88--height = 72----stride = 160---
 in writeCsp1 --width = 44--height = 36----stride = 44---
 in writeCsp1 --width = 44--height = 36----stride = 44---
@@ -1455,21 +1455,21 @@ x264_frame_expand_border_filtered
 plane_expand_border
 plane_expand_border
 plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 ssssssssssssssssssttttttttttttttt param.i_width 352 
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 in writeCsp1 --width = 88--height = 72----stride = 160---
 in writeCsp1 --width = 44--height = 36----stride = 44---
 in writeCsp1 --width = 44--height = 36----stride = 44---
@@ -1576,6 +1576,8 @@ x264_frame_pop_unused end
 if----------i_thread_frames = 6
 h->param.i_threads = 6
 h->param.b_sliced_threads = 0
+x264_frame_expand_border_chroma
+plane_expand_border
 encode i_frame = 66------------>
 encode_frame()***************
 x264_encoder_encode()-------------
@@ -1601,15 +1603,6 @@ x264_frame_expand_border_filtered
 plane_expand_border
 plane_expand_border
 plane_expand_border
-x264_frame_expand_border_chroma
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 x264_frame_expand_border
 plane_expand_border
 plane_expand_border
@@ -1618,6 +1611,13 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 ssssssssssssssssssttttttttttttttt param.i_width 352 
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 in writeCsp1 --width = 88--height = 72----stride = 160---
 in writeCsp1 --width = 44--height = 36----stride = 44---
 in writeCsp1 --width = 44--height = 36----stride = 44---
@@ -1651,47 +1651,47 @@ x264_frame_pop_unused end
 if----------i_thread_frames = 6
 h->param.i_threads = 6
 h->param.b_sliced_threads = 0
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 encode i_frame = 68------------>
 encode_frame()***************
 x264_encoder_encode()-------------
 x264_frame_pop_unused end 
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 ssssssssssssssssssttttttttttttttt param.i_width 352 
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 in writeCsp1 --width = 88--height = 72----stride = 160---
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 in writeCsp1 --width = 44--height = 36----stride = 44---
 in writeCsp1 --width = 44--height = 36----stride = 44---
 copy end!
@@ -1728,41 +1728,6 @@ encode i_frame = 70------------>
 encode_frame()***************
 x264_encoder_encode()-------------
 x264_frame_pop_unused end 
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 ssssssssssssssssssttttttttttttttt param.i_width 352 
 in writeCsp1 --width = 88--height = 72----stride = 160---
 in writeCsp1 --width = 44--height = 36----stride = 44---
@@ -1778,6 +1743,41 @@ x264_frame_pop_unused end
 if----------i_thread_frames = 6
 h->param.i_threads = 6
 h->param.b_sliced_threads = 0
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 encode i_frame = 71------------>
 encode_frame()***************
 x264_encoder_encode()-------------
@@ -1870,12 +1870,47 @@ x264_frame_pop_unused end
 if----------i_thread_frames = 6
 h->param.i_threads = 6
 h->param.b_sliced_threads = 0
-x264_frame_expand_border_chroma
-plane_expand_border
 encode i_frame = 74------------>
 encode_frame()***************
 x264_encoder_encode()-------------
 x264_frame_pop_unused end 
+x264_frame_expand_border_chroma
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 ssssssssssssssssssttttttttttttttt param.i_width 352 
 in writeCsp1 --width = 88--height = 72----stride = 160---
 in writeCsp1 --width = 44--height = 36----stride = 44---
@@ -1895,41 +1930,6 @@ encode i_frame = 75------------>
 encode_frame()***************
 x264_encoder_encode()-------------
 x264_frame_pop_unused end 
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 ssssssssssssssssssttttttttttttttt param.i_width 352 
 in writeCsp1 --width = 88--height = 72----stride = 160---
 in writeCsp1 --width = 44--height = 36----stride = 44---
@@ -1970,21 +1970,21 @@ x264_frame_expand_border_filtered
 plane_expand_border
 plane_expand_border
 plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 ssssssssssssssssssttttttttttttttt param.i_width 352 
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 in writeCsp1 --width = 88--height = 72----stride = 160---
 in writeCsp1 --width = 44--height = 36----stride = 44---
 in writeCsp1 --width = 44--height = 36----stride = 44---
@@ -2043,7 +2043,6 @@ x264_frame_expand_border_filtered
 plane_expand_border
 plane_expand_border
 plane_expand_border
-ssssssssssssssssssttttttttttttttt param.i_width 352 
 x264_frame_expand_border
 plane_expand_border
 plane_expand_border
@@ -2051,6 +2050,7 @@ x264_frame_expand_border_filtered
 plane_expand_border
 plane_expand_border
 plane_expand_border
+ssssssssssssssssssttttttttttttttt param.i_width 352 
 x264_frame_expand_border
 plane_expand_border
 plane_expand_border
@@ -2091,10 +2091,45 @@ x264_frame_pop_unused end
 if----------i_thread_frames = 6
 h->param.i_threads = 6
 h->param.b_sliced_threads = 0
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 encode i_frame = 80------------>
 encode_frame()***************
 x264_encoder_encode()-------------
 x264_frame_pop_unused end 
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 ssssssssssssssssssttttttttttttttt param.i_width 352 
 in writeCsp1 --width = 88--height = 72----stride = 160---
 in writeCsp1 --width = 44--height = 36----stride = 44---
@@ -2114,6 +2149,20 @@ encode i_frame = 81------------>
 encode_frame()***************
 x264_encoder_encode()-------------
 x264_frame_pop_unused end 
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 ssssssssssssssssssttttttttttttttt param.i_width 352 
 x264_frame_expand_border
 plane_expand_border
@@ -2129,63 +2178,14 @@ x264_frame_expand_border_filtered
 plane_expand_border
 plane_expand_border
 plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 in writeCsp1 --width = 88--height = 72----stride = 160---
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 in writeCsp1 --width = 44--height = 36----stride = 44---
 in writeCsp1 --width = 44--height = 36----stride = 44---
 copy end!
@@ -2253,13 +2253,6 @@ x264_frame_pop_unused end
 if----------i_thread_frames = 6
 h->param.i_threads = 6
 h->param.b_sliced_threads = 0
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 encode i_frame = 83------------>
 encode_frame()***************
 x264_encoder_encode()-------------
@@ -2278,22 +2271,29 @@ x264_frame_expand_border_filtered
 plane_expand_border
 plane_expand_border
 plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 ssssssssssssssssssttttttttttttttt param.i_width 352 
 in writeCsp1 --width = 88--height = 72----stride = 160---
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 in writeCsp1 --width = 44--height = 36----stride = 44---
 in writeCsp1 --width = 44--height = 36----stride = 44---
 copy end!
@@ -2332,21 +2332,21 @@ x264_frame_expand_border_filtered
 plane_expand_border
 plane_expand_border
 plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 ssssssssssssssssssttttttttttttttt param.i_width 352 
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 in writeCsp1 --width = 88--height = 72----stride = 160---
 in writeCsp1 --width = 44--height = 36----stride = 44---
 in writeCsp1 --width = 44--height = 36----stride = 44---
@@ -2365,20 +2365,6 @@ encode i_frame = 85------------>
 encode_frame()***************
 x264_encoder_encode()-------------
 x264_frame_pop_unused end 
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 ssssssssssssssssssttttttttttttttt param.i_width 352 
 x264_frame_expand_border
 plane_expand_border
@@ -2387,21 +2373,35 @@ x264_frame_expand_border_filtered
 plane_expand_border
 plane_expand_border
 plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 in writeCsp1 --width = 88--height = 72----stride = 160---
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 in writeCsp1 --width = 44--height = 36----stride = 44---
 in writeCsp1 --width = 44--height = 36----stride = 44---
 copy end!
@@ -2523,6 +2523,10 @@ x264_frame_pop_unused end
 if----------i_thread_frames = 6
 h->param.i_threads = 6
 h->param.b_sliced_threads = 0
+encode i_frame = 88------------>
+encode_frame()***************
+x264_encoder_encode()-------------
+x264_frame_pop_unused end 
 x264_frame_expand_border
 plane_expand_border
 plane_expand_border
@@ -2530,10 +2534,6 @@ x264_frame_expand_border_filtered
 plane_expand_border
 plane_expand_border
 plane_expand_border
-encode i_frame = 88------------>
-encode_frame()***************
-x264_encoder_encode()-------------
-x264_frame_pop_unused end 
 x264_frame_expand_border
 plane_expand_border
 plane_expand_border
@@ -2739,45 +2739,45 @@ x264_frame_pop_unused end
 if----------i_thread_frames = 6
 h->param.i_threads = 6
 h->param.b_sliced_threads = 0
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 encode i_frame = 92------------>
 encode_frame()***************
 x264_encoder_encode()-------------
 x264_frame_pop_unused end 
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 ssssssssssssssssssttttttttttttttt param.i_width 352 
 in writeCsp1 --width = 88--height = 72----stride = 160---
 in writeCsp1 --width = 44--height = 36----stride = 44---
@@ -2901,45 +2901,45 @@ x264_frame_pop_unused end
 if----------i_thread_frames = 6
 h->param.i_threads = 6
 h->param.b_sliced_threads = 0
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 encode i_frame = 95------------>
 encode_frame()***************
 x264_encoder_encode()-------------
 x264_frame_pop_unused end 
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 ssssssssssssssssssttttttttttttttt param.i_width 352 
 in writeCsp1 --width = 88--height = 72----stride = 160---
 in writeCsp1 --width = 44--height = 36----stride = 44---
@@ -2955,45 +2955,45 @@ x264_frame_pop_unused end
 if----------i_thread_frames = 6
 h->param.i_threads = 6
 h->param.b_sliced_threads = 0
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 encode i_frame = 96------------>
 encode_frame()***************
 x264_encoder_encode()-------------
 x264_frame_pop_unused end 
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 ssssssssssssssssssttttttttttttttt param.i_width 352 
 in writeCsp1 --width = 88--height = 72----stride = 160---
 in writeCsp1 --width = 44--height = 36----stride = 44---
@@ -3009,24 +3009,24 @@ x264_frame_pop_unused end
 if----------i_thread_frames = 6
 h->param.i_threads = 6
 h->param.b_sliced_threads = 0
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 encode i_frame = 97------------>
 encode_frame()***************
 x264_encoder_encode()-------------
 x264_frame_pop_unused end 
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 x264_frame_expand_border
 plane_expand_border
 plane_expand_border
@@ -3136,45 +3136,45 @@ x264_frame_pop_unused end
 if----------i_thread_frames = 6
 h->param.i_threads = 6
 h->param.b_sliced_threads = 0
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 encode i_frame = 100------------>
 encode_frame()***************
 x264_encoder_encode()-------------
 x264_frame_pop_unused end 
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 ssssssssssssssssssttttttttttttttt param.i_width 352 
 in writeCsp1 --width = 88--height = 72----stride = 160---
 in writeCsp1 --width = 44--height = 36----stride = 44---
@@ -3209,48 +3209,34 @@ x264_frame_pop_unused end
 if----------i_thread_frames = 6
 h->param.i_threads = 6
 h->param.b_sliced_threads = 0
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 encode i_frame = 102------------>
 encode_frame()***************
 x264_encoder_encode()-------------
 x264_frame_pop_unused end 
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 ssssssssssssssssssttttttttttttttt param.i_width 352 
 in writeCsp1 --width = 88--height = 72----stride = 160---
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 in writeCsp1 --width = 44--height = 36----stride = 44---
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 in writeCsp1 --width = 44--height = 36----stride = 44---
 copy end!
 i_width-22---24-x264_frame_expand_border_mod16
@@ -3259,10 +3245,24 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 x264_frame_pop_unused end 
 if----------i_thread_frames = 6
 h->param.i_threads = 6
 h->param.b_sliced_threads = 0
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 encode i_frame = 103------------>
 encode_frame()***************
 x264_encoder_encode()-------------
@@ -3336,24 +3336,24 @@ x264_frame_pop_unused end
 if----------i_thread_frames = 6
 h->param.i_threads = 6
 h->param.b_sliced_threads = 0
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 encode i_frame = 105------------>
 encode_frame()***************
 x264_encoder_encode()-------------
 x264_frame_pop_unused end 
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 x264_frame_expand_border
 plane_expand_border
 plane_expand_border
@@ -3409,45 +3409,45 @@ x264_frame_pop_unused end
 if----------i_thread_frames = 6
 h->param.i_threads = 6
 h->param.b_sliced_threads = 0
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 encode i_frame = 107------------>
 encode_frame()***************
 x264_encoder_encode()-------------
 x264_frame_pop_unused end 
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 ssssssssssssssssssttttttttttttttt param.i_width 352 
 in writeCsp1 --width = 88--height = 72----stride = 160---
 in writeCsp1 --width = 44--height = 36----stride = 44---
@@ -3482,45 +3482,45 @@ x264_frame_pop_unused end
 if----------i_thread_frames = 6
 h->param.i_threads = 6
 h->param.b_sliced_threads = 0
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 encode i_frame = 109------------>
 encode_frame()***************
 x264_encoder_encode()-------------
 x264_frame_pop_unused end 
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 ssssssssssssssssssttttttttttttttt param.i_width 352 
 in writeCsp1 --width = 88--height = 72----stride = 160---
 in writeCsp1 --width = 44--height = 36----stride = 44---
@@ -3536,46 +3536,46 @@ x264_frame_pop_unused end
 if----------i_thread_frames = 6
 h->param.i_threads = 6
 h->param.b_sliced_threads = 0
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 encode i_frame = 110------------>
 encode_frame()***************
 x264_encoder_encode()-------------
 x264_frame_pop_unused end 
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 ssssssssssssssssssttttttttttttttt param.i_width 352 
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 in writeCsp1 --width = 88--height = 72----stride = 160---
 in writeCsp1 --width = 44--height = 36----stride = 44---
 in writeCsp1 --width = 44--height = 36----stride = 44---
@@ -3682,45 +3682,10 @@ x264_frame_pop_unused end
 if----------i_thread_frames = 6
 h->param.i_threads = 6
 h->param.b_sliced_threads = 0
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 encode i_frame = 114------------>
 encode_frame()***************
 x264_encoder_encode()-------------
 x264_frame_pop_unused end 
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 ssssssssssssssssssttttttttttttttt param.i_width 352 
 in writeCsp1 --width = 88--height = 72----stride = 160---
 in writeCsp1 --width = 44--height = 36----stride = 44---
@@ -3736,6 +3701,41 @@ x264_frame_pop_unused end
 if----------i_thread_frames = 6
 h->param.i_threads = 6
 h->param.b_sliced_threads = 0
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 encode i_frame = 115------------>
 encode_frame()***************
 x264_encoder_encode()-------------
@@ -3755,45 +3755,45 @@ x264_frame_pop_unused end
 if----------i_thread_frames = 6
 h->param.i_threads = 6
 h->param.b_sliced_threads = 0
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 encode i_frame = 116------------>
 encode_frame()***************
 x264_encoder_encode()-------------
 x264_frame_pop_unused end 
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 ssssssssssssssssssttttttttttttttt param.i_width 352 
 in writeCsp1 --width = 88--height = 72----stride = 160---
 in writeCsp1 --width = 44--height = 36----stride = 44---
@@ -3828,24 +3828,24 @@ x264_frame_pop_unused end
 if----------i_thread_frames = 6
 h->param.i_threads = 6
 h->param.b_sliced_threads = 0
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 encode i_frame = 118------------>
 encode_frame()***************
 x264_encoder_encode()-------------
 x264_frame_pop_unused end 
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 x264_frame_expand_border
 plane_expand_border
 plane_expand_border
@@ -3901,45 +3901,45 @@ x264_frame_pop_unused end
 if----------i_thread_frames = 6
 h->param.i_threads = 6
 h->param.b_sliced_threads = 0
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 encode i_frame = 120------------>
 encode_frame()***************
 x264_encoder_encode()-------------
 x264_frame_pop_unused end 
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 ssssssssssssssssssttttttttttttttt param.i_width 352 
 in writeCsp1 --width = 88--height = 72----stride = 160---
 in writeCsp1 --width = 44--height = 36----stride = 44---
@@ -3992,29 +3992,29 @@ x264_frame_expand_border_filtered
 plane_expand_border
 plane_expand_border
 plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 ssssssssssssssssssttttttttttttttt param.i_width 352 
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 in writeCsp1 --width = 88--height = 72----stride = 160---
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 in writeCsp1 --width = 44--height = 36----stride = 44---
 in writeCsp1 --width = 44--height = 36----stride = 44---
 copy end!
@@ -4101,6 +4101,10 @@ x264_frame_pop_unused end
 if----------i_thread_frames = 6
 h->param.i_threads = 6
 h->param.b_sliced_threads = 0
+encode i_frame = 125------------>
+encode_frame()***************
+x264_encoder_encode()-------------
+x264_frame_pop_unused end 
 x264_frame_expand_border
 plane_expand_border
 plane_expand_border
@@ -4108,10 +4112,6 @@ x264_frame_expand_border_filtered
 plane_expand_border
 plane_expand_border
 plane_expand_border
-encode i_frame = 125------------>
-encode_frame()***************
-x264_encoder_encode()-------------
-x264_frame_pop_unused end 
 x264_frame_expand_border
 plane_expand_border
 plane_expand_border
@@ -4209,45 +4209,45 @@ x264_frame_pop_unused end
 if----------i_thread_frames = 6
 h->param.i_threads = 6
 h->param.b_sliced_threads = 0
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 encode i_frame = 127------------>
 encode_frame()***************
 x264_encoder_encode()-------------
 x264_frame_pop_unused end 
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 ssssssssssssssssssttttttttttttttt param.i_width 352 
 in writeCsp1 --width = 88--height = 72----stride = 160---
 in writeCsp1 --width = 44--height = 36----stride = 44---
@@ -4263,24 +4263,24 @@ x264_frame_pop_unused end
 if----------i_thread_frames = 6
 h->param.i_threads = 6
 h->param.b_sliced_threads = 0
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 encode i_frame = 128------------>
 encode_frame()***************
 x264_encoder_encode()-------------
 x264_frame_pop_unused end 
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 x264_frame_expand_border
 plane_expand_border
 plane_expand_border
@@ -4435,6 +4435,48 @@ x264_frame_expand_border_filtered
 plane_expand_border
 plane_expand_border
 plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+ in  x264_encoder_delayed_frames ---------------
+encode_frame()***************
+x264_encoder_encode()-------------
+x264_frame_pop_unused end 
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+if----------i_thread_frames = 6
+h->param.i_threads = 6
+h->param.b_sliced_threads = 0
  in  x264_encoder_delayed_frames ---------------
 encode_frame()***************
 x264_encoder_encode()-------------
@@ -4487,88 +4529,11 @@ plane_expand_border
 x264_frame_expand_border
 plane_expand_border
 plane_expand_border
+x264_frame_expand_border
 x264_frame_expand_border_filtered
 plane_expand_border
 plane_expand_border
 plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
- in  x264_encoder_delayed_frames ---------------
-encode_frame()***************
-x264_encoder_encode()-------------
-x264_frame_pop_unused end 
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-if----------i_thread_frames = 6
-h->param.i_threads = 6
-h->param.b_sliced_threads = 0
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
- in  x264_encoder_delayed_frames ---------------
-encode_frame()***************
-x264_encoder_encode()-------------
-x264_frame_pop_unused end 
-if----------i_thread_frames = 6
-h->param.i_threads = 6
-h->param.b_sliced_threads = 0
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
 plane_expand_border
 plane_expand_border
 x264_frame_expand_border_filtered
@@ -4666,13 +4631,6 @@ x264_frame_expand_border_filtered
 plane_expand_border
 plane_expand_border
 plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
  in  x264_encoder_delayed_frames ---------------
 encode_frame()***************
 x264_encoder_encode()-------------
@@ -4729,90 +4687,6 @@ x264_frame_expand_border_filtered
 plane_expand_border
 plane_expand_border
 plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
- in  x264_encoder_delayed_frames ---------------
-encode_frame()***************
-x264_encoder_encode()-------------
-x264_frame_pop_unused end 
-if----------i_thread_frames = 6
-h->param.i_threads = 6
-h->param.b_sliced_threads = 0
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
- in  x264_encoder_delayed_frames ---------------
-encode_frame()***************
-x264_encoder_encode()-------------
-x264_frame_pop_unused end 
-if----------i_thread_frames = 6
-h->param.i_threads = 6
-h->param.b_sliced_threads = 0
 x264_frame_expand_border
 plane_expand_border
 plane_expand_border
@@ -4932,41 +4806,6 @@ x264_frame_expand_border_filtered
 plane_expand_border
 plane_expand_border
 plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
- in  x264_encoder_delayed_frames ---------------
-encode_frame()***************
-x264_encoder_encode()-------------
-x264_frame_pop_unused end 
-if----------i_thread_frames = 6
-h->param.i_threads = 6
-h->param.b_sliced_threads = 0
- in  x264_encoder_delayed_frames ---------------
-encode_frame()***************
-x264_encoder_encode()-------------
-x264_frame_pop_unused end 
-if----------i_thread_frames = 6
-h->param.i_threads = 6
-h->param.b_sliced_threads = 0
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
  in  x264_encoder_delayed_frames ---------------
 encode_frame()***************
 x264_encoder_encode()-------------
@@ -5002,27 +4841,6 @@ x264_frame_expand_border_filtered
 plane_expand_border
 plane_expand_border
 plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
  in  x264_encoder_delayed_frames ---------------
 encode_frame()***************
 x264_encoder_encode()-------------
@@ -5030,62 +4848,6 @@ x264_frame_pop_unused end
 if----------i_thread_frames = 6
 h->param.i_threads = 6
 h->param.b_sliced_threads = 0
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
- in  x264_encoder_delayed_frames ---------------
-encode_frame()***************
-x264_encoder_encode()-------------
-x264_frame_pop_unused end 
-if----------i_thread_frames = 6
-h->param.i_threads = 6
-h->param.b_sliced_threads = 0
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
- in  x264_encoder_delayed_frames ---------------
-encode_frame()***************
-x264_encoder_encode()-------------
-x264_frame_pop_unused end 
-if----------i_thread_frames = 6
-h->param.i_threads = 6
-h->param.b_sliced_threads = 0
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 x264_frame_expand_border
 plane_expand_border
 plane_expand_border
@@ -5198,69 +4960,6 @@ x264_frame_expand_border_filtered
 plane_expand_border
 plane_expand_border
 plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
- in  x264_encoder_delayed_frames ---------------
-encode_frame()***************
-x264_encoder_encode()-------------
-x264_frame_pop_unused end 
-if----------i_thread_frames = 6
-h->param.i_threads = 6
-h->param.b_sliced_threads = 0
- in  x264_encoder_delayed_frames ---------------
-encode_frame()***************
-x264_encoder_encode()-------------
-x264_frame_pop_unused end 
-if----------i_thread_frames = 6
-h->param.i_threads = 6
-h->param.b_sliced_threads = 0
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
  in  x264_encoder_delayed_frames ---------------
 encode_frame()***************
 x264_encoder_encode()-------------
@@ -5282,55 +4981,6 @@ x264_frame_pop_unused end
 if----------i_thread_frames = 6
 h->param.i_threads = 6
 h->param.b_sliced_threads = 0
- in  x264_encoder_delayed_frames ---------------
-encode_frame()***************
-x264_encoder_encode()-------------
-x264_frame_pop_unused end 
-if----------i_thread_frames = 6
-h->param.i_threads = 6
-h->param.b_sliced_threads = 0
- in  x264_encoder_delayed_frames ---------------
-encode_frame()***************
-x264_encoder_encode()-------------
-x264_frame_pop_unused end 
-if----------i_thread_frames = 6
-h->param.i_threads = 6
-h->param.b_sliced_threads = 0
- in  x264_encoder_delayed_frames ---------------
-encode_frame()***************
-x264_encoder_encode()-------------
-x264_frame_pop_unused end 
-if----------i_thread_frames = 6
-h->param.i_threads = 6
-h->param.b_sliced_threads = 0
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
- in  x264_encoder_delayed_frames ---------------
-encode_frame()***************
-x264_encoder_encode()-------------
-x264_frame_pop_unused end 
-if----------i_thread_frames = 6
-h->param.i_threads = 6
-h->param.b_sliced_threads = 0
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
 x264_frame_expand_border
 plane_expand_border
 plane_expand_border
@@ -5439,14 +5089,406 @@ plane_expand_border
 x264_frame_expand_border
 plane_expand_border
 plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
 x264_frame_expand_border
 plane_expand_border
 plane_expand_border
 x264_frame_expand_border_filtered
 plane_expand_border
 plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
 x264_frame_expand_border_filtered
 plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+ in  x264_encoder_delayed_frames ---------------
+encode_frame()***************
+x264_encoder_encode()-------------
+x264_frame_pop_unused end 
+if----------i_thread_frames = 6
+h->param.i_threads = 6
+h->param.b_sliced_threads = 0
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+ in  x264_encoder_delayed_frames ---------------
+encode_frame()***************
+x264_encoder_encode()-------------
+x264_frame_pop_unused end 
+if----------i_thread_frames = 6
+h->param.i_threads = 6
+h->param.b_sliced_threads = 0
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+ in  x264_encoder_delayed_frames ---------------
+encode_frame()***************
+x264_encoder_encode()-------------
+x264_frame_pop_unused end 
+if----------i_thread_frames = 6
+h->param.i_threads = 6
+h->param.b_sliced_threads = 0
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+ in  x264_encoder_delayed_frames ---------------
+encode_frame()***************
+x264_encoder_encode()-------------
+x264_frame_pop_unused end 
+if----------i_thread_frames = 6
+h->param.i_threads = 6
+h->param.b_sliced_threads = 0
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+ in  x264_encoder_delayed_frames ---------------
+encode_frame()***************
+x264_encoder_encode()-------------
+x264_frame_pop_unused end 
+if----------i_thread_frames = 6
+h->param.i_threads = 6
+h->param.b_sliced_threads = 0
+ in  x264_encoder_delayed_frames ---------------
+encode_frame()***************
+x264_encoder_encode()-------------
+x264_frame_pop_unused end 
+if----------i_thread_frames = 6
+h->param.i_threads = 6
+h->param.b_sliced_threads = 0
+ in  x264_encoder_delayed_frames ---------------
+encode_frame()***************
+x264_encoder_encode()-------------
+x264_frame_pop_unused end 
+if----------i_thread_frames = 6
+h->param.i_threads = 6
+h->param.b_sliced_threads = 0
+ in  x264_encoder_delayed_frames ---------------
+encode_frame()***************
+x264_encoder_encode()-------------
+x264_frame_pop_unused end 
+if----------i_thread_frames = 6
+h->param.i_threads = 6
+h->param.b_sliced_threads = 0
+ in  x264_encoder_delayed_frames ---------------
+encode_frame()***************
+x264_encoder_encode()-------------
+x264_frame_pop_unused end 
+if----------i_thread_frames = 6
+h->param.i_threads = 6
+h->param.b_sliced_threads = 0
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+ in  x264_encoder_delayed_frames ---------------
+encode_frame()***************
+x264_encoder_encode()-------------
+x264_frame_pop_unused end 
+if----------i_thread_frames = 6
+h->param.i_threads = 6
+h->param.b_sliced_threads = 0
+ in  x264_encoder_delayed_frames ---------------
+encode_frame()***************
+x264_encoder_encode()-------------
+x264_frame_pop_unused end 
+if----------i_thread_frames = 6
+h->param.i_threads = 6
+h->param.b_sliced_threads = 0
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+ in  x264_encoder_delayed_frames ---------------
+encode_frame()***************
+x264_encoder_encode()-------------
+x264_frame_pop_unused end 
+if----------i_thread_frames = 6
+h->param.i_threads = 6
+h->param.b_sliced_threads = 0
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+ in  x264_encoder_delayed_frames ---------------
+encode_frame()***************
+x264_encoder_encode()-------------
+x264_frame_pop_unused end 
+if----------i_thread_frames = 6
+h->param.i_threads = 6
+h->param.b_sliced_threads = 0
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+ in  x264_encoder_delayed_frames ---------------
+encode_frame()***************
+x264_encoder_encode()-------------
+x264_frame_pop_unused end 
+if----------i_thread_frames = 6
+h->param.i_threads = 6
+h->param.b_sliced_threads = 0
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
 plane_expand_border
 plane_expand_border
 plane_expand_border
@@ -5513,48 +5555,6 @@ x264_frame_expand_border_filtered
 plane_expand_border
 plane_expand_border
 plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
- in  x264_encoder_delayed_frames ---------------
-encode_frame()***************
-x264_encoder_encode()-------------
-x264_frame_pop_unused end 
-if----------i_thread_frames = 6
-h->param.i_threads = 6
-h->param.b_sliced_threads = 0
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
  in  x264_encoder_delayed_frames ---------------
 encode_frame()***************
 x264_encoder_encode()-------------
@@ -5628,44 +5628,6 @@ plane_expand_border
  in  x264_encoder_delayed_frames ---------------
 encode_frame()***************
 x264_encoder_encode()-------------
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
- in  x264_encoder_delayed_frames ---------------
-encode_frame()***************
-x264_encoder_encode()-------------
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border
-plane_expand_border
-plane_expand_border
-x264_frame_expand_border_filtered
-plane_expand_border
-plane_expand_border
-plane_expand_border
  in  x264_encoder_delayed_frames ---------------
 encode_frame()***************
 x264_encoder_encode()-------------
@@ -5707,6 +5669,44 @@ plane_expand_border
  in  x264_encoder_delayed_frames ---------------
 encode_frame()***************
 x264_encoder_encode()-------------
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+ in  x264_encoder_delayed_frames ---------------
+encode_frame()***************
+x264_encoder_encode()-------------
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border
+plane_expand_border
+plane_expand_border
+x264_frame_expand_border_filtered
+plane_expand_border
+plane_expand_border
+plane_expand_border
  in  x264_encoder_delayed_frames ---------------
 encode_frame()***************
 x264_encoder_encode()-------------

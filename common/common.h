@@ -119,6 +119,23 @@ extern const int  m_nDataNotAvailable;
    	}\
 }
 
+
+#define AOF(exp)\
+{\
+  if(!(exp))\
+  	{\
+  	  assert(0);\
+  	}\
+}
+
+
+#define CHECKED_MALLOC_NO_FAIL( var, size )\
+do {\
+    var = x264_malloc( size );\
+    if( !var )\
+        return;\
+} while( 0 )
+
 #define CHECKED_MALLOC( var, size )\
 do {\
     var = x264_malloc( size );\
@@ -640,6 +657,13 @@ typedef struct
 	int b_adaptive_residual_prediction_flag;
 	int b_default_residual_prediction_flag;
 
+	/*b_scoeff_residual_pred_flag/b_tcoeff_level_pred_flag - BY MING*/ 
+	int b_scoeff_residual_pred_flag;
+	int b_tcoeff_level_pred_flag;
+    int b_base_layer_flag;//标记是否是基本层，临时变量- BY MING
+
+
+
 	int i_scan_start;
 	int i_scan_end;
 	// sh扩展结束
@@ -953,7 +977,9 @@ struct x264_t
         int8_t  *qp;                        /* mb qp */
         int16_t *cbp;                       /* mb cbp: 0x0?: luma, 0x?0: chroma, 0x100: luma dc, 0x0200 and 0x0400: chroma dc  (all set for PCM)*/
         int8_t  (*intra4x4_pred_mode)[8];   /* intra4x4 pred mode. for non I4x4 set to I_PRED_4x4_DC(2) */
-                                            /* actually has only 7 entries; set to 8 for write-combining optimizations */
+                                           /* actually has only 7 entries; set to 8 for write-combining optimizations */
+        /*extenstion mb table - BY MING */
+		uint8_t (*sub_partition)[4];
         uint8_t (*non_zero_count)[16*3];    /* nzc. for I_PCM set to 16 */
         int8_t  *chroma_pred_mode;          /* chroma_pred_mode. cabac only. for non intra I_PRED_CHROMA_DC(0) */
         int16_t (*mv[2])[2];                /* mb mv. set to 0 for intra mb */
@@ -1220,6 +1246,9 @@ struct x264_t
         int16_t *cbp;                       /* mb cbp: 0x0?: luma, 0x?0: chroma, 0x100: luma dc, 0x0200 and 0x0400: chroma dc  (all set for PCM)*/
         int8_t  (*intra4x4_pred_mode)[8];   /* intra4x4 pred mode. for non I4x4 set to I_PRED_4x4_DC(2) */
                                             /* actually has only 7 entries; set to 8 for write-combining optimizations */
+
+        /*extenstion mb table - BY MING */
+        uint8_t (*sub_partition)[4];
         uint8_t (*non_zero_count)[16*3];    /* nzc. for I_PCM set to 16 */
         int8_t  *chroma_pred_mode;          /* chroma_pred_mode. cabac only. for non intra I_PRED_CHROMA_DC(0) */
         int16_t (*mv[2])[2];                /* mb mv. set to 0 for intra mb */
@@ -1233,11 +1262,10 @@ struct x264_t
         uint8_t *field;
         int8_t* BL_skip;          /*BL_skip - BY MING*/
 		int8_t* transform8x8_size;       /* BY MING*/
-      /*extenstion mb table - BY MING */
-        uint8_t (*sub_partition)[4];
+
 		uint8_t * intra16x16_pred_mode;
 		int* mb_mode;
-		int (*blk_moed)[4];
+		int (*blk_mode)[4];
         
 		/*extension mb variable - BY MING*/
         int b_in_crop_window_flag;

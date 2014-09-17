@@ -123,6 +123,45 @@ static ALWAYS_INLINE int array_non_zero( dctcoef *v, int i_count )
 /* This means that decimation can be done merely by adjusting the CBP and NNZ
  * rather than memsetting the coefficients. */
 
+
+/*encode the I_BL macroblock -  BY MING*/
+static void x264_mb_encode_iBL(x264_t* h ,int p,int i_qp)
+{
+  for(int i = (p == 0 && h->mb.i_skip_intra)?15:0;i < 16;i++)
+  {   int nz;
+      pixel *p_src = &h->mb.pic.p_fenc[p][block_idx_xy_fenc[i]];
+
+	  /*the value of p_fdec has been the upsampling value from base layer at the function
+	      x264_load_pic_pointers() - BY MING*/
+      pixel *p_dst = &h->mb.pic.p_fdec[p][block_idx_xy_fdec[i]];
+      ALIGNED_ARRAY_N( dctcoef, dct4x4,[16] );
+ 
+
+	  if(h->mb.b_lossless)
+	  {
+	    nz = h->zigzagf.sub_4x4(h->dct.luma4x4[p*16 + i],p_src,p_dst);
+		h->mb.cache.non_zero_count[x264_scan8[p*16 + i]] = nz;
+		h->mb.i_cbp_luma |= nz << (i >> 2);
+		return ;
+	  }
+
+	  h->dctf.sub4x4_dct(dct4x4,p_src,p_dst);
+	  nz = x264_quant_4x4(h,dct4x4,i_qp,ctx_cat_plane[DCT_LUMA_4x4][p],1,p,i);
+	  h->mb.cache.non_zero_count[x264_scan8[p*16 + i]] = nz;
+
+	  if(nz)
+	  {
+	    h->mb.i_cbp_luma |= 1 << (i >> 2);
+		h->zigzagf.scan_4x4(h->dct.luma4x4[p*16 + i],dct4x4);
+		h->quantf.dequant_4x4(dct4x4,h->dequant4_mf[p?CQM_4IC:CQM_4IY],i_qp);
+		h->dctf.add4x4_idct(p_dst,dct4x4);
+	  }
+  }
+
+
+  
+}
+
 static void x264_mb_encode_i16x16( x264_t *h, int p, int i_qp )
 {
     pixel *p_src = h->mb.pic.p_fenc[p];
@@ -633,6 +672,16 @@ static ALWAYS_INLINE void x264_macroblock_encode_internal( x264_t *h, int plane_
                 h->mb.i_type = B_DIRECT;
         }
     }
+
+   if(h->mb.i_type == I_BL)
+   {
+     /*if I_BL is chosen, we will get the pixels from the base layer and get the residual - BY MING*/
+     for(int p = 0; p < plane_count; p++, i_qp = h->mb.i_chroma_qp)
+     	{
+	     x264_mb_encode_iBL(h,p,i_qp);
+     	}
+   }
+
 
     if( h->mb.i_type == P_SKIP )
     {

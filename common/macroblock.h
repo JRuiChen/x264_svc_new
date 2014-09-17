@@ -96,7 +96,7 @@ enum mb_class_e
     I_8x8           = 1,
     I_16x16         = 2,
     I_PCM           = 3,
-//    I_BL            = 20,
+
     P_L0            = 4,
     P_8x8           = 5,
     P_SKIP          = 6,
@@ -114,14 +114,15 @@ enum mb_class_e
     B_8x8           = 17,
     B_SKIP          = 18,
 
-    X264_MBTYPE_MAX = 19
+    X264_MBTYPE_MAX = 19,
+    I_BL            = 20,
 };
-static const uint8_t x264_mb_type_fix[X264_MBTYPE_MAX] =
+static const uint8_t x264_mb_type_fix[X264_MBTYPE_MAX + 1] =
 {
     I_4x4, I_4x4, I_16x16, I_PCM,//I_BL,
     P_L0, P_8x8, P_SKIP,
     B_DIRECT, B_L0_L0, B_L0_L1, B_L0_BI, B_L1_L0, B_L1_L1,
-    B_L1_BI, B_BI_L0, B_BI_L1, B_BI_BI, B_8x8, B_SKIP
+    B_L1_BI, B_BI_L0, B_BI_L1, B_BI_BI, B_8x8, B_SKIP,I_BL
 };
 static const uint8_t x264_mb_type_list_table[X264_MBTYPE_MAX][2][2] =
 {
