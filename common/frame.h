@@ -81,7 +81,7 @@ typedef struct ResizeParameters{//26 p
 }ResizeParameters;
 
 
-ResizeParameters cRP;
+//ResizeParameters cRP;
 
 typedef struct PictureParameters
 {
@@ -211,7 +211,7 @@ typedef struct MOTIONUPSAMPLING
 }MotionUpsampling;
 
 
-
+ MotionUpsampling * mo_up;
 
 /*xIsInCropWIndow - BY MING*/
 

@@ -1038,6 +1038,11 @@ struct x264_t
         bs_t        bs;
     } out;
 
+
+
+    /*extended motionsampling variable - BY MING*/
+	MotionUpsampling* mo_up;
+    ResizeParameters cRP;
     uint8_t *nal_buffer;
     int      nal_buffer_size;
 

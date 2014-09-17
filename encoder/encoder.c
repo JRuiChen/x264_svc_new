@@ -1607,7 +1607,7 @@ x264_t *x264_encoder_open( x264_param_t *param )
     int qp, i_slicetype_length;
 
     CHECKED_MALLOCZERO( h, sizeof(x264_t) );
-
+    
     /* Add by chenjie */
  //   up_sampling_arg.pH = h;
     up_sampling_arg.exit = 0;
@@ -1681,6 +1681,29 @@ x264_t *x264_encoder_open( x264_param_t *param )
 
     if( x264_cqm_init( h ) < 0 )
         goto fail;
+
+
+
+     /*malloc MotionUpsampling before copy layer*/
+	 CHECKED_MALLOCZERO(h->mo_up,sizeof(MotionUpsampling));
+	 CHECKED_MALLOCZERO(h->mo_up->m_rc_resize_params,sizeof(ResizeParameters));
+	 CHECKED_MALLOCZERO(h->mo_up->m_cPosCalc,sizeof(PosCalcParam));
+	 CHECKED_MALLOCZERO(h->mo_up->m_cMvScale,sizeof(MvScaleParam));
+     /*mo_up = malloc(sizeof(MotionUpsampling));
+     mo_up->m_rc_resize_params = malloc(sizeof(ResizeParameters));
+     mo_up->m_cPosCalc = malloc(sizeof(PosCalcParam));
+     mo_up->m_cMvScale = malloc(sizeof(MvScaleParam));*/
+
+
+
+
+
+
+
+
+
+
+	
 /*sky 2014.8.29 sps ¶Ômb  w h  init*/
     h->mb.i_mb_width = h->sps[0].i_mb_width;
     h->mb.i_mb_height = h->sps[0].i_mb_height;
@@ -3846,19 +3869,15 @@ static void *x264_slices_write( x264_t *h )
    	}
 
 
-
-
-
-    
 	
 	/*write all slices of base layer - BY MING*/
     
-	//x264_copy_mb_info_before_encode(h,BASE_LAYER);
-	//memcpy(&(h->mb),&(h->mbBL),sizeof(x264_mb_t));
-	//printf("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh sizeof(x264_mb_t) % d \ n" , sizeof(x264_mb_t));
+	x264_copy_mb_info_before_encode(h,BASE_LAYER);
+	//memcpy(&(h->mb),&(h->mbBL),sizeof(h->mb));
+	printf("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh sizeof(x264_mb_t) % d \ n" , sizeof(h->mb));
     h->sh.b_base_layer_flag = BASE_LAYER;
 	h->mb.b_reencode_mb = 0;
-	h->i_layer_id = 0;
+	//h->i_layer_id = 0;
 
     WRITE_ALL_SLICES
 
@@ -3866,19 +3885,19 @@ static void *x264_slices_write( x264_t *h )
 	//FILE *file_dst2 = fopen ("tst352x288_ori.yuv", "ab+" );
 
 	//MotionUpsampling* mo_up  = NULL;
-	//CHECKED_MALLOC_NO_FAIL(mo_up,sizeof(MotionUpsampling));
-	//x264_log( NULL, X264_LOG_ERROR, "motionupsampling malloc finish '%s' \n","finish malloc" );
+	//CHECKED_MALLOC(mo_up,sizeof(MotionUpsampling));
 	//memset(mo_up,0,sizeof(MotionUpsampling));
 	//writeCsp(h->fdec->plane[0], file_dst2, h->param.i_width, h->param.i_height, h->fdec->i_stride[0]);
-	//if( h->param.b_sliced_threads )
-		//x264_wait_up_sampling_finish(h->param.i_threads);
-	//else
-	//{
-	//	printf (" Call up-sampling function!!!!!!!!!!!!!!!!!!!!\n");
+	if( h->param.b_sliced_threads )
+		x264_wait_up_sampling_finish(h->param.i_threads);
+	else
+	{
+		printf (" Call up-sampling function!!!!!!!!!!!!!!!!!!!!\n");
+
+		x264_layer_upsample(h,h->fdec,h->i_layer_id);
 		//x264_frame_expand_layers(h, file_dst2, dst_s, h->fdec->plane[0], h->fdec->i_stride[0], h->param.i_width, h->param.i_height, h->param.i_width<<1, h->param.i_height<<1);
-        //xUpsampleMotion(mo_up,&cRP, cRP.m_bFieldPicFlag,0,MV_THRESHOLD,h);
-		//x264_log( NULL, X264_LOG_ERROR, "motionupsampling  finish '%s' \n","finish motionupsampling" );
-	//}
+        //xUpsampleMotion(h->mo_up,&cRP, cRP.m_bFieldPicFlag,0,MV_THRESHOLD,h);
+	}
 	//fclose(file_dst2);
 
 
@@ -4052,6 +4071,8 @@ int     x264_encoder_encode( x264_t *h,
         x264_frame_t *fenc = x264_frame_pop_unused( h, 0 );
         if( !fenc )
             return -1;
+
+
 
         if( x264_frame_copy_picture( h, fenc, pic_in ) < 0 )
             return -1;
@@ -5189,6 +5210,15 @@ void    x264_encoder_close  ( x264_t *h )
 
     if( h->i_thread_frames > 1 )
         h = h->thread[h->i_thread_phase];
+
+
+
+   /*free MotionUpsampling - BY MING*/
+   x264_free(h->mo_up);
+   x264_free(h->mo_up->m_rc_resize_params);
+   x264_free(h->mo_up->m_cPosCalc);
+   x264_free(h->mo_up->m_cMvScale);
+
 
     /* frames */
     x264_frame_delete_list( h->frames.unused[0] );

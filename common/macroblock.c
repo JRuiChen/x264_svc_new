@@ -300,14 +300,11 @@ int x264_macroblock_cache_allocate( x264_t *h )
 
     /* all coeffs */
     PREALLOC( h->mb.non_zero_count, i_mb_count * 48 * sizeof(uint8_t) );
-
-
     /* Add by chenjie */
     PREALLOC_BL( h->mbBL.qp, i_mbBL_count * sizeof(int8_t) );
     PREALLOC_BL( h->mbBL.cbp, i_mbBL_count * sizeof(int16_t) );
     PREALLOC_BL( h->mbBL.mb_transform_size, i_mbBL_count * sizeof(int8_t) );
     PREALLOC_BL( h->mbBL.slice_table, i_mbBL_count * sizeof(uint16_t) );
-
     /* 0 -> 3 top(4), 4 -> 6 : left(3) */
     PREALLOC_BL( h->mbBL.intra4x4_pred_mode, i_mb_count * 8 * sizeof(int8_t) );
 
@@ -1125,7 +1122,7 @@ static void ALWAYS_INLINE x264_macroblock_load_pic_pointers( x264_t *h, int mb_x
         }
 
     /*if it is enhance layer,then copy the p_ref_BL to fdec - BY MING*/
-    if(!h->i_layer_id)
+    if(h->i_layer_id)
     {
       h->mb.pic.p_ref_BL[i] = &h->fdec->planeUpsampleEL1[i][i_pix_offset];
 	  h->mc.copy[PIXEL_16x16]( h->mb.pic.p_fdec[i], FENC_STRIDE,  h->mb.pic.p_ref_BL[i], i_stride2, 16 );

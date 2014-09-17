@@ -1,14 +1,97 @@
----- h->sh.b_base_layer_flag Matches (13 in 2 files) ----
-Encoder.c (encoder):        if(h->sh.b_base_layer_flag)
-Encoder.c (encoder):    h->sh.b_base_layer_flag = BASE_LAYER;
-Encoder.c (encoder):	h->sh.b_base_layer_flag = ENHANCE_LAYER;
-Macroblock.c (common):    int i_stride = h->sh.b_base_layer_flag?h->fdec->i_stride[i]:h->fdec->i_strideEL1[i];
-Macroblock.c (common):    pixel *plane_fdec = h->sh.b_base_layer_flag?(&h->fdec->plane[i][i_pix_offset]):(&h->fdec->planeEL1[i][i_pix_offset]);
-Macroblock.c (common):    h->mb.pic.p_fenc_plane[i] = h->sh.b_base_layer_flag?(&h->fenc->plane[i][i_pix_offset]):(&h->fenc->planeEL1[i][i_pix_offset]);
-Macroblock.c (common):            plane_src = h->sh.b_base_layer_flag?h->fref[0][j>>1]->plane_fld[i]:h->fref[0][j>>1]->plane_fldEL1[i];
-Macroblock.c (common):            plane_src = h->sh.b_base_layer_flag?h->fref[0][j]->plane[i]:h->fref[0][j]->planeEL1[i];
-Macroblock.c (common):            filtered_src = h->sh.b_base_layer_flag?h->fref[0][j]->filtered[i]:h->fref[0][j]->filtered[i];
-Macroblock.c (common):                plane_src = h->sh.b_base_layer_flag?h->fref[1][j]->plane[i]:h->fref[1][j]->planeEL1[i];
-Macroblock.c (common):    if(!h->sh.b_base_layer_flag)
-Macroblock.c (common):    if(h->sh.b_base_layer_flag)
-Macroblock.c (common):    if(h->sh.b_base_layer_flag)
+---- cRP Matches (121 in 3 files) ----
+Encoder.c (encoder):        //xUpsampleMotion(h->mo_up,&cRP, cRP.m_bFieldPicFlag,0,MV_THRESHOLD,h);
+Frame.c (common):               ResizeParameters  rcRP,
+Frame.c (common):    ResizeParameters cRP = rcRP;
+Frame.c (common):      int iRefVerMbShift        = ( cRP.m_bRefLayerFrameMbsOnlyFlag ? 4 : 5 );
+Frame.c (common):      int iScaledVerShift       = ( cRP.m_bFrameMbsOnlyFlag         ? 1 : 2 );
+Frame.c (common):      int iHorDiv               = ( cRP.m_iRefLayerFrmWidth    <<               1 );
+Frame.c (common):      int iVerDiv               = ( cRP.m_iRefLayerFrmHeight   << iScaledVerShift );
+Frame.c (common):      int iRefFrmW              = ( ( cRP.m_iRefLayerFrmWidth   + ( 1 <<               4 ) - 1 ) >>               4 ) <<               4;  // round to next multiple of 16
+Frame.c (common):      int iRefFrmH              = ( ( cRP.m_iRefLayerFrmHeight  + ( 1 <<  iRefVerMbShift ) - 1 ) >>  iRefVerMbShift ) <<  iRefVerMbShift;  // round to next multiple of 16 or 32 (for interlaced)
+Frame.c (common):      int iScaledRefFrmW        = ( ( cRP.m_iScaledRefFrmWidth  * iRefFrmW + ( iHorDiv >> 1 ) ) / iHorDiv ) <<               1;  // scale and round to next multiple of  2
+Frame.c (common):      int iScaledRefFrmH        = ( ( cRP.m_iScaledRefFrmHeight * iRefFrmH + ( iVerDiv >> 1 ) ) / iVerDiv ) << iScaledVerShift;  // scale and round to next multiple of  2 or  4 (for interlaced)
+Frame.c (common):      cRP.m_iRefLayerFrmWidth   = iRefFrmW;
+Frame.c (common):      cRP.m_iRefLayerFrmHeight  = iRefFrmH;
+Frame.c (common):      cRP.m_iScaledRefFrmWidth  = iScaledRefFrmW;
+Frame.c (common):      cRP.m_iScaledRefFrmHeight = iScaledRefFrmH;
+Frame.c (common):    upsamplingSVC(p,stride,&cRP, resamplingMode == 3,cDownConvert);
+Frame.c (common):  ResizeParameters cRP = rcRP;
+Frame.c (common):    int iRefVerMbShift        = ( cRP.m_bRefLayerFrameMbsOnlyFlag ? 4 : 5 );
+Frame.c (common):    int iScaledVerShift       = ( cRP.m_bFrameMbsOnlyFlag         ? 1 : 2 );
+Frame.c (common):    int iHorDiv               = ( cRP.m_iFrameWidth    <<               1 );
+Frame.c (common):    int iVerDiv               = ( cRP.m_iFrameHeight   << iScaledVerShift );
+Frame.c (common):    int iRefFrmW              = ( ( cRP.m_iFrameWidth   + ( 1 <<               4 ) - 1 ) >>               4 ) <<               4;        // round to next multiple of 16
+Frame.c (common):    int iRefFrmH              = ( ( cRP.m_iFrameHeight  + ( 1 <<  iRefVerMbShift ) - 1 ) >>  iRefVerMbShift ) <<  iRefVerMbShift;        // round to next multiple of 16 or 32 (for interlaced)
+Frame.c (common):    int iScaledRefFrmW        = ( ( cRP.m_iScaledRefFrmWidth  * iRefFrmW + ( iHorDiv >> 1 ) ) / iHorDiv ) <<               1;  // scale and round to next multiple of  2
+Frame.c (common):    int iScaledRefFrmH        = ( ( cRP.m_iScaledRefFrmHeight * iRefFrmH + ( iVerDiv >> 1 ) ) / iVerDiv ) << iScaledVerShift;  // scale and round to next multiple of  2 or  4 (for interlaced)
+Frame.c (common):    cRP.m_iFrameWidth         = iRefFrmW;
+Frame.c (common):    cRP.m_iFrameHeight        = iRefFrmH;
+Frame.c (common):    cRP.m_iScaledRefFrmWidth  = iScaledRefFrmW;
+Frame.c (common):    cRP.m_iScaledRefFrmHeight = iScaledRefFrmH;
+Frame.c (common):  //downsamplingSVC( rcFrame.y.data,  rcFrame.y.stride, rcFrame.u.data,  rcFrame.u.stride, rcFrame.v.data,  rcFrame.v.stride, &cRP, resamplingMode == 3 );
+Frame.c (common):  //downsamplingSVC(p,  rcFrame.y.stride,&cRP, resamplingMode == 3,cDownConvert);
+Frame.c (common):  downsamplingSVC(p,  stride,&cRP, resamplingMode == 3,cDownConvert);
+Frame.c (common):  	//ResizeParameters cRP;
+Frame.c (common): 	cRP.m_bRefLayerFrameMbsOnlyFlag   = true;
+Frame.c (common):  	cRP.m_bFrameMbsOnlyFlag           = true;
+Frame.c (common):    cRP.m_bRefLayerFieldPicFlag       = false;
+Frame.c (common):    cRP.m_bFieldPicFlag               = false;
+Frame.c (common):    cRP.m_bRefLayerBotFieldFlag       = false;
+Frame.c (common):    cRP.m_bBotFieldFlag               = false;
+Frame.c (common):    cRP.m_bRefLayerIsMbAffFrame       = false;
+Frame.c (common):    cRP.m_bIsMbAffFrame               = false;
+Frame.c (common):    cRP.m_iRefLayerChromaPhaseX       = -1;
+Frame.c (common):    cRP.m_iRefLayerChromaPhaseY       = 0;
+Frame.c (common):    cRP.m_iChromaPhaseX               = -1;
+Frame.c (common):    cRP.m_iChromaPhaseY               = 0;
+Frame.c (common):    cRP.m_iRefLayerFrmWidth           = win;
+Frame.c (common):    cRP.m_iRefLayerFrmHeight          = hin;
+Frame.c (common):    cRP.m_iScaledRefFrmWidth          = 0;
+Frame.c (common):    cRP.m_iScaledRefFrmHeight         = 0;
+Frame.c (common):    cRP.m_iFrameWidth                 = wout;
+Frame.c (common):    cRP.m_iFrameHeight                = hout;
+Frame.c (common):    cRP.m_iLeftFrmOffset              = 0;
+Frame.c (common):    cRP.m_iTopFrmOffset               = 0;
+Frame.c (common):    cRP.m_iExtendedSpatialScalability = 0;
+Frame.c (common):    cRP.m_iLevelIdc                   = 0; 
+Frame.c (common):    cRP.m_iScaledRefFrmWidth  = gMax( cRP.m_iRefLayerFrmWidth,  cRP.m_iFrameWidth  );
+Frame.c (common):    cRP.m_iScaledRefFrmHeight = gMax( cRP.m_iRefLayerFrmHeight, cRP.m_iFrameHeight );   
+Frame.c (common):    upsampling  = ( cRP.m_iRefLayerFrmWidth < cRP.m_iFrameWidth ) || ( cRP.m_iRefLayerFrmHeight < cRP.m_iFrameHeight );
+Frame.c (common):      int imaxWidth  = gMax( cRP.m_iRefLayerFrmWidth,  cRP.m_iFrameWidth  );
+Frame.c (common):      int imaxHeight = gMax( cRP.m_iRefLayerFrmHeight, cRP.m_iFrameHeight );
+Frame.c (common):      int iminWidth  = gMin( cRP.m_iRefLayerFrmWidth,  cRP.m_iFrameWidth  );
+Frame.c (common):      int iminHeight = gMin( cRP.m_iRefLayerFrmHeight, cRP.m_iFrameHeight );
+Frame.c (common):    resampleFrame(p, cDownConvert, cRP, resamplingMethod, resamplingMode, resampling, upsampling, 1,stride );
+Frame.c (common):  //ResizeParameters cRP;
+Frame.c (common):  cRP.m_bRefLayerFrameMbsOnlyFlag   = true;
+Frame.c (common):  cRP.m_bFrameMbsOnlyFlag           = true;
+Frame.c (common):  cRP.m_bRefLayerFieldPicFlag       = false;
+Frame.c (common):  cRP.m_bFieldPicFlag               = false;
+Frame.c (common):  cRP.m_bRefLayerBotFieldFlag       = false;
+Frame.c (common):  cRP.m_bBotFieldFlag               = false;
+Frame.c (common):  cRP.m_bRefLayerIsMbAffFrame       = false;
+Frame.c (common):  cRP.m_bIsMbAffFrame               = false;
+Frame.c (common):  cRP.m_iRefLayerChromaPhaseX       = -1;
+Frame.c (common):  cRP.m_iRefLayerChromaPhaseY       = 0;
+Frame.c (common):  cRP.m_iChromaPhaseX               = -1;
+Frame.c (common):  cRP.m_iChromaPhaseY               = 0;
+Frame.c (common):  cRP.m_iRefLayerFrmWidth           = win;
+Frame.c (common):  cRP.m_iRefLayerFrmHeight          = hin;
+Frame.c (common):  cRP.m_iScaledRefFrmWidth          = 0;
+Frame.c (common):  cRP.m_iScaledRefFrmHeight         = 0;
+Frame.c (common):  cRP.m_iFrameWidth                 = wout;
+Frame.c (common):  cRP.m_iFrameHeight                = hout;
+Frame.c (common):  cRP.m_iLeftFrmOffset              = 0;
+Frame.c (common):  cRP.m_iTopFrmOffset               = 0;
+Frame.c (common):  cRP.m_iExtendedSpatialScalability = 0;
+Frame.c (common):  cRP.m_iLevelIdc                   = 0; 
+Frame.c (common):  cRP.m_iScaledRefFrmWidth  = gMax( cRP.m_iRefLayerFrmWidth,  cRP.m_iFrameWidth  );
+Frame.c (common):  cRP.m_iScaledRefFrmHeight = gMax( cRP.m_iRefLayerFrmHeight, cRP.m_iFrameHeight );   
+Frame.c (common):  upsampling  = ( cRP.m_iRefLayerFrmWidth < cRP.m_iFrameWidth ) || ( cRP.m_iRefLayerFrmHeight < cRP.m_iFrameHeight );
+Frame.c (common):    int maxWidth  = gMax( cRP.m_iRefLayerFrmWidth,  cRP.m_iFrameWidth  );
+Frame.c (common):    int maxHeight = gMax( cRP.m_iRefLayerFrmHeight, cRP.m_iFrameHeight );
+Frame.c (common):    int minWidth  = gMin( cRP.m_iRefLayerFrmWidth,  cRP.m_iFrameWidth  );
+Frame.c (common):    int minHeight = gMin( cRP.m_iRefLayerFrmHeight, cRP.m_iFrameHeight );
+Frame.c (common):   resampleFrame(p, cDownConvert, cRP, resamplingMethod, resamplingMode, resampling, upsampling, 1,stride );
+Frame.h (common):ResizeParameters cRP;
+Frame.h (common):               ResizeParameters  rcRP,
