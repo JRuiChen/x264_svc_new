@@ -98,7 +98,7 @@ static x264_frame_t *x264_frame_new( x264_t *h, int b_fdec )
 	i_width= h->mb.i_mb_width*16;//i_sample_width/i_sample_width;
     i_lines  = h->mb.i_mb_height*16;//i_sample_height/i_sample_height;
     i_stride = align_stride( i_width + 2*PADH, align, disalign );
-	printf("---%d----%d------%d---------\n",h->mb.i_mb_width,h->mbEL1.i_mb_width,h->mbEL2.i_mb_width);
+	//printf("---%d----%d------%d---------\n",h->mb.i_mb_width,h->mbEL1.i_mb_width,h->mbEL2.i_mb_width);
 	//author:zhaowei 6  
 	if(b_Enable_SVC){
 		/* BY MING*/
@@ -618,7 +618,7 @@ int x264_frame_copy_picture( x264_t *h, x264_frame_t *dst, x264_picture_t *src )
 				h->mc.plane_copy_interleave( dst->planeEL1[1], dst->i_strideEL1[1],
                                          (pixel*)pixU, h->param.i_width,
                                          (pixel*)pixV, h->param.i_width,
-                                         h->param.i_widthEL2>>(h->param.i_layer_number-1), h->param.i_heightEL2>>(v_shift*(h->param.i_layer_number-1)));
+                                         h->param.i_widthEL2/((h->param.i_layer_number-1)*i_sample_width), h->param.i_heightEL2>>(v_shift*(h->param.i_layer_number-1)));
 				free(pixU);
 				free(pixV);
 				//UV downsample
@@ -640,7 +640,7 @@ int x264_frame_copy_picture( x264_t *h, x264_frame_t *dst, x264_picture_t *src )
 				h->mc.plane_copy_interleave( dst->plane[1], dst->i_stride[1],
                                          (pixel*)pixU, h->param.i_width>>1,
                                          (pixel*)pixV, h->param.i_width>>1,
-                                         h->param.i_widthEL2>>h->param.i_layer_number, h->param.i_heightEL2>>(h->param.i_layer_number*v_shift));
+                                         h->param.i_widthEL2/(h->param.i_layer_number*i_sample_width), h->param.i_heightEL2>>(h->param.i_layer_number*v_shift));
 				free(pixU);
 				free(pixV);
           
