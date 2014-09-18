@@ -221,6 +221,7 @@ static void x264_frame_dump( x264_t *h )
     sh->i_scan_start = 0;
     sh->i_scan_end = 15;
 
+    sh->b_tcoeff_level_pred_flag = 0;
     sh->b_adaptive_base_mode_flag = 0;
     sh->b_default_base_mode_flag = 1;
 	/*sky 考虑到解码端 以下值设为0*/
@@ -565,39 +566,46 @@ printf("ooooooooooooooooooooooooosh->i_cabac_init_idc %d,sh->i_qp_delta %d\n",sh
 			}
   	}
   if(!nal->b_no_inter_layer_pred_flag)
-	  	{
+	  {
 			bs_write1(s, sh->b_slice_skip_flag); // 这个值怎么赋?暂时0?
-		if(sh->b_slice_skip_flag)
-			{
+		if(sh->b_slice_skip_flag)		
 				bs_write_ue(s,sh->i_num_mbs_in_slice - 1); // 这个值要init，init完成
-			}
 		else
-			{
+			{		
 				bs_write1(s,sh->b_adaptive_base_mode_flag);
 				if( !sh->b_adaptive_base_mode_flag )
-					{
+					
 						bs_write1(s, sh->b_default_base_mode_flag);
-						printf("ffffffffffffffffffffffffffffffffffff%d\n",sh->b_default_base_mode_flag);
-						if(sh->b_default_base_mode_flag)
+						
+						
+						if(!sh->b_default_base_mode_flag)
+							{
 							bs_write1(s,sh->b_adaptive_motion_prediction_flag);
 							if(!sh->b_adaptive_motion_prediction_flag)
 								bs_write1(s,sh->b_default_motion_prediction_flag);
-					}
+							}
+
+
+						
 				bs_write1(s,sh->b_adaptive_residual_prediction_flag);
-				if(sh->b_adaptive_residual_prediction_flag)
+				if(!sh->b_adaptive_residual_prediction_flag)
 					bs_write1(s,sh->b_default_residual_prediction_flag);
 			}
 		
 		if(sh->sps->b_adaptive_tcoeff_level_prediction_flag)
-			bs_write1(s,sh->sps->b_seq_tcoeff_level_prediction_flag);
+			{
+				bs_write1(s,sh->b_tcoeff_level_pred_flag);
+				printf("ffffffffffffffffffffffffffffffffffff%d\n",sh->sps->b_seq_tcoeff_level_prediction_flag);
+			}
   	}
+
+  
   if(!sh->sps->b_slice_header_restriction_flag  && !sh->b_slice_skip_flag)
   	{
 		bs_write( s, 4, 0); // "SH: scan_idx_start"这个值没有搞懂，赋值太麻烦
 		bs_write(s, 4, 15); // "SH: scan_idx_end"这个值没有搞懂，赋值太麻烦
-			
-  	}
-		}
+	}
+   }
 }
 
 /* If we are within a reasonable distance of the end of the memory allocated for the bitstream, */

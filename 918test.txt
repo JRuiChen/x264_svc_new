@@ -418,7 +418,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 1h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 1
+-----------------------4 ,0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 1
 qqqqqqqqqqqqqqqqqqqqq 0 0
 qqqqqqqqqqqqqqqqqqqqq 1 0
 qqqqqqqqqqqqqqqqqqqqq 2 0
@@ -582,9 +582,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 222222222222221h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 1
+-----------------------4 ,1ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 1
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 0
 qqqqqqqqqqqqqqqqqqqqq 1 0
 qqqqqqqqqqqqqqqqqqqqq 2 0
@@ -1116,7 +1115,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 2h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :0
+-----------------------4 ,1ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :0
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
 qqqqqqqqqqqqqqqqqqqqq 0 1
 qqqqqqqqqqqqqqqqqqqqq 1 1
@@ -1281,9 +1280,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 222222222222222h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
+-----------------------4 ,2ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 1
 qqqqqqqqqqqqqqqqqqqqq 1 1
 qqqqqqqqqqqqqqqqqqqqq 2 1
@@ -1815,7 +1813,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 2h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :0
+-----------------------4 ,2ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :0
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 qqqqqqqqqqqqqqqqqqqqq 0 2
 qqqqqqqqqqqqqqqqqqqqq 1 2
@@ -1917,9 +1915,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 2
 qqqqqqqqqqqqqqqqqqqqq 97 2
 qqqqqqqqqqqqqqqqqqqqq 98 2
 rrrrrrrrrrrrrrrrrrrrrrrrr 222222222222222h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
+-----------------------4 ,2ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 2
 qqqqqqqqqqqqqqqqqqqqq 1 2
 qqqqqqqqqqqqqqqqqqqqq 2 2
@@ -2331,7 +2328,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 3h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
+-----------------------4 ,2uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
 qqqqqqqqqqqqqqqqqqqqq 0 3
 qqqqqqqqqqqqqqqqqqqqq 1 3
 qqqqqqqqqqqqqqqqqqqqq 2 3
@@ -2495,9 +2492,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 222222222222223h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
+-----------------------4 ,3ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 3
 qqqqqqqqqqqqqqqqqqqqq 1 3
 qqqqqqqqqqqqqqqqqqqqq 2 3
@@ -3029,7 +3025,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 3h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,3ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 qqqqqqqqqqqqqqqqqqqqq 0 4
 qqqqqqqqqqqqqqqqqqqqq 1 4
@@ -3131,9 +3127,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 4
 qqqqqqqqqqqqqqqqqqqqq 97 4
 qqqqqqqqqqqqqqqqqqqqq 98 4
 rrrrrrrrrrrrrrrrrrrrrrrrr 222222222222223h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
+-----------------------4 ,3ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 4
 qqqqqqqqqqqqqqqqqqqqq 1 4
 qqqqqqqqqqqqqqqqqqqqq 2 4
@@ -3545,7 +3540,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 4h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,3ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 1
 qqqqqqqqqqqqqqqqqqqqq 0 5
 qqqqqqqqqqqqqqqqqqqqq 1 5
@@ -3710,9 +3705,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 222222222222224h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 1
+-----------------------4 ,4ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 1
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 5
 qqqqqqqqqqqqqqqqqqqqq 1 5
 qqqqqqqqqqqqqqqqqqqqq 2 5
@@ -4244,7 +4238,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 4h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,4ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 qqqqqqqqqqqqqqqqqqqqq 0 6
 qqqqqqqqqqqqqqqqqqqqq 1 6
@@ -4346,9 +4340,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 6
 qqqqqqqqqqqqqqqqqqqqq 97 6
 qqqqqqqqqqqqqqqqqqqqq 98 6
 rrrrrrrrrrrrrrrrrrrrrrrrr 222222222222224h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
+-----------------------4 ,4ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 6
 qqqqqqqqqqqqqqqqqqqqq 1 6
 qqqqqqqqqqqqqqqqqqqqq 2 6
@@ -4760,7 +4753,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 5h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,4ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
 qqqqqqqqqqqqqqqqqqqqq 0 7
 qqqqqqqqqqqqqqqqqqqqq 1 7
@@ -4925,9 +4918,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 222222222222225h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
+-----------------------4 ,5ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 7
 qqqqqqqqqqqqqqqqqqqqq 1 7
 qqqqqqqqqqqqqqqqqqqqq 2 7
@@ -5459,7 +5451,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 5h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,5ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 qqqqqqqqqqqqqqqqqqqqq 0 8
 qqqqqqqqqqqqqqqqqqqqq 1 8
@@ -5561,9 +5553,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 8
 qqqqqqqqqqqqqqqqqqqqq 97 8
 qqqqqqqqqqqqqqqqqqqqq 98 8
 rrrrrrrrrrrrrrrrrrrrrrrrr 222222222222225h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
+-----------------------4 ,5ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 8
 qqqqqqqqqqqqqqqqqqqqq 1 8
 qqqqqqqqqqqqqqqqqqqqq 2 8
@@ -5975,7 +5966,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 6h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,5ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 8
 qqqqqqqqqqqqqqqqqqqqq 0 9
 qqqqqqqqqqqqqqqqqqqqq 1 9
@@ -6140,9 +6131,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 222222222222226h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 8
+-----------------------4 ,6ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 8
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 9
 qqqqqqqqqqqqqqqqqqqqq 1 9
 qqqqqqqqqqqqqqqqqqqqq 2 9
@@ -6674,7 +6664,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 6h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,6ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 10
 qqqqqqqqqqqqqqqqqqqqq 0 10
 qqqqqqqqqqqqqqqqqqqqq 1 10
@@ -6776,9 +6766,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 10
 qqqqqqqqqqqqqqqqqqqqq 97 10
 qqqqqqqqqqqqqqqqqqqqq 98 10
 rrrrrrrrrrrrrrrrrrrrrrrrr 222222222222226h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 10
+-----------------------4 ,6ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 10
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 10
 qqqqqqqqqqqqqqqqqqqqq 1 10
 qqqqqqqqqqqqqqqqqqqqq 2 10
@@ -7190,7 +7179,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 7h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,6ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
 qqqqqqqqqqqqqqqqqqqqq 0 11
 qqqqqqqqqqqqqqqqqqqqq 1 11
@@ -7355,9 +7344,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 222222222222227h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
+-----------------------4 ,7ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 11
 qqqqqqqqqqqqqqqqqqqqq 1 11
 qqqqqqqqqqqqqqqqqqqqq 2 11
@@ -7889,7 +7877,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 7h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,7ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 11
 qqqqqqqqqqqqqqqqqqqqq 0 12
 qqqqqqqqqqqqqqqqqqqqq 1 12
@@ -7991,9 +7979,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 12
 qqqqqqqqqqqqqqqqqqqqq 97 12
 qqqqqqqqqqqqqqqqqqqqq 98 12
 rrrrrrrrrrrrrrrrrrrrrrrrr 222222222222227h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 11
+-----------------------4 ,7ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 11
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 12
 qqqqqqqqqqqqqqqqqqqqq 1 12
 qqqqqqqqqqqqqqqqqqqqq 2 12
@@ -8405,7 +8392,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 8h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,7ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 1
 qqqqqqqqqqqqqqqqqqqqq 0 13
 qqqqqqqqqqqqqqqqqqqqq 1 13
@@ -8570,9 +8557,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 222222222222228h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 1
+-----------------------4 ,8ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 1
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 13
 qqqqqqqqqqqqqqqqqqqqq 1 13
 qqqqqqqqqqqqqqqqqqqqq 2 13
@@ -9104,7 +9090,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 8h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,8ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 qqqqqqqqqqqqqqqqqqqqq 0 14
 qqqqqqqqqqqqqqqqqqqqq 1 14
@@ -9206,9 +9192,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 14
 qqqqqqqqqqqqqqqqqqqqq 97 14
 qqqqqqqqqqqqqqqqqqqqq 98 14
 rrrrrrrrrrrrrrrrrrrrrrrrr 222222222222228h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
+-----------------------4 ,8ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 14
 qqqqqqqqqqqqqqqqqqqqq 1 14
 qqqqqqqqqqqqqqqqqqqqq 2 14
@@ -9620,7 +9605,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 9h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,8ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 qqqqqqqqqqqqqqqqqqqqq 0 15
 qqqqqqqqqqqqqqqqqqqqq 1 15
@@ -9785,9 +9770,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 222222222222229h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
+-----------------------4 ,9ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 15
 qqqqqqqqqqqqqqqqqqqqq 1 15
 qqqqqqqqqqqqqqqqqqqqq 2 15
@@ -10319,7 +10303,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 9h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,9ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 qqqqqqqqqqqqqqqqqqqqq 0 16
 qqqqqqqqqqqqqqqqqqqqq 1 16
@@ -10421,9 +10405,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 16
 qqqqqqqqqqqqqqqqqqqqq 97 16
 qqqqqqqqqqqqqqqqqqqqq 98 16
 rrrrrrrrrrrrrrrrrrrrrrrrr 222222222222229h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
+-----------------------4 ,9ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 16
 qqqqqqqqqqqqqqqqqqqqq 1 16
 qqqqqqqqqqqqqqqqqqqqq 2 16
@@ -10835,7 +10818,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 10h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,9ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 qqqqqqqqqqqqqqqqqqqqq 0 17
 qqqqqqqqqqqqqqqqqqqqq 1 17
@@ -11000,9 +10983,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222210h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
+-----------------------4 ,10ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 17
 qqqqqqqqqqqqqqqqqqqqq 1 17
 qqqqqqqqqqqqqqqqqqqqq 2 17
@@ -11534,7 +11516,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 10h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,10ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
 qqqqqqqqqqqqqqqqqqqqq 0 18
 qqqqqqqqqqqqqqqqqqqqq 1 18
@@ -11636,9 +11618,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 18
 qqqqqqqqqqqqqqqqqqqqq 97 18
 qqqqqqqqqqqqqqqqqqqqq 98 18
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222210h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
+-----------------------4 ,10ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 18
 qqqqqqqqqqqqqqqqqqqqq 1 18
 qqqqqqqqqqqqqqqqqqqqq 2 18
@@ -12050,7 +12031,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 11h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,10ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
 qqqqqqqqqqqqqqqqqqqqq 0 19
 qqqqqqqqqqqqqqqqqqqqq 1 19
@@ -12215,9 +12196,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222211h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
+-----------------------4 ,11ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 19
 qqqqqqqqqqqqqqqqqqqqq 1 19
 qqqqqqqqqqqqqqqqqqqqq 2 19
@@ -12749,7 +12729,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 11h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,11ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 qqqqqqqqqqqqqqqqqqqqq 0 20
 qqqqqqqqqqqqqqqqqqqqq 1 20
@@ -12851,9 +12831,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 20
 qqqqqqqqqqqqqqqqqqqqq 97 20
 qqqqqqqqqqqqqqqqqqqqq 98 20
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222211h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
+-----------------------4 ,11ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 20
 qqqqqqqqqqqqqqqqqqqqq 1 20
 qqqqqqqqqqqqqqqqqqqqq 2 20
@@ -13265,7 +13244,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 12h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,11ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 1
 qqqqqqqqqqqqqqqqqqqqq 0 21
 qqqqqqqqqqqqqqqqqqqqq 1 21
@@ -13430,9 +13409,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222212h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 1
+-----------------------4 ,12ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 1
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 21
 qqqqqqqqqqqqqqqqqqqqq 1 21
 qqqqqqqqqqqqqqqqqqqqq 2 21
@@ -13964,7 +13942,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 12h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,12ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 qqqqqqqqqqqqqqqqqqqqq 0 22
 qqqqqqqqqqqqqqqqqqqqq 1 22
@@ -14066,9 +14044,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 22
 qqqqqqqqqqqqqqqqqqqqq 97 22
 qqqqqqqqqqqqqqqqqqqqq 98 22
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222212h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
+-----------------------4 ,12ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 22
 qqqqqqqqqqqqqqqqqqqqq 1 22
 qqqqqqqqqqqqqqqqqqqqq 2 22
@@ -14480,7 +14457,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 13h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,12ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
 qqqqqqqqqqqqqqqqqqqqq 0 23
 qqqqqqqqqqqqqqqqqqqqq 1 23
@@ -14645,9 +14622,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222213h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
+-----------------------4 ,13ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 23
 qqqqqqqqqqqqqqqqqqqqq 1 23
 qqqqqqqqqqqqqqqqqqqqq 2 23
@@ -15179,7 +15155,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 13h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,13ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 qqqqqqqqqqqqqqqqqqqqq 0 24
 qqqqqqqqqqqqqqqqqqqqq 1 24
@@ -15281,9 +15257,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 24
 qqqqqqqqqqqqqqqqqqqqq 97 24
 qqqqqqqqqqqqqqqqqqqqq 98 24
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222213h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
+-----------------------4 ,13ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 24
 qqqqqqqqqqqqqqqqqqqqq 1 24
 qqqqqqqqqqqqqqqqqqqqq 2 24
@@ -15695,7 +15670,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 14h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,13ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
 qqqqqqqqqqqqqqqqqqqqq 0 25
 qqqqqqqqqqqqqqqqqqqqq 1 25
@@ -15860,9 +15835,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222214h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
+-----------------------4 ,14ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 25
 qqqqqqqqqqqqqqqqqqqqq 1 25
 qqqqqqqqqqqqqqqqqqqqq 2 25
@@ -16394,7 +16368,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 14h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,14ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 11
 qqqqqqqqqqqqqqqqqqqqq 0 26
 qqqqqqqqqqqqqqqqqqqqq 1 26
@@ -16496,9 +16470,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 26
 qqqqqqqqqqqqqqqqqqqqq 97 26
 qqqqqqqqqqqqqqqqqqqqq 98 26
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222214h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 11
+-----------------------4 ,14ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 11
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 26
 qqqqqqqqqqqqqqqqqqqqq 1 26
 qqqqqqqqqqqqqqqqqqqqq 2 26
@@ -16910,7 +16883,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 15h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,14ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
 qqqqqqqqqqqqqqqqqqqqq 0 27
 qqqqqqqqqqqqqqqqqqqqq 1 27
@@ -17075,9 +17048,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222215h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
+-----------------------4 ,15ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 27
 qqqqqqqqqqqqqqqqqqqqq 1 27
 qqqqqqqqqqqqqqqqqqqqq 2 27
@@ -17609,7 +17581,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 15h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,15ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 11
 qqqqqqqqqqqqqqqqqqqqq 0 28
 qqqqqqqqqqqqqqqqqqqqq 1 28
@@ -17711,9 +17683,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 28
 qqqqqqqqqqqqqqqqqqqqq 97 28
 qqqqqqqqqqqqqqqqqqqqq 98 28
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222215h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 11
+-----------------------4 ,15ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 11
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 28
 qqqqqqqqqqqqqqqqqqqqq 1 28
 qqqqqqqqqqqqqqqqqqqqq 2 28
@@ -18125,7 +18096,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 16h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,15ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 qqqqqqqqqqqqqqqqqqqqq 0 29
 qqqqqqqqqqqqqqqqqqqqq 1 29
@@ -18290,9 +18261,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222216h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
+-----------------------4 ,0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 29
 qqqqqqqqqqqqqqqqqqqqq 1 29
 qqqqqqqqqqqqqqqqqqqqq 2 29
@@ -18824,7 +18794,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 16h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,0ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 8
 qqqqqqqqqqqqqqqqqqqqq 0 30
 qqqqqqqqqqqqqqqqqqqqq 1 30
@@ -18926,9 +18896,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 30
 qqqqqqqqqqqqqqqqqqqqq 97 30
 qqqqqqqqqqqqqqqqqqqqq 98 30
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222216h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 8
+-----------------------4 ,0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 8
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 30
 qqqqqqqqqqqqqqqqqqqqq 1 30
 qqqqqqqqqqqqqqqqqqqqq 2 30
@@ -19340,7 +19309,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 17h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,0ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 qqqqqqqqqqqqqqqqqqqqq 0 31
 qqqqqqqqqqqqqqqqqqqqq 1 31
@@ -19505,9 +19474,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222217h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
+-----------------------4 ,1ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 31
 qqqqqqqqqqqqqqqqqqqqq 1 31
 qqqqqqqqqqqqqqqqqqqqq 2 31
@@ -20039,7 +20007,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 17h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,1ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 8
 qqqqqqqqqqqqqqqqqqqqq 0 32
 qqqqqqqqqqqqqqqqqqqqq 1 32
@@ -20141,9 +20109,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 32
 qqqqqqqqqqqqqqqqqqqqq 97 32
 qqqqqqqqqqqqqqqqqqqqq 98 32
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222217h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 8
+-----------------------4 ,1ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 8
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 32
 qqqqqqqqqqqqqqqqqqqqq 1 32
 qqqqqqqqqqqqqqqqqqqqq 2 32
@@ -20555,7 +20522,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 18h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,1ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
 qqqqqqqqqqqqqqqqqqqqq 0 33
 qqqqqqqqqqqqqqqqqqqqq 1 33
@@ -20720,9 +20687,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222218h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
+-----------------------4 ,2ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 33
 qqqqqqqqqqqqqqqqqqqqq 1 33
 qqqqqqqqqqqqqqqqqqqqq 2 33
@@ -21254,7 +21220,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 18h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,2ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
 qqqqqqqqqqqqqqqqqqqqq 0 34
 qqqqqqqqqqqqqqqqqqqqq 1 34
@@ -21356,9 +21322,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 34
 qqqqqqqqqqqqqqqqqqqqq 97 34
 qqqqqqqqqqqqqqqqqqqqq 98 34
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222218h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
+-----------------------4 ,2ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 34
 qqqqqqqqqqqqqqqqqqqqq 1 34
 qqqqqqqqqqqqqqqqqqqqq 2 34
@@ -21770,7 +21735,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 19h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,2ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
 qqqqqqqqqqqqqqqqqqqqq 0 35
 qqqqqqqqqqqqqqqqqqqqq 1 35
@@ -21935,9 +21900,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222219h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
+-----------------------4 ,3ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 35
 qqqqqqqqqqqqqqqqqqqqq 1 35
 qqqqqqqqqqqqqqqqqqqqq 2 35
@@ -22469,7 +22433,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 19h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,3ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 qqqqqqqqqqqqqqqqqqqqq 0 36
 qqqqqqqqqqqqqqqqqqqqq 1 36
@@ -22571,9 +22535,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 36
 qqqqqqqqqqqqqqqqqqqqq 97 36
 qqqqqqqqqqqqqqqqqqqqq 98 36
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222219h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
+-----------------------4 ,3ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 36
 qqqqqqqqqqqqqqqqqqqqq 1 36
 qqqqqqqqqqqqqqqqqqqqq 2 36
@@ -22985,7 +22948,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 20h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,3ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
 qqqqqqqqqqqqqqqqqqqqq 0 37
 qqqqqqqqqqqqqqqqqqqqq 1 37
@@ -23150,9 +23113,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222220h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
+-----------------------4 ,4ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 37
 qqqqqqqqqqqqqqqqqqqqq 1 37
 qqqqqqqqqqqqqqqqqqqqq 2 37
@@ -23684,7 +23646,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 20h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,4ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 qqqqqqqqqqqqqqqqqqqqq 0 38
 qqqqqqqqqqqqqqqqqqqqq 1 38
@@ -23786,9 +23748,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 38
 qqqqqqqqqqqqqqqqqqqqq 97 38
 qqqqqqqqqqqqqqqqqqqqq 98 38
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222220h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
+-----------------------4 ,4ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 38
 qqqqqqqqqqqqqqqqqqqqq 1 38
 qqqqqqqqqqqqqqqqqqqqq 2 38
@@ -24200,7 +24161,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 21h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,4ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 qqqqqqqqqqqqqqqqqqqqq 0 39
 qqqqqqqqqqqqqqqqqqqqq 1 39
@@ -24365,9 +24326,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222221h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
+-----------------------4 ,5ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 39
 qqqqqqqqqqqqqqqqqqqqq 1 39
 qqqqqqqqqqqqqqqqqqqqq 2 39
@@ -24899,7 +24859,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 21h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,5ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 qqqqqqqqqqqqqqqqqqqqq 0 40
 qqqqqqqqqqqqqqqqqqqqq 1 40
@@ -25001,9 +24961,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 40
 qqqqqqqqqqqqqqqqqqqqq 97 40
 qqqqqqqqqqqqqqqqqqqqq 98 40
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222221h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
+-----------------------4 ,5ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 40
 qqqqqqqqqqqqqqqqqqqqq 1 40
 qqqqqqqqqqqqqqqqqqqqq 2 40
@@ -25415,7 +25374,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 22h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,5ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 qqqqqqqqqqqqqqqqqqqqq 0 41
 qqqqqqqqqqqqqqqqqqqqq 1 41
@@ -25580,9 +25539,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222222h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
+-----------------------4 ,6ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 41
 qqqqqqqqqqqqqqqqqqqqq 1 41
 qqqqqqqqqqqqqqqqqqqqq 2 41
@@ -26114,7 +26072,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 22h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,6ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 qqqqqqqqqqqqqqqqqqqqq 0 42
 qqqqqqqqqqqqqqqqqqqqq 1 42
@@ -26216,9 +26174,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 42
 qqqqqqqqqqqqqqqqqqqqq 97 42
 qqqqqqqqqqqqqqqqqqqqq 98 42
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222222h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
+-----------------------4 ,6ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 42
 qqqqqqqqqqqqqqqqqqqqq 1 42
 qqqqqqqqqqqqqqqqqqqqq 2 42
@@ -26630,7 +26587,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 23h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,6ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 qqqqqqqqqqqqqqqqqqqqq 0 43
 qqqqqqqqqqqqqqqqqqqqq 1 43
@@ -26795,9 +26752,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222223h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
+-----------------------4 ,7ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 43
 qqqqqqqqqqqqqqqqqqqqq 1 43
 qqqqqqqqqqqqqqqqqqqqq 2 43
@@ -27329,7 +27285,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 23h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,7ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 qqqqqqqqqqqqqqqqqqqqq 0 44
 qqqqqqqqqqqqqqqqqqqqq 1 44
@@ -27431,9 +27387,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 44
 qqqqqqqqqqqqqqqqqqqqq 97 44
 qqqqqqqqqqqqqqqqqqqqq 98 44
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222223h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
+-----------------------4 ,7ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 44
 qqqqqqqqqqqqqqqqqqqqq 1 44
 qqqqqqqqqqqqqqqqqqqqq 2 44
@@ -27845,7 +27800,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 24h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,7ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 qqqqqqqqqqqqqqqqqqqqq 0 45
 qqqqqqqqqqqqqqqqqqqqq 1 45
@@ -28010,9 +27965,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222224h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
+-----------------------4 ,8ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 45
 qqqqqqqqqqqqqqqqqqqqq 1 45
 qqqqqqqqqqqqqqqqqqqqq 2 45
@@ -28544,7 +28498,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 24h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,8ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
 qqqqqqqqqqqqqqqqqqqqq 0 46
 qqqqqqqqqqqqqqqqqqqqq 1 46
@@ -28646,9 +28600,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 46
 qqqqqqqqqqqqqqqqqqqqq 97 46
 qqqqqqqqqqqqqqqqqqqqq 98 46
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222224h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
+-----------------------4 ,8ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 46
 qqqqqqqqqqqqqqqqqqqqq 1 46
 qqqqqqqqqqqqqqqqqqqqq 2 46
@@ -29060,7 +29013,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 25h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,8ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 qqqqqqqqqqqqqqqqqqqqq 0 47
 qqqqqqqqqqqqqqqqqqqqq 1 47
@@ -29225,9 +29178,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222225h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
+-----------------------4 ,9ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 47
 qqqqqqqqqqqqqqqqqqqqq 1 47
 qqqqqqqqqqqqqqqqqqqqq 2 47
@@ -29759,7 +29711,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 25h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,9ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
 qqqqqqqqqqqqqqqqqqqqq 0 48
 qqqqqqqqqqqqqqqqqqqqq 1 48
@@ -29861,9 +29813,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 48
 qqqqqqqqqqqqqqqqqqqqq 97 48
 qqqqqqqqqqqqqqqqqqqqq 98 48
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222225h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
+-----------------------4 ,9ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 48
 qqqqqqqqqqqqqqqqqqqqq 1 48
 qqqqqqqqqqqqqqqqqqqqq 2 48
@@ -30275,7 +30226,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 26h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,9ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
 qqqqqqqqqqqqqqqqqqqqq 0 49
 qqqqqqqqqqqqqqqqqqqqq 1 49
@@ -30440,9 +30391,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222226h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
+-----------------------4 ,10ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 49
 qqqqqqqqqqqqqqqqqqqqq 1 49
 qqqqqqqqqqqqqqqqqqqqq 2 49
@@ -30974,7 +30924,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 26h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,10ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
 qqqqqqqqqqqqqqqqqqqqq 0 50
 qqqqqqqqqqqqqqqqqqqqq 1 50
@@ -31076,9 +31026,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 50
 qqqqqqqqqqqqqqqqqqqqq 97 50
 qqqqqqqqqqqqqqqqqqqqq 98 50
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222226h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
+-----------------------4 ,10ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 50
 qqqqqqqqqqqqqqqqqqqqq 1 50
 qqqqqqqqqqqqqqqqqqqqq 2 50
@@ -31490,7 +31439,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 27h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,10ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
 qqqqqqqqqqqqqqqqqqqqq 0 51
 qqqqqqqqqqqqqqqqqqqqq 1 51
@@ -31655,9 +31604,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222227h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
+-----------------------4 ,11ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 51
 qqqqqqqqqqqqqqqqqqqqq 1 51
 qqqqqqqqqqqqqqqqqqqqq 2 51
@@ -32189,7 +32137,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 27h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,11ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 qqqqqqqqqqqqqqqqqqqqq 0 52
 qqqqqqqqqqqqqqqqqqqqq 1 52
@@ -32291,9 +32239,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 52
 qqqqqqqqqqqqqqqqqqqqq 97 52
 qqqqqqqqqqqqqqqqqqqqq 98 52
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222227h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
+-----------------------4 ,11ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 52
 qqqqqqqqqqqqqqqqqqqqq 1 52
 qqqqqqqqqqqqqqqqqqqqq 2 52
@@ -32705,7 +32652,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 28h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,11ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
 qqqqqqqqqqqqqqqqqqqqq 0 53
 qqqqqqqqqqqqqqqqqqqqq 1 53
@@ -32870,9 +32817,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222228h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
+-----------------------4 ,12ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 53
 qqqqqqqqqqqqqqqqqqqqq 1 53
 qqqqqqqqqqqqqqqqqqqqq 2 53
@@ -33404,7 +33350,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 28h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,12ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 qqqqqqqqqqqqqqqqqqqqq 0 54
 qqqqqqqqqqqqqqqqqqqqq 1 54
@@ -33506,9 +33452,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 54
 qqqqqqqqqqqqqqqqqqqqq 97 54
 qqqqqqqqqqqqqqqqqqqqq 98 54
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222228h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
+-----------------------4 ,12ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 54
 qqqqqqqqqqqqqqqqqqqqq 1 54
 qqqqqqqqqqqqqqqqqqqqq 2 54
@@ -33920,7 +33865,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 29h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,12ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
 qqqqqqqqqqqqqqqqqqqqq 0 55
 qqqqqqqqqqqqqqqqqqqqq 1 55
@@ -34085,9 +34030,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222229h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
+-----------------------4 ,13ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 55
 qqqqqqqqqqqqqqqqqqqqq 1 55
 qqqqqqqqqqqqqqqqqqqqq 2 55
@@ -34619,7 +34563,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 29h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,13ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 qqqqqqqqqqqqqqqqqqqqq 0 56
 qqqqqqqqqqqqqqqqqqqqq 1 56
@@ -34721,9 +34665,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 56
 qqqqqqqqqqqqqqqqqqqqq 97 56
 qqqqqqqqqqqqqqqqqqqqq 98 56
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222229h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
+-----------------------4 ,13ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 56
 qqqqqqqqqqqqqqqqqqqqq 1 56
 qqqqqqqqqqqqqqqqqqqqq 2 56
@@ -35135,7 +35078,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 30h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,13ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
 qqqqqqqqqqqqqqqqqqqqq 0 57
 qqqqqqqqqqqqqqqqqqqqq 1 57
@@ -35300,9 +35243,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222230h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
+-----------------------4 ,14ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 57
 qqqqqqqqqqqqqqqqqqqqq 1 57
 qqqqqqqqqqqqqqqqqqqqq 2 57
@@ -35834,7 +35776,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 30h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,14ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 qqqqqqqqqqqqqqqqqqqqq 0 58
 qqqqqqqqqqqqqqqqqqqqq 1 58
@@ -35936,9 +35878,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 58
 qqqqqqqqqqqqqqqqqqqqq 97 58
 qqqqqqqqqqqqqqqqqqqqq 98 58
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222230h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
+-----------------------4 ,14ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 58
 qqqqqqqqqqqqqqqqqqqqq 1 58
 qqqqqqqqqqqqqqqqqqqqq 2 58
@@ -36350,7 +36291,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 31h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,14ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
 qqqqqqqqqqqqqqqqqqqqq 0 59
 qqqqqqqqqqqqqqqqqqqqq 1 59
@@ -36515,9 +36456,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222231h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
+-----------------------4 ,15ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 59
 qqqqqqqqqqqqqqqqqqqqq 1 59
 qqqqqqqqqqqqqqqqqqqqq 2 59
@@ -37049,7 +36989,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 31h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,15ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 qqqqqqqqqqqqqqqqqqqqq 0 60
 qqqqqqqqqqqqqqqqqqqqq 1 60
@@ -37151,9 +37091,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 60
 qqqqqqqqqqqqqqqqqqqqq 97 60
 qqqqqqqqqqqqqqqqqqqqq 98 60
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222231h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
+-----------------------4 ,15ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 60
 qqqqqqqqqqqqqqqqqqqqq 1 60
 qqqqqqqqqqqqqqqqqqqqq 2 60
@@ -37565,7 +37504,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 32h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,15ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
 qqqqqqqqqqqqqqqqqqqqq 0 61
 qqqqqqqqqqqqqqqqqqqqq 1 61
@@ -37730,9 +37669,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222232h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
+-----------------------4 ,0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 61
 qqqqqqqqqqqqqqqqqqqqq 1 61
 qqqqqqqqqqqqqqqqqqqqq 2 61
@@ -38264,7 +38202,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 32h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,0ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 qqqqqqqqqqqqqqqqqqqqq 0 62
 qqqqqqqqqqqqqqqqqqqqq 1 62
@@ -38366,9 +38304,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 62
 qqqqqqqqqqqqqqqqqqqqq 97 62
 qqqqqqqqqqqqqqqqqqqqq 98 62
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222232h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
+-----------------------4 ,0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 62
 qqqqqqqqqqqqqqqqqqqqq 1 62
 qqqqqqqqqqqqqqqqqqqqq 2 62
@@ -38780,7 +38717,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 33h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,0ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
 qqqqqqqqqqqqqqqqqqqqq 0 63
 qqqqqqqqqqqqqqqqqqqqq 1 63
@@ -38945,9 +38882,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222233h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
+-----------------------4 ,1ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 63
 qqqqqqqqqqqqqqqqqqqqq 1 63
 qqqqqqqqqqqqqqqqqqqqq 2 63
@@ -39479,7 +39415,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 33h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,1ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 qqqqqqqqqqqqqqqqqqqqq 0 64
 qqqqqqqqqqqqqqqqqqqqq 1 64
@@ -39581,9 +39517,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 64
 qqqqqqqqqqqqqqqqqqqqq 97 64
 qqqqqqqqqqqqqqqqqqqqq 98 64
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222233h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
+-----------------------4 ,1ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 64
 qqqqqqqqqqqqqqqqqqqqq 1 64
 qqqqqqqqqqqqqqqqqqqqq 2 64
@@ -39995,7 +39930,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 34h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,1ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
 qqqqqqqqqqqqqqqqqqqqq 0 65
 qqqqqqqqqqqqqqqqqqqqq 1 65
@@ -40160,9 +40095,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222234h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
+-----------------------4 ,2ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 65
 qqqqqqqqqqqqqqqqqqqqq 1 65
 qqqqqqqqqqqqqqqqqqqqq 2 65
@@ -40694,7 +40628,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 34h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,2ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 qqqqqqqqqqqqqqqqqqqqq 0 66
 qqqqqqqqqqqqqqqqqqqqq 1 66
@@ -40796,9 +40730,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 66
 qqqqqqqqqqqqqqqqqqqqq 97 66
 qqqqqqqqqqqqqqqqqqqqq 98 66
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222234h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
+-----------------------4 ,2ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 66
 qqqqqqqqqqqqqqqqqqqqq 1 66
 qqqqqqqqqqqqqqqqqqqqq 2 66
@@ -41210,7 +41143,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 35h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,2ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 qqqqqqqqqqqqqqqqqqqqq 0 67
 qqqqqqqqqqqqqqqqqqqqq 1 67
@@ -41375,9 +41308,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222235h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
+-----------------------4 ,3ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 67
 qqqqqqqqqqqqqqqqqqqqq 1 67
 qqqqqqqqqqqqqqqqqqqqq 2 67
@@ -41909,7 +41841,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 35h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,3ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 8
 qqqqqqqqqqqqqqqqqqqqq 0 68
 qqqqqqqqqqqqqqqqqqqqq 1 68
@@ -42011,9 +41943,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 68
 qqqqqqqqqqqqqqqqqqqqq 97 68
 qqqqqqqqqqqqqqqqqqqqq 98 68
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222235h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 8
+-----------------------4 ,3ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 8
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 68
 qqqqqqqqqqqqqqqqqqqqq 1 68
 qqqqqqqqqqqqqqqqqqqqq 2 68
@@ -42425,7 +42356,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 36h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,3ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 qqqqqqqqqqqqqqqqqqqqq 0 69
 qqqqqqqqqqqqqqqqqqqqq 1 69
@@ -42590,9 +42521,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222236h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
+-----------------------4 ,4ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 69
 qqqqqqqqqqqqqqqqqqqqq 1 69
 qqqqqqqqqqqqqqqqqqqqq 2 69
@@ -43124,7 +43054,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 36h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,4ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 10
 qqqqqqqqqqqqqqqqqqqqq 0 70
 qqqqqqqqqqqqqqqqqqqqq 1 70
@@ -43226,9 +43156,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 70
 qqqqqqqqqqqqqqqqqqqqq 97 70
 qqqqqqqqqqqqqqqqqqqqq 98 70
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222236h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 10
+-----------------------4 ,4ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 10
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 70
 qqqqqqqqqqqqqqqqqqqqq 1 70
 qqqqqqqqqqqqqqqqqqqqq 2 70
@@ -43640,7 +43569,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 37h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,4ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 qqqqqqqqqqqqqqqqqqqqq 0 71
 qqqqqqqqqqqqqqqqqqqqq 1 71
@@ -43805,9 +43734,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222237h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
+-----------------------4 ,5ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 71
 qqqqqqqqqqqqqqqqqqqqq 1 71
 qqqqqqqqqqqqqqqqqqqqq 2 71
@@ -44339,7 +44267,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 37h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,5ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 11
 qqqqqqqqqqqqqqqqqqqqq 0 72
 qqqqqqqqqqqqqqqqqqqqq 1 72
@@ -44441,9 +44369,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 72
 qqqqqqqqqqqqqqqqqqqqq 97 72
 qqqqqqqqqqqqqqqqqqqqq 98 72
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222237h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 11
+-----------------------4 ,5ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 11
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 72
 qqqqqqqqqqqqqqqqqqqqq 1 72
 qqqqqqqqqqqqqqqqqqqqq 2 72
@@ -44855,7 +44782,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 38h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,5ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 qqqqqqqqqqqqqqqqqqqqq 0 73
 qqqqqqqqqqqqqqqqqqqqq 1 73
@@ -45020,9 +44947,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222238h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
+-----------------------4 ,6ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 73
 qqqqqqqqqqqqqqqqqqqqq 1 73
 qqqqqqqqqqqqqqqqqqqqq 2 73
@@ -45554,7 +45480,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 38h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,6ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 11
 qqqqqqqqqqqqqqqqqqqqq 0 74
 qqqqqqqqqqqqqqqqqqqqq 1 74
@@ -45656,9 +45582,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 74
 qqqqqqqqqqqqqqqqqqqqq 97 74
 qqqqqqqqqqqqqqqqqqqqq 98 74
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222238h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 11
+-----------------------4 ,6ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 11
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 74
 qqqqqqqqqqqqqqqqqqqqq 1 74
 qqqqqqqqqqqqqqqqqqqqq 2 74
@@ -46070,7 +45995,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 39h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,6ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 qqqqqqqqqqqqqqqqqqqqq 0 75
 qqqqqqqqqqqqqqqqqqqqq 1 75
@@ -46235,9 +46160,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222239h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
+-----------------------4 ,7ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 75
 qqqqqqqqqqqqqqqqqqqqq 1 75
 qqqqqqqqqqqqqqqqqqqqq 2 75
@@ -46769,7 +46693,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 39h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,7ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 10
 qqqqqqqqqqqqqqqqqqqqq 0 76
 qqqqqqqqqqqqqqqqqqqqq 1 76
@@ -46871,9 +46795,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 76
 qqqqqqqqqqqqqqqqqqqqq 97 76
 qqqqqqqqqqqqqqqqqqqqq 98 76
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222239h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 10
+-----------------------4 ,7ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 10
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 76
 qqqqqqqqqqqqqqqqqqqqq 1 76
 qqqqqqqqqqqqqqqqqqqqq 2 76
@@ -47285,7 +47208,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 40h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,7ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 qqqqqqqqqqqqqqqqqqqqq 0 77
 qqqqqqqqqqqqqqqqqqqqq 1 77
@@ -47450,9 +47373,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222240h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
+-----------------------4 ,8ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 77
 qqqqqqqqqqqqqqqqqqqqq 1 77
 qqqqqqqqqqqqqqqqqqqqq 2 77
@@ -47984,7 +47906,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 40h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,8ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 9
 qqqqqqqqqqqqqqqqqqqqq 0 78
 qqqqqqqqqqqqqqqqqqqqq 1 78
@@ -48086,9 +48008,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 78
 qqqqqqqqqqqqqqqqqqqqq 97 78
 qqqqqqqqqqqqqqqqqqqqq 98 78
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222240h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 9
+-----------------------4 ,8ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 9
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 78
 qqqqqqqqqqqqqqqqqqqqq 1 78
 qqqqqqqqqqqqqqqqqqqqq 2 78
@@ -48500,7 +48421,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 41h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,8ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
 qqqqqqqqqqqqqqqqqqqqq 0 79
 qqqqqqqqqqqqqqqqqqqqq 1 79
@@ -48665,9 +48586,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222241h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
+-----------------------4 ,9ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 79
 qqqqqqqqqqqqqqqqqqqqq 1 79
 qqqqqqqqqqqqqqqqqqqqq 2 79
@@ -49199,7 +49119,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 41h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,9ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 9
 qqqqqqqqqqqqqqqqqqqqq 0 80
 qqqqqqqqqqqqqqqqqqqqq 1 80
@@ -49301,9 +49221,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 80
 qqqqqqqqqqqqqqqqqqqqq 97 80
 qqqqqqqqqqqqqqqqqqqqq 98 80
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222241h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 9
+-----------------------4 ,9ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 9
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 80
 qqqqqqqqqqqqqqqqqqqqq 1 80
 qqqqqqqqqqqqqqqqqqqqq 2 80
@@ -49715,7 +49634,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 42h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,9ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 qqqqqqqqqqqqqqqqqqqqq 0 81
 qqqqqqqqqqqqqqqqqqqqq 1 81
@@ -49880,9 +49799,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222242h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
+-----------------------4 ,10ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 81
 qqqqqqqqqqqqqqqqqqqqq 1 81
 qqqqqqqqqqqqqqqqqqqqq 2 81
@@ -50414,7 +50332,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 42h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,10ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 10
 qqqqqqqqqqqqqqqqqqqqq 0 82
 qqqqqqqqqqqqqqqqqqqqq 1 82
@@ -50516,9 +50434,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 82
 qqqqqqqqqqqqqqqqqqqqq 97 82
 qqqqqqqqqqqqqqqqqqqqq 98 82
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222242h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 10
+-----------------------4 ,10ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 10
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 82
 qqqqqqqqqqqqqqqqqqqqq 1 82
 qqqqqqqqqqqqqqqqqqqqq 2 82
@@ -50930,7 +50847,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 43h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,10ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 qqqqqqqqqqqqqqqqqqqqq 0 83
 qqqqqqqqqqqqqqqqqqqqq 1 83
@@ -51095,9 +51012,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222243h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
+-----------------------4 ,11ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 83
 qqqqqqqqqqqqqqqqqqqqq 1 83
 qqqqqqqqqqqqqqqqqqqqq 2 83
@@ -51629,7 +51545,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 43h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,11ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 11
 qqqqqqqqqqqqqqqqqqqqq 0 84
 qqqqqqqqqqqqqqqqqqqqq 1 84
@@ -51731,9 +51647,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 84
 qqqqqqqqqqqqqqqqqqqqq 97 84
 qqqqqqqqqqqqqqqqqqqqq 98 84
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222243h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 11
+-----------------------4 ,11ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 11
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 84
 qqqqqqqqqqqqqqqqqqqqq 1 84
 qqqqqqqqqqqqqqqqqqqqq 2 84
@@ -52145,7 +52060,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 44h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,11ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 qqqqqqqqqqqqqqqqqqqqq 0 85
 qqqqqqqqqqqqqqqqqqqqq 1 85
@@ -52310,9 +52225,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222244h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
+-----------------------4 ,12ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 85
 qqqqqqqqqqqqqqqqqqqqq 1 85
 qqqqqqqqqqqqqqqqqqqqq 2 85
@@ -52844,7 +52758,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 44h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,12ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 11
 qqqqqqqqqqqqqqqqqqqqq 0 86
 qqqqqqqqqqqqqqqqqqqqq 1 86
@@ -52946,9 +52860,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 86
 qqqqqqqqqqqqqqqqqqqqq 97 86
 qqqqqqqqqqqqqqqqqqqqq 98 86
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222244h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 11
+-----------------------4 ,12ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 11
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 86
 qqqqqqqqqqqqqqqqqqqqq 1 86
 qqqqqqqqqqqqqqqqqqqqq 2 86
@@ -53360,7 +53273,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 45h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,12ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 0
 qqqqqqqqqqqqqqqqqqqqq 0 87
 qqqqqqqqqqqqqqqqqqqqq 1 87
@@ -53525,9 +53438,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222245h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 0
+-----------------------4 ,13ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 0
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 87
 qqqqqqqqqqqqqqqqqqqqq 1 87
 qqqqqqqqqqqqqqqqqqqqq 2 87
@@ -54059,7 +53971,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 45h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,13ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 9
 qqqqqqqqqqqqqqqqqqqqq 0 88
 qqqqqqqqqqqqqqqqqqqqq 1 88
@@ -54161,9 +54073,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 88
 qqqqqqqqqqqqqqqqqqqqq 97 88
 qqqqqqqqqqqqqqqqqqqqq 98 88
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222245h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 9
+-----------------------4 ,13ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 9
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 88
 qqqqqqqqqqqqqqqqqqqqq 1 88
 qqqqqqqqqqqqqqqqqqqqq 2 88
@@ -54575,7 +54486,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 46h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,13ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 0
 qqqqqqqqqqqqqqqqqqqqq 0 89
 qqqqqqqqqqqqqqqqqqqqq 1 89
@@ -54740,9 +54651,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222246h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 0
+-----------------------4 ,14ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 0
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 89
 qqqqqqqqqqqqqqqqqqqqq 1 89
 qqqqqqqqqqqqqqqqqqqqq 2 89
@@ -55274,7 +55184,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 46h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,14ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 qqqqqqqqqqqqqqqqqqqqq 0 90
 qqqqqqqqqqqqqqqqqqqqq 1 90
@@ -55376,9 +55286,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 90
 qqqqqqqqqqqqqqqqqqqqq 97 90
 qqqqqqqqqqqqqqqqqqqqq 98 90
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222246h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
+-----------------------4 ,14ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 90
 qqqqqqqqqqqqqqqqqqqqq 1 90
 qqqqqqqqqqqqqqqqqqqqq 2 90
@@ -55790,7 +55699,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 47h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,14ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta -1
 qqqqqqqqqqqqqqqqqqqqq 0 91
 qqqqqqqqqqqqqqqqqqqqq 1 91
@@ -55955,9 +55864,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222247h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta -1
+-----------------------4 ,15ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta -1
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 91
 qqqqqqqqqqqqqqqqqqqqq 1 91
 qqqqqqqqqqqqqqqqqqqqq 2 91
@@ -56489,7 +56397,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 47h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,15ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 qqqqqqqqqqqqqqqqqqqqq 0 92
 qqqqqqqqqqqqqqqqqqqqq 1 92
@@ -56591,9 +56499,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 92
 qqqqqqqqqqqqqqqqqqqqq 97 92
 qqqqqqqqqqqqqqqqqqqqq 98 92
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222247h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
+-----------------------4 ,15ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 92
 qqqqqqqqqqqqqqqqqqqqq 1 92
 qqqqqqqqqqqqqqqqqqqqq 2 92
@@ -57005,7 +56912,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 48h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,15ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta -1
 qqqqqqqqqqqqqqqqqqqqq 0 93
 qqqqqqqqqqqqqqqqqqqqq 1 93
@@ -57170,9 +57077,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222248h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta -1
+-----------------------4 ,0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta -1
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 93
 qqqqqqqqqqqqqqqqqqqqq 1 93
 qqqqqqqqqqqqqqqqqqqqq 2 93
@@ -57704,7 +57610,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 48h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,0ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 qqqqqqqqqqqqqqqqqqqqq 0 94
 qqqqqqqqqqqqqqqqqqqqq 1 94
@@ -57806,9 +57712,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 94
 qqqqqqqqqqqqqqqqqqqqq 97 94
 qqqqqqqqqqqqqqqqqqqqq 98 94
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222248h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
+-----------------------4 ,0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 94
 qqqqqqqqqqqqqqqqqqqqq 1 94
 qqqqqqqqqqqqqqqqqqqqq 2 94
@@ -58220,7 +58125,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 49h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,0ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta -1
 qqqqqqqqqqqqqqqqqqqqq 0 95
 qqqqqqqqqqqqqqqqqqqqq 1 95
@@ -58385,9 +58290,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222249h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta -1
+-----------------------4 ,1ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta -1
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 95
 qqqqqqqqqqqqqqqqqqqqq 1 95
 qqqqqqqqqqqqqqqqqqqqq 2 95
@@ -58919,7 +58823,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 49h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,1ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 qqqqqqqqqqqqqqqqqqqqq 0 96
 qqqqqqqqqqqqqqqqqqqqq 1 96
@@ -59021,9 +58925,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 96
 qqqqqqqqqqqqqqqqqqqqq 97 96
 qqqqqqqqqqqqqqqqqqqqq 98 96
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222249h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
+-----------------------4 ,1ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 96
 qqqqqqqqqqqqqqqqqqqqq 1 96
 qqqqqqqqqqqqqqqqqqqqq 2 96
@@ -59435,7 +59338,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 50h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,1ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 0
 qqqqqqqqqqqqqqqqqqqqq 0 97
 qqqqqqqqqqqqqqqqqqqqq 1 97
@@ -59600,9 +59503,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222250h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 0
+-----------------------4 ,2ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 0
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 97
 qqqqqqqqqqqqqqqqqqqqq 1 97
 qqqqqqqqqqqqqqqqqqqqq 2 97
@@ -60134,7 +60036,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 50h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,2ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 qqqqqqqqqqqqqqqqqqqqq 0 98
 qqqqqqqqqqqqqqqqqqqqq 1 98
@@ -60236,9 +60138,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 98
 qqqqqqqqqqqqqqqqqqqqq 97 98
 qqqqqqqqqqqqqqqqqqqqq 98 98
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222250h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
+-----------------------4 ,2ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 98
 qqqqqqqqqqqqqqqqqqqqq 1 98
 qqqqqqqqqqqqqqqqqqqqq 2 98
@@ -60650,7 +60551,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 51h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,2ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
 qqqqqqqqqqqqqqqqqqqqq 0 99
 qqqqqqqqqqqqqqqqqqqqq 1 99
@@ -60815,9 +60716,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222251h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
+-----------------------4 ,3ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 99
 qqqqqqqqqqqqqqqqqqqqq 1 99
 qqqqqqqqqqqqqqqqqqqqq 2 99
@@ -61349,7 +61249,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 51h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,3ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 qqqqqqqqqqqqqqqqqqqqq 0 100
 qqqqqqqqqqqqqqqqqqqqq 1 100
@@ -61451,9 +61351,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 100
 qqqqqqqqqqqqqqqqqqqqq 97 100
 qqqqqqqqqqqqqqqqqqqqq 98 100
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222251h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
+-----------------------4 ,3ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 100
 qqqqqqqqqqqqqqqqqqqqq 1 100
 qqqqqqqqqqqqqqqqqqqqq 2 100
@@ -61865,7 +61764,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 52h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,3ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
 qqqqqqqqqqqqqqqqqqqqq 0 101
 qqqqqqqqqqqqqqqqqqqqq 1 101
@@ -62030,9 +61929,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222252h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
+-----------------------4 ,4ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 101
 qqqqqqqqqqqqqqqqqqqqq 1 101
 qqqqqqqqqqqqqqqqqqqqq 2 101
@@ -62564,7 +62462,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 52h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,4ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 8
 qqqqqqqqqqqqqqqqqqqqq 0 102
 qqqqqqqqqqqqqqqqqqqqq 1 102
@@ -62666,9 +62564,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 102
 qqqqqqqqqqqqqqqqqqqqq 97 102
 qqqqqqqqqqqqqqqqqqqqq 98 102
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222252h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 8
+-----------------------4 ,4ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 8
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 102
 qqqqqqqqqqqqqqqqqqqqq 1 102
 qqqqqqqqqqqqqqqqqqqqq 2 102
@@ -63080,7 +62977,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 53h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,4ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 qqqqqqqqqqqqqqqqqqqqq 0 103
 qqqqqqqqqqqqqqqqqqqqq 1 103
@@ -63245,9 +63142,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222253h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
+-----------------------4 ,5ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 103
 qqqqqqqqqqqqqqqqqqqqq 1 103
 qqqqqqqqqqqqqqqqqqqqq 2 103
@@ -63779,7 +63675,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 53h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,5ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 8
 qqqqqqqqqqqqqqqqqqqqq 0 104
 qqqqqqqqqqqqqqqqqqqqq 1 104
@@ -63881,9 +63777,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 104
 qqqqqqqqqqqqqqqqqqqqq 97 104
 qqqqqqqqqqqqqqqqqqqqq 98 104
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222253h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 8
+-----------------------4 ,5ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 8
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 104
 qqqqqqqqqqqqqqqqqqqqq 1 104
 qqqqqqqqqqqqqqqqqqqqq 2 104
@@ -64295,7 +64190,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 54h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,5ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
 qqqqqqqqqqqqqqqqqqqqq 0 105
 qqqqqqqqqqqqqqqqqqqqq 1 105
@@ -64460,9 +64355,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222254h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
+-----------------------4 ,6ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 105
 qqqqqqqqqqqqqqqqqqqqq 1 105
 qqqqqqqqqqqqqqqqqqqqq 2 105
@@ -64994,7 +64888,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 54h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,6ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 qqqqqqqqqqqqqqqqqqqqq 0 106
 qqqqqqqqqqqqqqqqqqqqq 1 106
@@ -65096,9 +64990,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 106
 qqqqqqqqqqqqqqqqqqqqq 97 106
 qqqqqqqqqqqqqqqqqqqqq 98 106
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222254h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
+-----------------------4 ,6ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 106
 qqqqqqqqqqqqqqqqqqqqq 1 106
 qqqqqqqqqqqqqqqqqqqqq 2 106
@@ -65512,7 +65405,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 55h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :4
+-----------------------4 ,6ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :4
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 6ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
 qqqqqqqqqqqqqqqqqqqqq 0 107
 qqqqqqqqqqqqqqqqqqqqq 1 107
@@ -65677,9 +65570,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222255h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
+-----------------------4 ,7ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 107
 qqqqqqqqqqqqqqqqqqqqq 1 107
 qqqqqqqqqqqqqqqqqqqqq 2 107
@@ -66211,7 +66103,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 55h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,7ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 qqqqqqqqqqqqqqqqqqqqq 0 108
 qqqqqqqqqqqqqqqqqqqqq 1 108
@@ -66313,9 +66205,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 108
 qqqqqqqqqqqqqqqqqqqqq 97 108
 qqqqqqqqqqqqqqqqqqqqq 98 108
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222255h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
+-----------------------4 ,7ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 108
 qqqqqqqqqqqqqqqqqqqqq 1 108
 qqqqqqqqqqqqqqqqqqqqq 2 108
@@ -66729,7 +66620,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 56h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :4
+-----------------------4 ,7ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :4
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 7ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 1
 qqqqqqqqqqqqqqqqqqqqq 0 109
 qqqqqqqqqqqqqqqqqqqqq 1 109
@@ -66894,9 +66785,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222256h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 1
+-----------------------4 ,8ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 1
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 109
 qqqqqqqqqqqqqqqqqqqqq 1 109
 qqqqqqqqqqqqqqqqqqqqq 2 109
@@ -67422,7 +67312,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 56h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,8ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 qqqqqqqqqqqqqqqqqqqqq 0 110
 qqqqqqqqqqqqqqqqqqqqq 1 110
@@ -67524,9 +67414,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 110
 qqqqqqqqqqqqqqqqqqqqq 97 110
 qqqqqqqqqqqqqqqqqqqqq 98 110
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222256h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
+-----------------------4 ,8ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 110
 qqqqqqqqqqqqqqqqqqqqq 1 110
 qqqqqqqqqqqqqqqqqqqqq 2 110
@@ -67931,7 +67820,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 57h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,8ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 1
 qqqqqqqqqqqqqqqqqqqqq 0 111
 qqqqqqqqqqqqqqqqqqqqq 1 111
@@ -68096,9 +67985,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222257h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 1
+-----------------------4 ,9ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 1
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 111
 qqqqqqqqqqqqqqqqqqqqq 1 111
 qqqqqqqqqqqqqqqqqqqqq 2 111
@@ -68623,7 +68511,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 57h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,9ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 qqqqqqqqqqqqqqqqqqqqq 0 112
 qqqqqqqqqqqqqqqqqqqqq 1 112
@@ -68725,9 +68613,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 112
 qqqqqqqqqqqqqqqqqqqqq 97 112
 qqqqqqqqqqqqqqqqqqqqq 98 112
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222257h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
+-----------------------4 ,9ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 112
 qqqqqqqqqqqqqqqqqqqqq 1 112
 qqqqqqqqqqqqqqqqqqqqq 2 112
@@ -69132,7 +69019,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 58h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,9ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
 qqqqqqqqqqqqqqqqqqqqq 0 113
 qqqqqqqqqqqqqqqqqqqqq 1 113
@@ -69297,9 +69184,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222258h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
+-----------------------4 ,10ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 113
 qqqqqqqqqqqqqqqqqqqqq 1 113
 qqqqqqqqqqqqqqqqqqqqq 2 113
@@ -69824,7 +69710,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 58h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,10ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 qqqqqqqqqqqqqqqqqqqqq 0 114
 qqqqqqqqqqqqqqqqqqqqq 1 114
@@ -69926,9 +69812,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 114
 qqqqqqqqqqqqqqqqqqqqq 97 114
 qqqqqqqqqqqqqqqqqqqqq 98 114
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222258h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
+-----------------------4 ,10ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 114
 qqqqqqqqqqqqqqqqqqqqq 1 114
 qqqqqqqqqqqqqqqqqqqqq 2 114
@@ -70333,7 +70218,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 59h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,10ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 qqqqqqqqqqqqqqqqqqqqq 0 115
 qqqqqqqqqqqqqqqqqqqqq 1 115
@@ -70498,9 +70383,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222259h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
+-----------------------4 ,11ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 115
 qqqqqqqqqqqqqqqqqqqqq 1 115
 qqqqqqqqqqqqqqqqqqqqq 2 115
@@ -71025,7 +70909,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 59h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,11ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 qqqqqqqqqqqqqqqqqqqqq 0 116
 qqqqqqqqqqqqqqqqqqqqq 1 116
@@ -71127,9 +71011,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 116
 qqqqqqqqqqqqqqqqqqqqq 97 116
 qqqqqqqqqqqqqqqqqqqqq 98 116
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222259h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
+-----------------------4 ,11ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 116
 qqqqqqqqqqqqqqqqqqqqq 1 116
 qqqqqqqqqqqqqqqqqqqqq 2 116
@@ -71534,7 +71417,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 60h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,11ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
 qqqqqqqqqqqqqqqqqqqqq 0 117
 qqqqqqqqqqqqqqqqqqqqq 1 117
@@ -71699,9 +71582,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222260h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
+-----------------------4 ,12ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 117
 qqqqqqqqqqqqqqqqqqqqq 1 117
 qqqqqqqqqqqqqqqqqqqqq 2 117
@@ -72226,7 +72108,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 60h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,12ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 qqqqqqqqqqqqqqqqqqqqq 0 118
 qqqqqqqqqqqqqqqqqqqqq 1 118
@@ -72328,9 +72210,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 118
 qqqqqqqqqqqqqqqqqqqqq 97 118
 qqqqqqqqqqqqqqqqqqqqq 98 118
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222260h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
+-----------------------4 ,12ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 118
 qqqqqqqqqqqqqqqqqqqqq 1 118
 qqqqqqqqqqqqqqqqqqqqq 2 118
@@ -72735,7 +72616,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 61h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,12ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
 qqqqqqqqqqqqqqqqqqqqq 0 119
 qqqqqqqqqqqqqqqqqqqqq 1 119
@@ -72900,9 +72781,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222261h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
+-----------------------4 ,13ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 119
 qqqqqqqqqqqqqqqqqqqqq 1 119
 qqqqqqqqqqqqqqqqqqqqq 2 119
@@ -73427,7 +73307,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 62h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,13ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
 qqqqqqqqqqqqqqqqqqqqq 0 120
 qqqqqqqqqqqqqqqqqqqqq 1 120
@@ -73592,9 +73472,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222262h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
+-----------------------4 ,14ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 120
 qqqqqqqqqqqqqqqqqqqqq 1 120
 qqqqqqqqqqqqqqqqqqqqq 2 120
@@ -74119,7 +73998,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 63h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,14ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
 qqqqqqqqqqqqqqqqqqqqq 0 121
 qqqqqqqqqqqqqqqqqqqqq 1 121
@@ -74284,9 +74163,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222263h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
+-----------------------4 ,15ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 121
 qqqqqqqqqqqqqqqqqqqqq 1 121
 qqqqqqqqqqqqqqqqqqqqq 2 121
@@ -74811,7 +74689,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 63h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,15ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 qqqqqqqqqqqqqqqqqqqqq 0 122
 qqqqqqqqqqqqqqqqqqqqq 1 122
@@ -74913,9 +74791,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 122
 qqqqqqqqqqqqqqqqqqqqq 97 122
 qqqqqqqqqqqqqqqqqqqqq 98 122
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222263h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
+-----------------------4 ,15ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 122
 qqqqqqqqqqqqqqqqqqqqq 1 122
 qqqqqqqqqqqqqqqqqqqqq 2 122
@@ -75320,7 +75197,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 64h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,15ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
 qqqqqqqqqqqqqqqqqqqqq 0 123
 qqqqqqqqqqqqqqqqqqqqq 1 123
@@ -75485,9 +75362,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222264h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
+-----------------------4 ,0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 123
 qqqqqqqqqqqqqqqqqqqqq 1 123
 qqqqqqqqqqqqqqqqqqqqq 2 123
@@ -76012,7 +75888,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 64h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,0ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 qqqqqqqqqqqqqqqqqqqqq 0 124
 qqqqqqqqqqqqqqqqqqqqq 1 124
@@ -76114,9 +75990,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 124
 qqqqqqqqqqqqqqqqqqqqq 97 124
 qqqqqqqqqqqqqqqqqqqqq 98 124
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222264h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
+-----------------------4 ,0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 124
 qqqqqqqqqqqqqqqqqqqqq 1 124
 qqqqqqqqqqqqqqqqqqqqq 2 124
@@ -76521,7 +76396,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 65h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,0ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
 qqqqqqqqqqqqqqqqqqqqq 0 125
 qqqqqqqqqqqqqqqqqqqqq 1 125
@@ -76686,9 +76561,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222265h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
+-----------------------4 ,1ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 2
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 125
 qqqqqqqqqqqqqqqqqqqqq 1 125
 qqqqqqqqqqqqqqqqqqqqq 2 125
@@ -77213,7 +77087,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 65h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,1ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 qqqqqqqqqqqqqqqqqqqqq 0 126
 qqqqqqqqqqqqqqqqqqqqq 1 126
@@ -77315,9 +77189,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 126
 qqqqqqqqqqqqqqqqqqqqq 97 126
 qqqqqqqqqqqqqqqqqqqqq 98 126
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222265h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
+-----------------------4 ,1ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 126
 qqqqqqqqqqqqqqqqqqqqq 1 126
 qqqqqqqqqqqqqqqqqqqqq 2 126
@@ -77722,7 +77595,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 66h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,1ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
 qqqqqqqqqqqqqqqqqqqqq 0 127
 qqqqqqqqqqqqqqqqqqqqq 1 127
@@ -77887,9 +77760,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222266h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
+-----------------------4 ,2ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 127
 qqqqqqqqqqqqqqqqqqqqq 1 127
 qqqqqqqqqqqqqqqqqqqqq 2 127
@@ -78414,7 +78286,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 66h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,2ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 qqqqqqqqqqqqqqqqqqqqq 0 128
 qqqqqqqqqqqqqqqqqqqqq 1 128
@@ -78516,9 +78388,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 128
 qqqqqqqqqqqqqqqqqqqqq 97 128
 qqqqqqqqqqqqqqqqqqqqq 98 128
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222266h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
+-----------------------4 ,2ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 128
 qqqqqqqqqqqqqqqqqqqqq 1 128
 qqqqqqqqqqqqqqqqqqqqq 2 128
@@ -78923,7 +78794,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 67h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,2ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
 qqqqqqqqqqqqqqqqqqqqq 0 129
 qqqqqqqqqqqqqqqqqqqqq 1 129
@@ -79088,9 +78959,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222267h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
+-----------------------4 ,3ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 3
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 129
 qqqqqqqqqqqqqqqqqqqqq 1 129
 qqqqqqqqqqqqqqqqqqqqq 2 129
@@ -79615,7 +79485,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 67h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,3ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 qqqqqqqqqqqqqqqqqqqqq 0 130
 qqqqqqqqqqqqqqqqqqqqq 1 130
@@ -79717,9 +79587,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 130
 qqqqqqqqqqqqqqqqqqqqq 97 130
 qqqqqqqqqqqqqqqqqqqqq 98 130
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222267h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
+-----------------------4 ,3ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 130
 qqqqqqqqqqqqqqqqqqqqq 1 130
 qqqqqqqqqqqqqqqqqqqqq 2 130
@@ -80124,7 +79993,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 68h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,3ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 qqqqqqqqqqqqqqqqqqqqq 0 131
 qqqqqqqqqqqqqqqqqqqqq 1 131
@@ -80289,9 +80158,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222268h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
+-----------------------4 ,4ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 131
 qqqqqqqqqqqqqqqqqqqqq 1 131
 qqqqqqqqqqqqqqqqqqqqq 2 131
@@ -80816,7 +80684,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 68h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,4ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 qqqqqqqqqqqqqqqqqqqqq 0 132
 qqqqqqqqqqqqqqqqqqqqq 1 132
@@ -80918,9 +80786,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 132
 qqqqqqqqqqqqqqqqqqqqq 97 132
 qqqqqqqqqqqqqqqqqqqqq 98 132
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222268h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
+-----------------------4 ,4ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 132
 qqqqqqqqqqqqqqqqqqqqq 1 132
 qqqqqqqqqqqqqqqqqqqqq 2 132
@@ -81325,7 +81192,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 69h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,4ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 qqqqqqqqqqqqqqqqqqqqq 0 133
 qqqqqqqqqqqqqqqqqqqqq 1 133
@@ -81490,9 +81357,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222269h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
+-----------------------4 ,5ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 133
 qqqqqqqqqqqqqqqqqqqqq 1 133
 qqqqqqqqqqqqqqqqqqqqq 2 133
@@ -82017,7 +81883,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 69h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,5ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
 qqqqqqqqqqqqqqqqqqqqq 0 134
 qqqqqqqqqqqqqqqqqqqqq 1 134
@@ -82119,9 +81985,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 134
 qqqqqqqqqqqqqqqqqqqqq 97 134
 qqqqqqqqqqqqqqqqqqqqq 98 134
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222269h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
+-----------------------4 ,5ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 134
 qqqqqqqqqqqqqqqqqqqqq 1 134
 qqqqqqqqqqqqqqqqqqqqq 2 134
@@ -82526,7 +82391,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 70h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,5ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 qqqqqqqqqqqqqqqqqqqqq 0 135
 qqqqqqqqqqqqqqqqqqqqq 1 135
@@ -82691,9 +82556,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222270h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
+-----------------------4 ,6ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 135
 qqqqqqqqqqqqqqqqqqqqq 1 135
 qqqqqqqqqqqqqqqqqqqqq 2 135
@@ -83218,7 +83082,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 70h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,6ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
 qqqqqqqqqqqqqqqqqqqqq 0 136
 qqqqqqqqqqqqqqqqqqqqq 1 136
@@ -83320,9 +83184,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 136
 qqqqqqqqqqqqqqqqqqqqq 97 136
 qqqqqqqqqqqqqqqqqqqqq 98 136
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222270h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
+-----------------------4 ,6ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 136
 qqqqqqqqqqqqqqqqqqqqq 1 136
 qqqqqqqqqqqqqqqqqqqqq 2 136
@@ -83727,7 +83590,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 71h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,6ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 qqqqqqqqqqqqqqqqqqqqq 0 137
 qqqqqqqqqqqqqqqqqqqqq 1 137
@@ -83892,9 +83755,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222271h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
+-----------------------4 ,7ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 137
 qqqqqqqqqqqqqqqqqqqqq 1 137
 qqqqqqqqqqqqqqqqqqqqq 2 137
@@ -84419,7 +84281,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 71h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,7ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
 qqqqqqqqqqqqqqqqqqqqq 0 138
 qqqqqqqqqqqqqqqqqqqqq 1 138
@@ -84521,9 +84383,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 138
 qqqqqqqqqqqqqqqqqqqqq 97 138
 qqqqqqqqqqqqqqqqqqqqq 98 138
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222271h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
+-----------------------4 ,7ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 138
 qqqqqqqqqqqqqqqqqqqqq 1 138
 qqqqqqqqqqqqqqqqqqqqq 2 138
@@ -84928,7 +84789,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 72h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,7ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 qqqqqqqqqqqqqqqqqqqqq 0 139
 qqqqqqqqqqqqqqqqqqqqq 1 139
@@ -85093,9 +84954,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222272h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
+-----------------------4 ,8ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 139
 qqqqqqqqqqqqqqqqqqqqq 1 139
 qqqqqqqqqqqqqqqqqqqqq 2 139
@@ -85620,7 +85480,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 72h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,8ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
 qqqqqqqqqqqqqqqqqqqqq 0 140
 qqqqqqqqqqqqqqqqqqqqq 1 140
@@ -85722,9 +85582,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 140
 qqqqqqqqqqqqqqqqqqqqq 97 140
 qqqqqqqqqqqqqqqqqqqqq 98 140
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222272h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
+-----------------------4 ,8ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 140
 qqqqqqqqqqqqqqqqqqqqq 1 140
 qqqqqqqqqqqqqqqqqqqqq 2 140
@@ -86129,7 +85988,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 73h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,8ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 qqqqqqqqqqqqqqqqqqqqq 0 141
 qqqqqqqqqqqqqqqqqqqqq 1 141
@@ -86294,9 +86153,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222273h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
+-----------------------4 ,9ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 141
 qqqqqqqqqqqqqqqqqqqqq 1 141
 qqqqqqqqqqqqqqqqqqqqq 2 141
@@ -86821,7 +86679,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 73h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,9ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
 qqqqqqqqqqqqqqqqqqqqq 0 142
 qqqqqqqqqqqqqqqqqqqqq 1 142
@@ -86923,9 +86781,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 142
 qqqqqqqqqqqqqqqqqqqqq 97 142
 qqqqqqqqqqqqqqqqqqqqq 98 142
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222273h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
+-----------------------4 ,9ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 142
 qqqqqqqqqqqqqqqqqqqqq 1 142
 qqqqqqqqqqqqqqqqqqqqq 2 142
@@ -87330,7 +87187,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 74h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,9ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 qqqqqqqqqqqqqqqqqqqqq 0 143
 qqqqqqqqqqqqqqqqqqqqq 1 143
@@ -87495,9 +87352,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222274h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
+-----------------------4 ,10ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 4
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 143
 qqqqqqqqqqqqqqqqqqqqq 1 143
 qqqqqqqqqqqqqqqqqqqqq 2 143
@@ -88022,7 +87878,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 74h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,10ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 qqqqqqqqqqqqqqqqqqqqq 0 144
 qqqqqqqqqqqqqqqqqqqqq 1 144
@@ -88124,9 +87980,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 144
 qqqqqqqqqqqqqqqqqqqqq 97 144
 qqqqqqqqqqqqqqqqqqqqq 98 144
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222274h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
+-----------------------4 ,10ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 144
 qqqqqqqqqqqqqqqqqqqqq 1 144
 qqqqqqqqqqqqqqqqqqqqq 2 144
@@ -88531,7 +88386,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 75h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,10ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 qqqqqqqqqqqqqqqqqqqqq 0 145
 qqqqqqqqqqqqqqqqqqqqq 1 145
@@ -88696,9 +88551,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222275h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
+-----------------------4 ,11ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 5
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 145
 qqqqqqqqqqqqqqqqqqqqq 1 145
 qqqqqqqqqqqqqqqqqqqqq 2 145
@@ -89223,7 +89077,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 75h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,11ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
 qqqqqqqqqqqqqqqqqqqqq 0 146
 qqqqqqqqqqqqqqqqqqqqq 1 146
@@ -89325,9 +89179,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 146
 qqqqqqqqqqqqqqqqqqqqq 97 146
 qqqqqqqqqqqqqqqqqqqqq 98 146
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222275h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
+-----------------------4 ,11ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 7
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 146
 qqqqqqqqqqqqqqqqqqqqq 1 146
 qqqqqqqqqqqqqqqqqqqqq 2 146
@@ -89732,7 +89585,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 76h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,11ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 qqqqqqqqqqqqqqqqqqqqq 0 147
 qqqqqqqqqqqqqqqqqqqqq 1 147
@@ -89897,9 +89750,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222276h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
+-----------------------4 ,12ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 147
 qqqqqqqqqqqqqqqqqqqqq 1 147
 qqqqqqqqqqqqqqqqqqqqq 2 147
@@ -90424,7 +90276,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 76h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
+-----------------------4 ,12ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :1
 ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 qqqqqqqqqqqqqqqqqqqqq 0 148
 qqqqqqqqqqqqqqqqqqqqq 1 148
@@ -90526,9 +90378,8 @@ qqqqqqqqqqqqqqqqqqqqq 96 148
 qqqqqqqqqqqqqqqqqqqqq 97 148
 qqqqqqqqqqqqqqqqqqqqq 98 148
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222276h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
+-----------------------4 ,12ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 148
 qqqqqqqqqqqqqqqqqqqqq 1 148
 qqqqqqqqqqqqqqqqqqqqq 2 148
@@ -90933,7 +90784,7 @@ if----------i_thread_frames = 1
 h->param.i_threads = 1
 h->param.b_sliced_threads = 0
 rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 77h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
+-----------------------4 ,12ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :3
 uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type1, sh->weight[0][0].i_denom 0ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 qqqqqqqqqqqqqqqqqqqqq 0 149
 qqqqqqqqqqqqqqqqqqqqq 1 149
@@ -91098,9 +90949,8 @@ plane_expand_border
 plane_expand_border
 plane_expand_border
 rrrrrrrrrrrrrrrrrrrrrrrrr 2222222222222277h->i_frame_num-------------static int x264_slice_write( x264_t *h )-----
-ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
+-----------------------4 ,13ooooooooooooooooooooooooosh->i_cabac_init_idc 0,sh->i_qp_delta 6
 hhhhhhhhhhhhhhhhhhhhhhhhhh 0
-ffffffffffffffffffffffffffffffffffff1
 qqqqqqqqqqqqqqqqqqqqq 0 149
 qqqqqqqqqqqqqqqqqqqqq 1 149
 qqqqqqqqqqqqqqqqqqqqq 2 149

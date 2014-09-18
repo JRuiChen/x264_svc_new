@@ -296,7 +296,7 @@ void x264_sps_init( x264_sps_t *sps, int i_id, x264_param_t *param )
  	}
  else 
  	{
-		sps ->b_adaptive_tcoeff_level_prediction_flag = 1;
+		sps ->b_adaptive_tcoeff_level_prediction_flag = 0;
 		sps ->b_seq_tcoeff_level_prediction_flag = 0;
 		/*ÕâÁ½¸öÖµµÈÓÚÊäÈëĞÅÏ¢²ÎÊı ¿ param
 

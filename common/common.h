@@ -639,7 +639,9 @@ typedef struct
 	int b_default_motion_prediction_flag;
 	int b_adaptive_residual_prediction_flag;
 	int b_default_residual_prediction_flag;
-
+	
+	int b_tcoeff_level_pred_flag;
+	
 	int i_scan_start;
 	int i_scan_end;
 	// shÀ©Õ¹½áÊø
