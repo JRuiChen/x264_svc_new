@@ -1030,7 +1030,7 @@ NumMbPart( mb_type ) = = 4 )*/
 
     if( i_mb_type != I_16x16 )    // if( MbPartPredMode( mb_type, 0 ) != Intra_16x16 ) 
     {
-    /*skytest0916 ifesle
+    /*skytest0916 ifesle*/
 	if(h->i_layer_id)
 		{	
 			h->mb.i_cbp_luma = 0;
@@ -1041,7 +1041,7 @@ NumMbPart( mb_type ) = = 4 )*/
       			  if( chroma )
       			      x264_cabac_cbp_chroma( h, cb );
 		}
-	else*/
+	else
 		{
 			x264_cabac_cbp_luma( h, cb );  // 这个写入 他的后四位其实就写入了 coded_block_pattern余16的	情况
       			  if( chroma )
@@ -1068,11 +1068,11 @@ MbPartPredMode( mb_type, 0 ) = = Intra_16x16 ) */
             for( int p = 0; p < plane_count; p++ )
             {
              /*skytest0916 ifesle*/
-		/*if(h->i_layer_id)
+		/**/if(h->i_layer_id)
 		{	
 			x264_cabac_block_residual_dc_cbf( h, cb, ctx_cat_plane[DCT_LUMA_DC][p], LUMA_DC+p, 0, 1 );
 		}
-		else*/
+		else
 			x264_cabac_block_residual_dc_cbf( h, cb, ctx_cat_plane[DCT_LUMA_DC][p], LUMA_DC+p, h->dct.luma16x16_dc[p], 1 );
 
                 /* AC Luma */

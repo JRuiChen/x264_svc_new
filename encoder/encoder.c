@@ -3240,6 +3240,7 @@ else
         mb_xy = i_mb_x + i_mb_y * h->mb.i_mb_width;
         int mb_spos = bs_pos(&h->out.bs) + x264_cabac_pos(&h->cabac);
 
+	printf("qqqqqqqqqqqqqqqqqqqqq %d %d\n",mb_xy,h->i_frame);
         if( i_mb_x == 0 )
         {
             if( x264_bitstream_check_buffer( h ) )
@@ -3396,6 +3397,7 @@ reencode:
         }
 cont:
         h->mb.b_reencode_mb = 0;
+/*}//end if else*/
 if(h->i_layer_id)
 {
 }
@@ -3487,7 +3489,7 @@ else{
         /* calculate deblock strength values (actual deblocking is done per-row along with hpel) */
         if( b_deblock )
             x264_macroblock_deblock_strength( h );
-
+}//end if else
         if( mb_xy == h->sh.i_last_mb )
             break;
 
@@ -3503,8 +3505,8 @@ else{
             i_mb_y++;
             i_mb_x = 0;
         }
-    }//end if else
-
+    
+}
     if( h->sh.i_last_mb < h->sh.i_first_mb )
         return 0;
 
@@ -3523,7 +3525,7 @@ else{
         bs_rbsp_trailing( &h->out.bs );
         bs_flush( &h->out.bs );
     }
-    	}
+    	
     if( x264_nal_end( h ) )
         return -1;
 
@@ -3700,8 +3702,7 @@ static void *x264_slices_write( x264_t *h )
    	{\
    	   h->sh.i_last_mb = last_thread_mb;\
 	   if(!i_slice_num || !x264_frame_new_slice(h,h->fdec))\
-	   	{\
-	   
+	   	{\	   
 	   	   if(h->param.i_slice_max_mbs)\
 	   	   	{\
 	   	   	 if(SLICE_MBAFF)\
@@ -3747,7 +3748,7 @@ static void *x264_slices_write( x264_t *h )
 	   WRITE_ALL_SLICES
 	   	
 
-	/*skytest  0916 添加增强层空跑内容*/
+	/*skytest  0916 添加增强层空跑内容
 		 h->i_layer_id = 1;
 	 
 	h->mb.b_reencode_mb = 0;
@@ -3755,20 +3756,20 @@ static void *x264_slices_write( x264_t *h )
 	h->mb.i_mb_width = h->mbEL2.i_mb_width ;
 	h->mb.i_mb_height = h->mbEL2.i_mb_height ;
 	h->mb.i_mb_count = h->mbEL2.i_mb_count ;
-	h->mb.i_mb_stride = h->mbEL2.i_mb_stride;
+	h->mb.i_mb_stride = h->mbEL2.i_mb_stride;*/
 	
-/*skytest917验证不能直接调用slice init*/
-	// x264_slice_init( h,h->i_nal_type, x264_ratecontrol_qp( h ));
-	 x264_slice_header_init( h, &h->sh,& h->sps[h->i_layer_id],& h->pps[h->i_layer_id], h->i_idr_pic_id, h->i_frame_num,x264_ratecontrol_qp( h ));
-	last_thread_mb = h->sh.i_last_mb;
+/*skytest917验证不能直接调用slice init
+	x264_slice_init( h,h->i_nal_type, x264_ratecontrol_qp( h ));*/
+	// x264_slice_header_init( h, &h->sh,& h->sps[h->i_layer_id],& h->pps[h->i_layer_id], h->i_idr_pic_id, h->i_frame_num,x264_ratecontrol_qp( h ));
+	//last_thread_mb = h->sh.i_last_mb;
 	/*	h->sh.sps = &h->sps[h->i_layer_id];
 	       h->sh.pps = &h->pps[h->i_layer_id];
 	
   		  h->sh.i_first_mb  = 0;
   		  h->sh.i_last_mb   = h->mb.i_mb_count - 1;
-		  h->sh.i_pps_id    = h->pps[h->i_layer_id].i_id;*/
+		  h->sh.i_pps_id    = h->pps[h->i_layer_id].i_id;
 		
-	WRITE_ALL_SLICES
+	//WRITE_ALL_SLICES
 		
 		
 	h->mb.i_mb_width = h->mbBL.i_mb_width ;
@@ -3776,7 +3777,7 @@ static void *x264_slices_write( x264_t *h )
 	h->mb.i_mb_count = h->mbBL.i_mb_count ;
 	h->mb.i_mb_stride = h->mbBL.i_mb_stride;
 	//x264_copy_mb_info_before_encode(h,1);
-	  h->i_layer_id = 0;
+	  h->i_layer_id = 0;*/
 	
 	
 	/*
