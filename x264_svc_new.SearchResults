@@ -1,1 +1,11 @@
----- x264_copy_mb_info_before_encode Matches (0 in 0 files) ----
+---- h->i_frame_num Matches (10 in 1 files) ----
+Encoder.c (encoder):    h->i_frame_num = 0;
+Encoder.c (encoder):            int diff = h->i_frame_num - h->fref[0][i]->i_frame_num;
+Encoder.c (encoder):            int diff = h->i_frame_num - h->frames.reference[ref]->i_frame_num;
+Encoder.c (encoder):        x264_slice_header_init( h, &h->sh,& h->sps[h->i_layer_id],& h->pps[h->i_layer_id], h->i_idr_pic_id, h->i_frame_num, i_global_qp );
+Encoder.c (encoder):        x264_slice_header_init( h, &h->sh, &h->sps[h->i_layer_id], &h->pps[h->i_layer_id], -1, h->i_frame_num, i_global_qp );
+Encoder.c (encoder):       x264_slice_header_init( h, &h->sh,& h->sps[h->i_layer_id],& h->pps[h->i_layer_id], h->i_idr_pic_id, h->i_frame_num, i_global_qp );
+Encoder.c (encoder):        x264_slice_header_init( h, &h->sh, &h->sps[h->i_layer_id], &h->pps[h->i_layer_id], -1, h->i_frame_num, i_global_qp );
+Encoder.c (encoder):	 x264_slice_header_init( h, &h->sh,& h->sps[h->i_layer_id],& h->pps[h->i_layer_id], h->i_idr_pic_id, h->i_frame_num,x264_ratecontrol_qp( h ));
+Encoder.c (encoder):            h->i_frame_num = 0;
+Encoder.c (encoder):        h->i_frame_num++;

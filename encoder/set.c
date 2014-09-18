@@ -296,6 +296,8 @@ void x264_sps_init( x264_sps_t *sps, int i_id, x264_param_t *param )
  	}
  else 
  	{
+		sps ->b_adaptive_tcoeff_level_prediction_flag = 1;
+		sps ->b_seq_tcoeff_level_prediction_flag = 0;
 		/*ÕâÁ½¸öÖµµÈÓÚÊäÈëÐÅÏ¢²ÎÊý ¿ param
 
 		*	sps ->b_adaptive_tcoeff_level_prediction_flag = 0;
@@ -610,6 +612,7 @@ void x264_pps_init( x264_pps_t *pps, int i_id, x264_param_t *param, x264_sps_t *
     }
 	/*sky 2014.08.28 pps init extension*/
 	pps->b_base_pred_weight_table_flag = 1; // Õâ¸öÖµÔÝÊ±¸³Óè 1
+	pps->i_slice_group_map_type = -1; // Õâ¸öÖµ²»È·¶¨£¬µ«ÊÇ²»»á×ß
 }
 
 void x264_pps_write( bs_t *s, x264_sps_t *sps, x264_pps_t *pps )

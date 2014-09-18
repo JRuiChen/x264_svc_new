@@ -563,7 +563,7 @@ int x264_frame_copy_picture( x264_t *h, x264_frame_t *dst, x264_picture_t *src )
 				h->param.i_heightEL2,h->param.i_widthEL1,
 				h->param.i_heightEL1);
 
-			printf("ssssssssssssssssssttttttttttttttt param.i_width %d \n",h->param.i_widthEL2);
+			
 			//writeCsp1(dst->planeEL1[0],fileEL1,h->param.i_width/2,h->param.i_height/2, dst->i_strideEL1[0]/sizeof(pixel));
 			x264_frame_expand_layers(h,dst->plane[0],dst->i_stride[0],
 				dst->planeEL2[0],dst->i_strideEL2[0],h->param.i_widthEL2,
@@ -675,7 +675,7 @@ int x264_frame_copy_picture( x264_t *h, x264_frame_t *dst, x264_picture_t *src )
                               stride[2]/sizeof(pixel), h->param.i_widthEL2, h->param.i_heightEL2 );
         }
     }
-	printf("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk%d\n",h->mb.i_mb_width);
+	
 	printf("copy end!\n");
     return 0;
 }
