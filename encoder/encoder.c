@@ -3314,7 +3314,7 @@ else
         /* encode this macroblock -> be careful it can change the mb type to P_SKIP if needed */
 reencode:
         x264_macroblock_encode( h );
-		} // if else skytest
+ } // if else skytest
         if( h->param.b_cabac )
         {
             if( mb_xy > h->sh.i_first_mb && !(SLICE_MBAFF && (i_mb_y&1)) )
@@ -3779,20 +3779,13 @@ static void *x264_slices_write( x264_t *h )
 	h->mb.i_mb_count = h->mbEL2.i_mb_count ;
 	h->mb.i_mb_stride = h->mbEL2.i_mb_stride;
 	
-/*skytest917验证不能直接调用slice init
-	x264_slice_init( h,h->i_nal_type, x264_ratecontrol_qp( h ));*/
+/*skytest917验证不能直接调用slice init*/
+	
 	 x264_slice_header_init( h, &h->sh,& h->sps[h->i_layer_id],& h->pps[h->i_layer_id], h->i_idr_pic_id, h->i_frame_num,x264_ratecontrol_qp( h ));
 	printf("rrrrrrrrrrrrrrrrrrrrrrrrr 22222222222222%dh->i_frame_num",h->i_frame_num);
 	last_thread_mb = h->sh.i_last_mb;
-	/*	测试可以不需要这些
-		h->sh.sps = &h->sps[h->i_layer_id];
-	       h->sh.pps = &h->pps[h->i_layer_id];
-	
-  		  h->sh.i_first_mb  = 0;
-  		  h->sh.i_last_mb   = h->mb.i_mb_count - 1;
-		  h->sh.i_pps_id    = h->pps[h->i_layer_id].i_id;*/
 		
-	WRITE_ALL_SLICES
+	//WRITE_ALL_SLICES
 		
 		
 	h->mb.i_mb_width = h->mbBL.i_mb_width ;
