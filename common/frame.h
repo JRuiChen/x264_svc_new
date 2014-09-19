@@ -91,7 +91,7 @@ typedef struct PictureParameters
   int m_iLeftFrmOffset;
   int m_iTopFrmOffset;
   int m_iRefLayerChromaPhaseX;
-  int m_iRefLayerChromaPahseY;
+  int m_iRefLayerChromaPhaseY;
   
 }PictureParameters;
 
@@ -381,6 +381,9 @@ typedef struct x264_frame
 
     int     *lowres_mv_costs[2][X264_BFRAME_MAX+1];
     int8_t  *ref[2];
+     /*BY MING refEL1 - BY MING*/
+	int8_t *refEL1;
+	 
     int     i_ref[2];
     int     ref_poc[2][X264_REF_MAX];
     int16_t inv_ref_poc[2]; // inverse values of ref0 poc to avoid divisions in temporal MV prediction

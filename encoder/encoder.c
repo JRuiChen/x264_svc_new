@@ -139,6 +139,11 @@ static void x264_slice_header_init( x264_t *h, x264_slice_header_t *sh,
 
     sh->i_redundant_pic_cnt = 0;
 
+/*BY MING*/
+    sh->b_scoeff_residual_pred_flag = 0;
+	sh->b_tcoeff_level_pred_flag = 0;
+
+	
     h->mb.b_direct_auto_write = h->param.analyse.i_direct_mv_pred == X264_DIRECT_PRED_AUTO
                                 && h->param.i_bframe
                                 && ( h->param.rc.b_stat_write || !h->param.rc.b_stat_read );
@@ -1743,8 +1748,8 @@ x264_t *x264_encoder_open( x264_param_t *param )
      * The chosen solution is to make MBAFF non-adaptive in this case. */
     h->mbEL1.b_adaptive_mbaff = PARAM_INTERLACED && h->param.analyse.i_subpel_refine;
 
-    h->mbEL2.i_mb_width = h->sps->i_mb_width*4;
-    h->mbEL2.i_mb_height = h->sps->i_mb_height*4;
+    h->mbEL2.i_mb_width = h->sps->i_mb_width*2;
+    h->mbEL2.i_mb_height = h->sps->i_mb_height*2;
     h->mbEL2.i_mb_count = h->mbEL2.i_mb_width * h->mbEL2.i_mb_height;
 
     h->mbEL2.chroma_h_shift = CHROMA_FORMAT == CHROMA_420 || CHROMA_FORMAT == CHROMA_422;
@@ -3872,15 +3877,13 @@ static void *x264_slices_write( x264_t *h )
 	
 	/*write all slices of base layer - BY MING*/
     
-	x264_copy_mb_info_before_encode(h,BASE_LAYER);
+	//x264_copy_mb_info_before_encode(h,BASE_LAYER);
 	//memcpy(&(h->mb),&(h->mbBL),sizeof(h->mb));
-	printf("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh sizeof(x264_mb_t) % d \ n" , sizeof(h->mb));
     h->sh.b_base_layer_flag = BASE_LAYER;
 	h->mb.b_reencode_mb = 0;
 	//h->i_layer_id = 0;
 
     WRITE_ALL_SLICES
-
     //void writeCsp(pixel* p, FILE* file, int width, int height,int stride);
 	//FILE *file_dst2 = fopen ("tst352x288_ori.yuv", "ab+" );
 
@@ -3894,13 +3897,18 @@ static void *x264_slices_write( x264_t *h )
 	{
 		printf (" Call up-sampling function!!!!!!!!!!!!!!!!!!!!\n");
 
-		x264_layer_upsample(h,h->fdec,h->i_layer_id);
+		x264_layer_upsample(h,h->fenc,0);
 		//x264_frame_expand_layers(h, file_dst2, dst_s, h->fdec->plane[0], h->fdec->i_stride[0], h->param.i_width, h->param.i_height, h->param.i_width<<1, h->param.i_height<<1);
-        //xUpsampleMotion(h->mo_up,&cRP, cRP.m_bFieldPicFlag,0,MV_THRESHOLD,h);
+       // xUpsampleMotion(h->mo_up,&h->cRP, h->cRP.m_bFieldPicFlag,0,MV_THRESHOLD,h);
 	}
+	
+	
+
+
+	//writeCsp1(h->fdec->planeUpsampleEL1[0], file_dst2, h->param.i_widthEL1, h->param.i_heightEL1, h->fdec->i_strideEL1[0]/sizeof(pixel));
+
+
 	//fclose(file_dst2);
-
-
 
     /*write all slices of enhance layer - BY MING*/
 	/*h->mb.b_reencode_mb = 0;
@@ -4609,7 +4617,9 @@ int     x264_encoder_encode( x264_t *h,
         if( (intptr_t)x264_slices_write( h ) )
             return -1;
     }
-	
+
+
+
     return x264_encoder_frame_end( thread_oldest, thread_current, pp_nal, pi_nal, pic_out );
 	printf("encoder_encode end\n");
 }

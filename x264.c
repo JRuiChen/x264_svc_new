@@ -1279,10 +1279,10 @@ static int init_vid_filters( char *sequence, hnd_t *handle, video_info_t *info, 
 			/*BY MING*/
 			param->i_widthEL2 = param->i_width;
 			param->i_heightEL2 = param->i_height;
-			param->i_widthEL1 = param->i_width/2;
-			param->i_heightEL1 = param->i_height/2;
-			param->i_width /= 4;
-			param->i_height /= 4;
+			param->i_widthEL1 = param->i_width;
+			param->i_heightEL1 = param->i_height;
+			param->i_width /= 2;
+			param->i_height /= 2;
 
 	}
     /* force the output csp to what the user specified (or the default) */

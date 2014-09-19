@@ -92,7 +92,6 @@ extern const int  m_nDataNotAvailable;
   const int nMSysRetVal = (exp);\
   if(nMSysRetVal != m_nOK)\
   	{\
-  	  assert(0);\
       return nMSysRetVal;\
   	}\
 }
@@ -100,7 +99,6 @@ extern const int  m_nDataNotAvailable;
 
 #define RERR() \
 {\
-   assert(0);\
    return m_nERR;\
 }
 
@@ -108,7 +106,7 @@ extern const int  m_nDataNotAvailable;
 {\
   if(!(exp))\
   	{\
-  	  RERR();\
+  	  return m_nERR;\
   	}\
 }
 
@@ -117,7 +115,7 @@ extern const int  m_nDataNotAvailable;
 {\
    if(exp) \
    	{\
-   	  RERR();\
+   	  RERR()\
    	}\
 }
 
