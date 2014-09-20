@@ -189,7 +189,7 @@ typedef struct MOTIONUPSAMPLING
    int b_in_crop_window;
    int b_intraBL;
    int i_aai_part_idc[4][4];
-   int i_aai_ref_idx_temp[2][2][2];
+   int i_aai_ref_idx_temp[4][4];
    int i_aaai_ref_idx[2][2][2];
    int i_aaac_mv[2][4][4][2];
 
@@ -354,6 +354,9 @@ typedef struct x264_frame
     /* motion data */
     int8_t  *mb_type;
     uint8_t *mb_partition;
+	/*sub_partition - BY MING*/
+	uint8_t (*sub_partition)[4];
+	
     int16_t (*mv[2])[2];
     int16_t (*mv16x16)[2];
     int16_t (*lowres_mvs[2][X264_BFRAME_MAX+1])[2];
@@ -363,6 +366,9 @@ typedef struct x264_frame
 	/*motion data in Enhance Layer - BY MING*/
     int8_t  *mbEL1_type;
     uint8_t *mbEL1_partition;
+    /*sub_partitionEL1 - BY MING*/
+	uint8_t (*sub_partitionEL1)[4];
+	 
     int16_t (*mvEL1[2])[2];
     int16_t (*mvEL116x16)[2];
     int16_t (*lowres_mvsEL1[2][X264_BFRAME_MAX+1])[2];
@@ -382,7 +388,7 @@ typedef struct x264_frame
     int     *lowres_mv_costs[2][X264_BFRAME_MAX+1];
     int8_t  *ref[2];
      /*BY MING refEL1 - BY MING*/
-	int8_t *refEL1;
+	int8_t *refEL1[2];
 	 
     int     i_ref[2];
     int     ref_poc[2][X264_REF_MAX];

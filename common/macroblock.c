@@ -573,8 +573,11 @@ void x264_macroblock_slice_init( x264_t *h )
     h->mb.ref[1] = h->fdec->ref[1];
     h->mb.type = h->fdec->mb_type;
     h->mb.partition = h->fdec->mb_partition;
+	/*BY MING*/
+	h->mb.sub_partition = h->fdec->sub_partition;
+	
     h->mb.field = h->fdec->field;
-
+    
     /* Add by chenjie */
     h->mbBL.mv[0] = h->fdec->mv[0];
     h->mbBL.mv[1] = h->fdec->mv[1];
@@ -583,6 +586,9 @@ void x264_macroblock_slice_init( x264_t *h )
     h->mbBL.ref[1] = h->fdec->ref[1];
     h->mbBL.type = h->fdec->mb_type;
     h->mbBL.partition = h->fdec->mb_partition;
+	/*BY MING*/
+	h->mbBL.sub_partition = h->fdec->sub_partition;
+	
     h->mbBL.field = h->fdec->field;
 
 
@@ -593,7 +599,12 @@ void x264_macroblock_slice_init( x264_t *h )
     h->mbEL1.ref[1] = h->fdec->refEL1[1];
     h->mbEL1.type = h->fdec->mbEL1_type;
     h->mbEL1.partition = h->fdec->mbEL1_partition;
+	/*BY MING*/
+	h->mbEL1.sub_partition = h->fdec->sub_partitionEL1;
+	
     h->mbEL1.field = h->fdec->fieldEL1;
+
+
 
     h->mbEL2.mv[0] = h->fdec->mv[0];
     h->mbEL2.mv[1] = h->fdec->mv[1];
@@ -2318,6 +2329,13 @@ void x264_macroblock_cache_save( x264_t *h )
     h->mb.type[i_mb_xy] = i_mb_type;
     h->mb.slice_table[i_mb_xy] = h->sh.i_first_mb;
     h->mb.partition[i_mb_xy] = IS_INTRA( i_mb_type ) ? D_16x16 : h->mb.i_partition;
+	if(h->mb.i_partition == D_8x8)
+	{
+	  for(int i = 0;i < 4;i++)
+	  {
+	    h->mb.sub_partition[i_mb_xy][i] = h->mb.i_sub_partition[i];
+	  }
+	}
     h->mb.i_mb_prev_xy = i_mb_xy;
     /* save intra4x4 */
     if( i_mb_type == I_4x4 )

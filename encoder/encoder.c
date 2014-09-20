@@ -3143,6 +3143,7 @@ static int x264_copy_mb_info_to_BL(x264_t* h)
    h->des_mb.base = h->src_mb.base;\
    h->des_mb.type = h->src_mb.type;\
    h->des_mb.partition = h->src_mb.partition;\
+   h->des_mb.sub_partition = h->src_mb.sub_partition;\
    h->des_mb.qp = h->src_mb.qp;\
    h->des_mb.cbp = h->src_mb.cbp;\
    h->des_mb.intra4x4_pred_mode = h->src_mb.intra4x4_pred_mode;\
@@ -3899,7 +3900,7 @@ static void *x264_slices_write( x264_t *h )
 
 		x264_layer_upsample(h,h->fenc,0);
 		//x264_frame_expand_layers(h, file_dst2, dst_s, h->fdec->plane[0], h->fdec->i_stride[0], h->param.i_width, h->param.i_height, h->param.i_width<<1, h->param.i_height<<1);
-       // xUpsampleMotion(h->mo_up,&h->cRP, h->cRP.m_bFieldPicFlag,0,MV_THRESHOLD,h);
+        xUpsampleMotion(h->mo_up,&h->cRP, h->cRP.m_bFieldPicFlag,0,MV_THRESHOLD,h);
 	}
 	
 	

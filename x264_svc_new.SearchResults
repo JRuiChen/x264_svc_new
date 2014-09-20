@@ -1,18 +1,2 @@
----- b_enable Matches (17 in 3 files) ----
-Common.c (common):int b_Enable_SVC = 1;
-Common.h (common):extern int b_Enable_SVC;
-Frame.c (common):	if(b_Enable_SVC){
-Frame.c (common):		if(b_Enable_SVC){
-Frame.c (common):		if(b_Enable_SVC){
-Frame.c (common):			if(b_Enable_SVC){
-Frame.c (common):			if(b_Enable_SVC){
-Frame.c (common):		if(b_Enable_SVC){
-Frame.c (common):				if(b_Enable_SVC){
-Frame.c (common):			if(b_Enable_SVC){
-Frame.c (common):			if(b_Enable_SVC){
-Frame.c (common):	//b_Enable_SVC = 0;
-Frame.c (common):		if(b_Enable_SVC){
-Frame.c (common):     		if(b_Enable_SVC){
-Frame.c (common):	//b_Enable_SVC = 0;
-Frame.c (common):	if(!b_Enable_SVC){
-Frame.c (common):    if(!b_Enable_SVC){
+---- TTTTTTTTTTTTTTTTTTTTTTTTTT Matches (1 in 1 files) ----
+Frame.c (common):     printf("call function xDeriveBlockModeAndUpdateMv TTTTTTTTTTTTTTTTTTTTTTTTTT \n");
