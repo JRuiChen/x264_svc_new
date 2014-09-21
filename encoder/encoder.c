@@ -141,6 +141,11 @@ static void x264_frame_dump( x264_t *h )
 
     sh->i_redundant_pic_cnt = 0;
 
+/*BY MING*/
+    sh->b_scoeff_residual_pred_flag = 0;
+	sh->b_tcoeff_level_pred_flag = 0;
+
+	
     h->mb.b_direct_auto_write = h->param.analyse.i_direct_mv_pred == X264_DIRECT_PRED_AUTO
                                 && h->param.i_bframe
                                 && ( h->param.rc.b_stat_write || !h->param.rc.b_stat_read );
@@ -1634,7 +1639,7 @@ x264_t *x264_encoder_open( x264_param_t *param )
     int qp, i_slicetype_length;
 
     CHECKED_MALLOCZERO( h, sizeof(x264_t) );
-
+    
     /* Add by chenjie */
  //   up_sampling_arg.pH = h;
     up_sampling_arg.exit = 0;
@@ -1708,6 +1713,29 @@ x264_t *x264_encoder_open( x264_param_t *param )
 
     if( x264_cqm_init( h ) < 0 )
         goto fail;
+
+
+
+     /*malloc MotionUpsampling before copy layer*/
+	 CHECKED_MALLOCZERO(h->mo_up,sizeof(MotionUpsampling));
+	 CHECKED_MALLOCZERO(h->mo_up->m_rc_resize_params,sizeof(ResizeParameters));
+	 CHECKED_MALLOCZERO(h->mo_up->m_cPosCalc,sizeof(PosCalcParam));
+	 CHECKED_MALLOCZERO(h->mo_up->m_cMvScale,sizeof(MvScaleParam));
+     /*mo_up = malloc(sizeof(MotionUpsampling));
+     mo_up->m_rc_resize_params = malloc(sizeof(ResizeParameters));
+     mo_up->m_cPosCalc = malloc(sizeof(PosCalcParam));
+     mo_up->m_cMvScale = malloc(sizeof(MvScaleParam));*/
+
+
+
+
+
+
+
+
+
+
+	
 /*sky 2014.8.29 sps 对mb  w h  init*/
     h->mb.i_mb_width = h->sps[0].i_mb_width;
     h->mb.i_mb_height = h->sps[0].i_mb_height;
@@ -1735,8 +1763,9 @@ x264_t *x264_encoder_open( x264_param_t *param )
     h->mbBL.b_adaptive_mbaff = PARAM_INTERLACED && h->param.analyse.i_subpel_refine;
 
 
-    h->mbEL1.i_mb_width = h->sps->i_mb_width;
-    h->mbEL1.i_mb_height = h->sps->i_mb_height;
+    h->mbEL1.i_mb_width = h->sps->i_mb_width*2;
+    h->mbEL1.i_mb_height = h->sps->i_mb_height*2;
+
     h->mbEL1.i_mb_count = h->mbEL1.i_mb_width * h->mbEL1.i_mb_height;
 
     h->mbEL1.chroma_h_shift = CHROMA_FORMAT == CHROMA_420 || CHROMA_FORMAT == CHROMA_422;
@@ -3104,6 +3133,7 @@ static int x264_copy_mb_info_to_BL(x264_t* h)
  
 }
 
+
 /*copy mbBL or mbEL info to mb before the encoding process - BY MING*/
  static int x264_copy_mb_info_before_encode(x264_t* h,int b_base_layer)
  {
@@ -3128,7 +3158,7 @@ static int x264_copy_mb_info_to_BL(x264_t* h)
    h->des_mb.left_b8[0] = h->src_mb.left_b8[0];\
    h->des_mb.left_b8[1] = h->src_mb.left_b8[1];\
    h->des_mb.left_b4[0] = h->src_mb.left_b4[0];\
-   h->des_mb.left_b4[0] = h->src_mb.left_b4[1];\
+   h->des_mb.left_b4[1] = h->src_mb.left_b4[1];\
    h->des_mb.mv_min[0] = h->src_mb.mv_min[0];\
    h->des_mb.mv_min[1] = h->src_mb.mv_min[1];\
    h->des_mb.mv_max[0] = h->src_mb.mv_max[0];\
@@ -3145,6 +3175,7 @@ static int x264_copy_mb_info_to_BL(x264_t* h)
    h->des_mb.base = h->src_mb.base;\
    h->des_mb.type = h->src_mb.type;\
    h->des_mb.partition = h->src_mb.partition;\
+   h->des_mb.sub_partition = h->src_mb.sub_partition;\
    h->des_mb.qp = h->src_mb.qp;\
    h->des_mb.cbp = h->src_mb.cbp;\
    h->des_mb.intra4x4_pred_mode = h->src_mb.intra4x4_pred_mode;\
@@ -3297,13 +3328,6 @@ else
             h->mb.field[mb_xy] = MB_INTERLACED;
         }
 
-		/*skytest0916 ifesle*/
-    if(h->i_layer_id)
-    	{
-    
-    	}
-	else
-       {
         /* load cache */
         if( SLICE_MBAFF )
             x264_macroblock_cache_load_interlaced( h, i_mb_x, i_mb_y );
@@ -3311,12 +3335,14 @@ else
             x264_macroblock_cache_load_progressive( h, i_mb_x, i_mb_y );
 
 
-        x264_macroblock_analyse( h );
+        /*only when it is base layer, do we have the macroblock analysed - BY MING*/
+        if(h->i_layer_id == 0)
+             x264_macroblock_analyse( h );
 
         /* encode this macroblock -> be careful it can change the mb type to P_SKIP if needed */
 reencode:
         x264_macroblock_encode( h );
- } // if else skytest
+
         if( h->param.b_cabac )
         {
             if( mb_xy > h->sh.i_first_mb && !(SLICE_MBAFF && (i_mb_y&1)) )
@@ -3420,12 +3446,10 @@ reencode:
         }
 cont:
         h->mb.b_reencode_mb = 0;
-/*}//end if else*/
-if(h->i_layer_id)
-{
-}
-else{
+
+
         /* save cache */
+if(h->i_layer_id == 0)
         x264_macroblock_cache_save( h );
 
         if( x264_ratecontrol_mb( h, mb_size ) < 0 )
@@ -3512,7 +3536,7 @@ else{
         /* calculate deblock strength values (actual deblocking is done per-row along with hpel) */
         if( b_deblock )
             x264_macroblock_deblock_strength( h );
-}//end if else
+
         if( mb_xy == h->sh.i_last_mb )
             break;
 
@@ -3598,7 +3622,6 @@ else{
 
 
 
-
 static void x264_slice_write_EL(x264_t* h)
 {
   int i_skip;
@@ -3624,18 +3647,57 @@ static void x264_slice_write_EL(x264_t* h)
   x264_nal_start(h,h->i_nal_type,h->i_nal_ref_idc);
   h->out.nal[h->out.i_nal].i_first_mb = h->sh.i_first_mb;
 
+  
 
   /*slice header for EL - BY MING*/
- // x264_macroblock_thread_init_EL(h);
+  x264_macroblock_thread_init(h);
 
   /*set the QP equal to the first QP in the slice for more accurate CABAC initialization - BY MING*/
-  h->mbEL1.i_mb_xy = h->sh.i_first_mb;
+  h->mb.i_mb_xy = h->sh.i_first_mb;
   h->sh.i_qp = x264_ratecontrol_mb_qp(h);
   h->sh.i_qp = SPEC_QP(h->sh.i_qp);
   h->sh.i_qp_delta = h->sh.i_qp - h->pps->i_pic_init_qp;
+ 
+  //x264_slice_header_write_EL( &h->out.bs, &h->sh, h->i_nal_ref_idc,&h->out.nal[h->out.i_nal] );
 
+  h->mb.field_decoding_flag = 0;
+
+  i_mb_y = h->sh.i_first_mb/h->mb.i_mb_width;
+  i_mb_x = h->sh.i_first_mb%h->mb.i_mb_width;
+  i_skip = 0;
+
+  while(1)
+  {
+    mb_xy = i_mb_x + i_mb_y*h->mb.i_mb_width;
+	if(i_mb_x == 0)
+	{
+	  
+	}
+
+
+    if( PARAM_INTERLACED )
+     {
+         if( h->mb.b_adaptive_mbaff )
+          {
+               if( !(i_mb_y&1) )
+                {
+                    /* FIXME: VSAD is fast but fairly poor at choosing the best interlace type. */
+                    h->mb.b_interlaced = x264_field_vsad( h, i_mb_x, i_mb_y );
+                    memcpy( &h->zigzagf, MB_INTERLACED ? &h->zigzagf_interlaced : &h->zigzagf_progressive, sizeof(h->zigzagf) );
+                    if( !MB_INTERLACED && (i_mb_y+2) == h->mb.i_mb_height )
+                        x264_expand_border_mbpair( h, i_mb_x, i_mb_y );
+                }
+            }
+            h->mb.field[mb_xy] = MB_INTERLACED;
+      }
+
+
+
+	
+  }
   
 }
+
 
 
 
@@ -3714,22 +3776,96 @@ static void x264_wait_up_sampling_finish(int i_encode_threads)
 
 }
 
+
+static void x264_write_all_slices(x264_t* h,int i_slice_num,int last_thread_mb,int b_base_layer)
+{
+ while( h->sh.i_first_mb + SLICE_MBAFF*h->mb.i_mb_stride <= last_thread_mb )
+{
+	 h->sh.i_last_mb = last_thread_mb;
+	if( !i_slice_num || !x264_frame_new_slice( h, h->fdec ) )
+	{
+		if( h->param.i_slice_max_mbs )
+		{
+			if( SLICE_MBAFF )
+			{
+				// convert first to mbaff form, add slice-max-mbs, then convert back to normal form
+				int last_mbaff = 2*(h->sh.i_first_mb % h->mb.i_mb_width)
+					+ h->mb.i_mb_width*(h->sh.i_first_mb / h->mb.i_mb_width)
+					+ h->param.i_slice_max_mbs - 1;
+				int last_x = (last_mbaff % (2*h->mb.i_mb_width))/2;
+				int last_y = (last_mbaff / (2*h->mb.i_mb_width))*2 + 1;
+				h->sh.i_last_mb = last_x + h->mb.i_mb_stride*last_y;
+			}
+			else
+			{
+				h->sh.i_last_mb = h->sh.i_first_mb + h->param.i_slice_max_mbs - 1;
+				if( h->sh.i_last_mb < last_thread_mb && last_thread_mb - h->sh.i_last_mb < h->param.i_slice_min_mbs )
+					h->sh.i_last_mb = last_thread_mb - h->param.i_slice_min_mbs;
+			}
+			i_slice_num++;
+		}
+		else if( h->param.i_slice_count && !h->param.b_sliced_threads )
+		{
+			int height = h->mb.i_mb_height >> PARAM_INTERLACED;
+			int width = h->mb.i_mb_width << PARAM_INTERLACED;
+			i_slice_num++;
+			h->sh.i_last_mb = (height * i_slice_num + h->param.i_slice_count/2) / h->param.i_slice_count * width - 1;
+		}
+	}
+	h->sh.i_last_mb = X264_MIN( h->sh.i_last_mb, last_thread_mb );
+	if(b_base_layer)
+	{
+
+	 if( x264_stack_align( x264_slice_write, h ) )
+	 goto fail;
+	}
+	else
+	{
+	   if(x264_stack_align(x264_slice_write_EL,h))
+	   	goto fail;
+	}
+		
+	
+		
+	h->sh.i_first_mb = h->sh.i_last_mb + 1;
+	// if i_first_mb is not the last mb in a row then go to the next mb in MBAFF order
+	if( SLICE_MBAFF && h->sh.i_first_mb % h->mb.i_mb_width )
+		h->sh.i_first_mb -= h->mb.i_mb_stride;
+
+    return (void*) 0;
+	fail:
+    /* Tell other threads we're done, so they wouldn't wait for it */
+    if( h->param.b_sliced_threads )
+        x264_threadslice_cond_broadcast( h, 2 );
+}
+}
+
+
+
+
+#define BASE_LAYER 1
+#define ENHANCE_LAYER 0
+
 static void *x264_slices_write( x264_t *h )
 {
 
-    int i_slice_num = 0;
-    int last_thread_mb = h->sh.i_last_mb;
+   
+  // for(int i = 0;i < h->mb.i_mb_count;i++)
+   //x264_log( NULL, X264_LOG_ERROR, "the mb type of current frame i_frame '%s' index '%s' type '%s' \n",h->i_frame, i, h->mb.type[i] );
+/* 三个层共用sh，sh重新赋值*/
 
-    /* init stats */
-    memset( &h->stat.frame, 0, sizeof(h->stat.frame) );
+   
 
-	/*skytest 0916 添加while宏信息*/
- #define WRITE_ALL_SLICES\
+   int i_slice_num = 0;
+   int  last_thread_mb = h->sh.i_last_mb;
+   memset( &h->stat.frame, 0, sizeof(h->stat.frame) );
+
+   #define WRITE_ALL_SLICES\
    while( h->sh.i_first_mb + SLICE_MBAFF*h->mb.i_mb_stride <= last_thread_mb )\
    	{\
    	   h->sh.i_last_mb = last_thread_mb;\
 	   if(!i_slice_num || !x264_frame_new_slice(h,h->fdec))\
-	   	{\	   
+	   	{\
 	   	   if(h->param.i_slice_max_mbs)\
 	   	   	{\
 	   	   	 if(SLICE_MBAFF)\
@@ -3766,200 +3902,53 @@ static void *x264_slices_write( x264_t *h )
    	}
 
 
+
 	
-       h->mb.b_reencode_mb = 0;	
+	/*write all slices of base layer - BY MING*/
+    	h->mb.b_reencode_mb = 0;
 	h->i_layer_id = 0;
-	/*skytest 0916 mbBL -> mb*/
-		
-	x264_copy_mb_info_before_encode(h,1);
-	   WRITE_ALL_SLICES
-	   	
-
-	/*skytest  0916 添加增强层空跑内容*/
-		 h->i_layer_id = 1;
-	 
-	h->mb.b_reencode_mb = 0;
-	// x264_copy_mb_info_before_encode(h,0);
-	h->mb.i_mb_width = h->mbEL2.i_mb_width ;
-	h->mb.i_mb_height = h->mbEL2.i_mb_height ;
-	h->mb.i_mb_count = h->mbEL2.i_mb_count ;
-	h->mb.i_mb_stride = h->mbEL2.i_mb_stride;
+	x264_copy_mb_info_before_encode(h,BASE_LAYER);
 	
-/*skytest917验证不能直接调用slice init*/
-	
-	 x264_slice_header_init( h, &h->sh,& h->sps[h->i_layer_id],& h->pps[h->i_layer_id], h->i_idr_pic_id, h->i_frame_num,x264_ratecontrol_qp( h ));
-	
-	last_thread_mb = h->sh.i_last_mb;
-		
-	WRITE_ALL_SLICES
-		
-		
-	h->mb.i_mb_width = h->mbBL.i_mb_width ;
-	h->mb.i_mb_height = h->mbBL.i_mb_height ;
-	h->mb.i_mb_count = h->mbBL.i_mb_count ;
-	h->mb.i_mb_stride = h->mbBL.i_mb_stride;
-	//x264_copy_mb_info_before_encode(h,1);
-	  h->i_layer_id = 0;
-	
-	
-	/*
-    while( h->sh.i_first_mb + SLICE_MBAFF*h->mb.i_mb_stride <= last_thread_mb )//从这儿开始遍历
-    {
-        h->sh.i_last_mb = last_thread_mb;
-        if( !i_slice_num || !x264_frame_new_slice( h, h->fdec ) )
-        {
-            if( h->param.i_slice_max_mbs )
-            {
-                if( SLICE_MBAFF )
-                {h->mb.b_reencode_mb = 0;
-                    // convert first to mbaff form, add slice-max-mbs, then convert back to normal form
-                    int last_mbaff = 2*(h->sh.i_first_mb % h->mb.i_mb_width)
-                        + h->mb.i_mb_width*(h->sh.i_first_mb / h->mb.i_mb_width)
-                        + h->param.i_slice_max_mbs - 1;
-                    int last_x = (last_mbaff % (2*h->mb.i_mb_width))/2;
-                    int last_y = (last_mbaff / (2*h->mb.i_mb_width))*2 + 1;
-                    h->sh.i_last_mb = last_x + h->mb.i_mb_stride*last_y;
-                }
-                else
-                {
-                    h->sh.i_last_mb = h->sh.i_first_mb + h->param.i_slice_max_mbs - 1;
-                    if( h->sh.i_last_mb < last_thread_mb && last_thread_mb - h->sh.i_last_mb < h->param.i_slice_min_mbs )
-                        h->sh.i_last_mb = last_thread_mb - h->param.i_slice_min_mbs;
-                }
-                i_slice_num++;
-            }
-            else if( h->param.i_slice_count && !h->param.b_sliced_threads )
-            {
-                int height = h->mb.i_mb_height >> PARAM_INTERLACED;
-                int width = h->mb.i_mb_width << PARAM_INTERLACED;
-                i_slice_num++;
-                h->sh.i_last_mb = (height * i_slice_num + h->param.i_slice_count/2) / h->param.i_slice_count * width - 1;
-            }
-        }
-        h->sh.i_last_mb = X264_MIN( h->sh.i_last_mb, last_thread_mb );
-        if( x264_stack_align( x264_slice_write, h ) )
-            goto fail;
-        h->sh.i_first_mb = h->sh.i_last_mb + 1;
-        // if i_first_mb is not the last mb in a row then go to the next mb in MBAFF order
-        if( SLICE_MBAFF && h->sh.i_first_mb % h->mb.i_mb_width )
-            h->sh.i_first_mb -= h->mb.i_mb_stride;
-    }
-*/
-	
+       h->sh.b_base_layer_flag = BASE_LAYER;	
 
-    return (void *)0;
-
-fail:
-    /* Tell other threads we're done, so they wouldn't wait for it */
-    if( h->param.b_sliced_threads )
-        x264_threadslice_cond_broadcast( h, 2 );
-    return (void *)-1;
-
-
-
-
-   
-	//void writeCsp(pixel* p, FILE* file, int width, int height,int stride);
-//	FILE *file_dst2 = fopen ("tst352x288_ori.yuv", "ab+" );
-//	writeCsp(h->fdec->plane[0], file_dst2, h->param.i_width, h->param.i_height, h->fdec->i_stride[0]);
-/*	if( h->param.b_sliced_threads )
+    WRITE_ALL_SLICES
+    
+	if( h->param.b_sliced_threads )
 		x264_wait_up_sampling_finish(h->param.i_threads);
 	else
 	{
 		printf (" Call up-sampling function!!!!!!!!!!!!!!!!!!!!\n");
-		x264_frame_expand_layers(h, file_dst2, dst_s, h->fdec->plane[0], h->fdec->i_stride[0], h->param.i_width, h->param.i_height, h->param.i_width<<1, h->param.i_height<<1);
+
+		x264_layer_upsample(h,h->fenc,0);
+		
+        xUpsampleMotion(h->mo_up,&h->cRP, h->cRP.m_bFieldPicFlag,0,MV_THRESHOLD,h);
 	}
-	fclose(file_dst2);
-*/
-/* 三个层共用sh，sh重新赋值*/
 
-   //int i_nal_type = h->i_nal_type;
-   //int i_global_qp = x264_ratecontrol_qp(h);
-   //x264_slice_init(h,h->i_nal_type,int i_global_qp)
-/*
-   h->sh.i_first_mb = 0; 
-   h->sh.i_last_mb = h->mbEL1.i_mb_count - 1;
-   i_slice_num = 0;
-   last_thread_mb = h->sh.i_last_mb;
-
-   h->mbEL1.b_reencode_mb = 0;
-   while( h->sh.i_first_mb + SLICE_MBAFF*h->mbEL1.i_mb_stride <= last_thread_mb )
-   	{
-   	   h->sh.i_last_mb = last_thread_mb;
-	   if(!i_slice_num || !x264_frame_new_slice(h,h->fdec))
-	   	{
-	   	   if(h->param.i_slice_max_mbs)
-	   	   	{
-	   	   	 if(SLICE_MBAFF)
-	   	   	 {
-	   	   	 	   //convert first to mbaff form, add slice-,ax-mbs,the convert back to normal form
-	   	   	 	   int last_mbaff = 2*(h->sh.i_first_mb % h->mbEL1.i_mb_width)
-	   	   	 	                    + h->mbEL1.i_mb_width*(h->sh.i_first_mb/h->mbEL1.i_mb_width)
-	   	   	 	                    + h->param.i_slice_max_mbs - 1;
-				   int last_x = (last_mbaff % (2*h->mbEL1.i_mb_width))/2;
-				   int last_y = (last_mbaff / (2*h->mbEL1.i_mb_width))*2 + 1;
-				   h->sh.i_last_mb = last_x + h->mbEL1.i_mb_stride*last_y;
-	   	   	 }
-			 else
-			 {
-			    h->sh.i_last_mb = h->sh.i_first_mb + h->param.i_slice_max_mbs - 1;
-				if(h->sh.i_last_mb < last_thread_mb && last_thread_mb - h->sh.i_last_mb < h->param.i_slice_min_mbs)
-					 h->sh.i_last_mb = last_thread_mb - h->param.i_slice_min_mbs;
-			 }
-
-			 i_slice_num++;
-	   	   	}
-		   else if(h->param.i_slice_count && !h->param.b_sliced_threads)
-		   {
-		      int height = h->mbEL1.i_mb_height >> PARAM_INTERLACED;
-			  int width = h->mbEL1.i_mb_width << PARAM_INTERLACED;
-			  i_slice_num++;
-			  h->sh.i_last_mb = (height * i_slice_num + h->param.i_slice_count/2) / h->param.i_slice_count * width - 1;
-		   }
-	   	}
-
-	   h->sh.i_last_mb = X264_MIN(h->sh.i_last_mb,last_thread_mb);
-	   if(x264_stack_align(x264_slice_write,h))
-	   	   goto fail;
-
-	   h->sh.i_first_mb = h->sh.i_last_mb + 1;
-
-	   if(SLICE_MBAFF && h->sh.i_first_mb % h->mbEL1.i_mb_width)
-	   	  h->sh.i_first_mb -= h->mbEL1.i_mb_stride;
-   	}
-
-
-
-*/ 
-
-
-/*
-
-	for ( int i = 0; i < 10000; ++i )
-	{
-		if ( i == 0 )
-			printf (" The second while ------------------------------\n");
-	}
-	x264_wait_up_sampling_finish(h->param.i_threads);
 	
+	 x264_copy_mb_info_before_encode(h,0);
 
+	h->i_layer_id = 1;
+	h->mb.b_reencode_mb = 0;
+ 	x264_slice_header_init( h, &h->sh,& h->sps[h->i_layer_id],& h->pps[h->i_layer_id], h->i_idr_pic_id, h->i_frame_num,x264_ratecontrol_qp( h ));
+	last_thread_mb = h->sh.i_last_mb;
+	
+		
+	//WRITE_ALL_SLICES
 
+	h->mb.i_mb_width = h->mbBL.i_mb_width ;
+	h->mb.i_mb_height = h->mbBL.i_mb_height ;
+	h->mb.i_mb_count = h->mbBL.i_mb_count ;
+	h->mb.i_mb_stride = h->mbBL.i_mb_stride;
+	h->i_layer_id = 0;
+    return (void *)0;
 
-	for ( int i = 0; i < 10000; ++i )
-	{
-		if ( i == 0 )
-			printf (" The third while ------------------------------\n");
-	}
-	x264_wait_up_sampling_finish(h->param.i_threads);
-	*/
-  //  return (void *)0;
-
-//fail:
+fail:
     /* Tell other threads we're done, so they wouldn't wait for it */
-  //  if( h->param.b_sliced_threads )
-    //    x264_threadslice_cond_broadcast( h, 2 );
-   // return (void *)-1;
+   if( h->param.b_sliced_threads )
+      x264_threadslice_cond_broadcast( h, 2 );
+    return (void *)-1;
 }
+
 
 static int x264_threaded_slices_write( x264_t *h )
 {
@@ -4113,6 +4102,8 @@ int     x264_encoder_encode( x264_t *h,
         x264_frame_t *fenc = x264_frame_pop_unused( h, 0 );
         if( !fenc )
             return -1;
+
+
 
         if( x264_frame_copy_picture( h, fenc, pic_in ) < 0 )
             return -1;
@@ -4649,7 +4640,9 @@ int     x264_encoder_encode( x264_t *h,
         if( (intptr_t)x264_slices_write( h ) )
             return -1;
     }
-	
+
+
+
     return x264_encoder_frame_end( thread_oldest, thread_current, pp_nal, pi_nal, pic_out );
 	printf("encoder_encode end\n");
 }
@@ -5250,6 +5243,15 @@ void    x264_encoder_close  ( x264_t *h )
 
     if( h->i_thread_frames > 1 )
         h = h->thread[h->i_thread_phase];
+
+
+
+   /*free MotionUpsampling - BY MING*/
+   x264_free(h->mo_up);
+   x264_free(h->mo_up->m_rc_resize_params);
+   x264_free(h->mo_up->m_cPosCalc);
+   x264_free(h->mo_up->m_cMvScale);
+
 
     /* frames */
     x264_frame_delete_list( h->frames.unused[0] );

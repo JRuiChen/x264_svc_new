@@ -1279,8 +1279,10 @@ static int init_vid_filters( char *sequence, hnd_t *handle, video_info_t *info, 
 			/*BY MING*/
 			param->i_widthEL2 = param->i_width;
 			param->i_heightEL2 = param->i_height;
-			param->i_widthEL1 = param->i_width/2;
-			param->i_heightEL1 = param->i_height/2;
+/*SKY0921 E1he el2 yiyang param->i_widthEL1 = param->i_width/2;
+			param->i_heightEL1 = param->i_height/2;*/
+			param->i_widthEL1 = param->i_width;
+			param->i_heightEL1 = param->i_height;
 			if(b_Enable_SVC)
 				{
 					param->i_width /= 2;

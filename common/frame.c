@@ -55,7 +55,7 @@ static int x264_frame_internal_csp( int external_csp )
         case X264_CSP_NV16:
         case X264_CSP_I422:
         case X264_CSP_YV16:
-  //      case X264_CSP_V210:
+        //case X264_CSP_V210:
             return X264_CSP_NV16;
         case X264_CSP_I444:
         case X264_CSP_YV24:
@@ -73,6 +73,8 @@ static x264_frame_t *x264_frame_new( x264_t *h, int b_fdec )
     x264_frame_t *frame;
     int i_csp = x264_frame_internal_csp( h->param.i_csp );
     int i_mb_count = h->mb.i_mb_count;
+	/*BY MING*/
+	int i_mb_countEL1 = h->mbEL1.i_mb_count;
     int i_stride, i_width, i_lines, luma_plane_count;
 	//author:zhaowei 1
 	int i_strideEL1,i_widthEL1,i_linesEL1,i_strideEL2,i_widthEL2,i_linesEL2;
@@ -101,6 +103,7 @@ static x264_frame_t *x264_frame_new( x264_t *h, int b_fdec )
 	//printf("---%d----%d------%d---------\n",h->mb.i_mb_width,h->mbEL1.i_mb_width,h->mbEL2.i_mb_width);
 	//author:zhaowei 6  
 	if(b_Enable_SVC){
+
 		/* BY MING*/
 		i_width= h->mb.i_mb_width*16;
     	i_lines  = h->mb.i_mb_height*16;
@@ -113,6 +116,7 @@ static x264_frame_t *x264_frame_new( x264_t *h, int b_fdec )
     	i_strideEL2= align_stride( i_widthEL2 + 2*PADH, align, disalign );
 	}
     dst_s = align_stride( i_width*2 + 2*PADH, align, disalign );  //add by chenjie
+
     if( i_csp == X264_CSP_NV12 || i_csp == X264_CSP_NV16 )
     {
         luma_plane_count = 1;
@@ -124,7 +128,9 @@ static x264_frame_t *x264_frame_new( x264_t *h, int b_fdec )
             frame->i_stride[i] = i_stride;
 			//printf("-=-=stride[%d] = %d-=-=-\n",i,i_width);
         }
-		//author:zhaowei ??DT??????yuv 4:2:0ààDíμ?
+
+		//author:zhaowei 只修改针对yuv 4:2:0类型的
+
 		if(b_Enable_SVC){
 			for( int i = 0; i < 2; i++ )
        		{
@@ -250,18 +256,41 @@ static x264_frame_t *x264_frame_new( x264_t *h, int b_fdec )
     {
         PREALLOC( frame->mb_type, i_mb_count * sizeof(int8_t) );
         PREALLOC( frame->mb_partition, i_mb_count * sizeof(uint8_t) );
+		/*BY MING*/
+        PREALLOC(frame->sub_partition,i_mb_count * sizeof(uint8_t) * 4);
+		
         PREALLOC( frame->mv[0], 2*16 * i_mb_count * sizeof(int16_t) );
         PREALLOC( frame->mv16x16, 2*(i_mb_count+1) * sizeof(int16_t) );
         PREALLOC( frame->ref[0], 4 * i_mb_count * sizeof(int8_t) );
-        if( h->param.i_bframe )
+
+
+		/*PREALLOC mb_type and mb_partition .... for EL1 - BY MING*/
+		PREALLOC(frame->mbEL1_type,i_mb_countEL1 * sizeof(int8_t));
+		PREALLOC(frame->mbEL1_partition,i_mb_countEL1 * sizeof(uint8_t));
+		PREALLOC(frame->sub_partitionEL1,i_mb_countEL1 * sizeof(uint8_t) * 4);
+		PREALLOC(frame->mvEL1[0],2*16*i_mb_countEL1 * sizeof(int16_t));
+		PREALLOC(frame->mvEL116x16,2*(i_mb_countEL1 + 1) * sizeof(int16_t));
+		PREALLOC(frame->refEL1[0],4 * i_mb_countEL1 * sizeof(int8_t));
+
+		if( h->param.i_bframe )
         {
             PREALLOC( frame->mv[1], 2*16 * i_mb_count * sizeof(int16_t) );
             PREALLOC( frame->ref[1], 4 * i_mb_count * sizeof(int8_t) );
+
+			/*BY MING*/
+			PREALLOC(frame->mvEL1[1],2*16*i_mb_countEL1 * sizeof(int16_t));
+			PREALLOC(frame->refEL1[1], 4 * i_mb_countEL1 * sizeof(int8_t));
+			
         }
         else
         {
             frame->mv[1]  = NULL;
             frame->ref[1] = NULL;
+
+			/*BY MING*/
+            frame->mvEL1[1] = NULL;
+			frame->refEL1[1] = NULL;
+			
         }
         PREALLOC( frame->i_row_bits, i_lines/16 * sizeof(int) );
         PREALLOC( frame->f_row_qp, i_lines/16 * sizeof(float) );
@@ -269,9 +298,17 @@ static x264_frame_t *x264_frame_new( x264_t *h, int b_fdec )
         if( h->param.analyse.i_me_method >= X264_ME_ESA )
             PREALLOC( frame->buffer[3], frame->i_stride[0] * (frame->i_lines[0] + 2*i_padv) * sizeof(uint16_t) << h->frames.b_have_sub8x8_esa );
         if( PARAM_INTERLACED )
+        {
             PREALLOC( frame->field, i_mb_count * sizeof(uint8_t) );
+			/*BY MING*/
+			PREALLOC( frame->fieldEL1,i_mb_countEL1 * sizeof(uint8_t));
+        }
         if( h->param.analyse.b_mb_info )
+        {
             PREALLOC( frame->effective_qp, i_mb_count * sizeof(uint8_t) );
+			/*BY MING*/
+			PREALLOC(frame->effective_qpEL1, i_mb_countEL1 * sizeof(uint8_t));
+        }
     }
     else /* fenc frame */
     {
@@ -484,8 +521,8 @@ int x264_frame_copy_picture( x264_t *h, x264_frame_t *dst, x264_picture_t *src )
         return -1;
     }
 #endif
-
- /*   if( BIT_DEPTH != 10 && i_csp == X264_CSP_V210 )
+/*
+    if( BIT_DEPTH != 10 && i_csp == X264_CSP_V210 )
     {
         x264_log( h, X264_LOG_ERROR, "v210 input is only compatible with bit-depth of 10 bits\n" );
         return -1;
@@ -511,7 +548,8 @@ int x264_frame_copy_picture( x264_t *h, x264_frame_t *dst, x264_picture_t *src )
 	//author:zhaowei
 	int strideEL1[3];
 	int strideEL2[3];
- /*   if( i_csp == X264_CSP_V210 )
+
+   /* if( i_csp == X264_CSP_V210 )
     {
          stride[0] = src->img.i_stride[0];
          pix[0] = src->img.plane[0];
@@ -520,9 +558,9 @@ int x264_frame_copy_picture( x264_t *h, x264_frame_t *dst, x264_picture_t *src )
                                              dst->plane[1], dst->i_stride[1],
                                              (uint32_t *)pix[0], stride[0]/sizeof(uint32_t), h->param.i_width, h->param.i_height );
     }*/
-    
-//    else if( i_csp >= X264_CSP_BGR )
-    if( i_csp >= X264_CSP_BGR )
+
+	//else if( i_csp >= X264_CSP_BGR )
+	if(i_csp >= X264_CSP_BGR)
     {
          stride[0] = src->img.i_stride[0];
          pix[0] = src->img.plane[0];
@@ -541,39 +579,38 @@ int x264_frame_copy_picture( x264_t *h, x264_frame_t *dst, x264_picture_t *src )
     {
         int v_shift = CHROMA_V_SHIFT;
 		//author:zhaowei
+
 		//FILE *fileEL1;
 		//FILE *fileEL2;i_layer_number
 		FILE *fileEL0;
 		if(b_Enable_SVC){
-			//printf("SVC\n");
-			//printf("----dst->stride[0]=%d  dst->strideEL1[0] = %d---dst->strideEL2[0] = %d\n",dst->i_stride[0],dst->i_strideEL1[0],dst->i_strideEL2[0]);
-			//FILE *file = fopen ("111aframe.yuv", "wb" );
-			//FILE *file1 = fopen ("111222aframe.yuv", "wb" );
-			//fileEL2 = fopen ("1EL2.yuv", "ab+" );
-			//fileEL1 = fopen ("1EL1.yuv", "ab+" );
-			//fileEL0 = fopen ("1EL0.yuv", "ab+" );
+
+
 			get_plane_ptr( h, src, &pixEL2[0], &strideEL2[0], 0, 0, 0 );
 			h->mc.plane_copy( dst->planeEL2[0], dst->i_strideEL2[0], (pixel*)pixEL2[0],
                           strideEL2[0]/sizeof(pixel), h->param.i_widthEL2, h->param.i_heightEL2 );
-           	//writeCsp1(dst->planeEL2[0],fileEL2,h->param.i_width,h->param.i_height, dst->i_strideEL2[0]/sizeof(pixel));
+			//x264_frame_expand_layers1(h->param.i_width,h->param.i_height,h->param.i_width/2,h->param.i_height/2);
+
 			x264_frame_expand_layers(h,dst->planeEL1[0],dst->i_strideEL1[0],
 				dst->planeEL2[0],dst->i_strideEL2[0],h->param.i_widthEL2,
 				h->param.i_heightEL2,h->param.i_widthEL1,
 				h->param.i_heightEL1);
 
-			//writeCsp1(dst->planeEL1[0],fileEL1,h->param.i_width/2,h->param.i_height/2, dst->i_strideEL1[0]/sizeof(pixel));
+
 			x264_frame_expand_layers(h,dst->plane[0],dst->i_stride[0],
 				dst->planeEL2[0],dst->i_strideEL2[0],h->param.i_widthEL2,
 				h->param.i_heightEL2,h->param.i_width,
 				h->param.i_height);
-			//writeCsp1(dst->plane[0],fileEL0,h->param.i_width,h->param.i_height,dst->i_stride[0]/sizeof(pixel));
+
+
 		}
 
 		else{
+
         	get_plane_ptr( h, src, &pix[0], &stride[0], 0, 0, 0 );
         	h->mc.plane_copy( dst->plane[0], dst->i_stride[0], (pixel*)pix[0],
                           stride[0]/sizeof(pixel), h->param.i_widthEL2, h->param.i_heightEL2 );
-			
+		
 		}
 		
 		
@@ -587,16 +624,10 @@ int x264_frame_copy_picture( x264_t *h, x264_frame_t *dst, x264_picture_t *src )
         {
         	//author:zhaowei
      		if(b_Enable_SVC){
-				//FILE *file = fopen ("111aframe.yuv", "wb" );
-				//fileEL1 = fopen ("1EL1.yuv", "ab+" );
+
 				int uv_swap = i_csp == X264_CSP_YV12 || i_csp == X264_CSP_YV16;//UV′?′￠?3Dòê?·?????
             	get_plane_ptr( h, src, &pixEL2[1], &strideEL2[1], uv_swap ? 2 : 1, 1, v_shift );
             	get_plane_ptr( h, src, &pixEL2[2], &strideEL2[2], uv_swap ? 1 : 2, 1, v_shift );
-					//printf("->>>>>>>strideEL2[2]= %d\n",strideEL2[2]);getchar();
-				//fileEL2 = fopen ("1EL2.yuv", "ab+" );
-				//writeCsp1(pixEL2[1], fileEL2,h->param.i_width>>1, h->param.i_height>>v_shift,h->param.i_width>>1);
-				//fileEL2 = fopen ("1EL2.yuv", "ab+" );
-				//writeCsp1(pixEL2[2], fileEL2,h->param.i_width>>1, h->param.i_height>>v_shift,h->param.i_width>>1);
 				h->mc.plane_copy_interleave( dst->planeEL2[1], dst->i_strideEL2[1],
                                          (pixel*)pixEL2[1], strideEL2[1]/sizeof(pixel),
                                          (pixel*)pixEL2[2], strideEL2[2]/sizeof(pixel),
@@ -605,49 +636,50 @@ int x264_frame_copy_picture( x264_t *h, x264_frame_t *dst, x264_picture_t *src )
 				pixU = malloc(sizeof(pixel)*(h->param.i_width)*(h->param.i_height));
 				pixV = malloc(sizeof(pixel)*(h->param.i_width)*(h->param.i_height));
 				x264_frame_expand_layers(h,pixU,h->param.i_width,
-				pixEL2[1],strideEL2[1],h->param.i_widthEL2>>1,
-				h->param.i_heightEL2>>1,h->param.i_width,
-				h->param.i_height);
-				//writeCsp1(pixU,fileEL1,h->param.i_width/i_sample_width/i_sample_width,h->param.i_height/i_sample_height/i_sample_height,h->param.i_width/i_sample_width/i_sample_width);
 
+				pixEL2[1],strideEL2[1],h->param.i_widthEL2/2,
+				h->param.i_heightEL2/2,h->param.i_widthEL1/2,
+				h->param.i_heightEL1/2);
+				
 				x264_frame_expand_layers(h,pixV,h->param.i_width,
-				pixEL2[2],strideEL2[2],h->param.i_widthEL2>>1,
-				h->param.i_heightEL2>>1,h->param.i_width,
-				h->param.i_height);
-				//fileEL1 = fopen("1EL1.yuv", "ab+");
-				//writeCsp1(pixV,fileEL1,h->param.i_width/i_sample_width/i_sample_width,h->param.i_height/i_sample_height/i_sample_height,h->param.i_width/i_sample_width/i_sample_width);
+				pixEL2[2],strideEL2[2],h->param.i_widthEL2/2,
+				h->param.i_heightEL2/2,h->param.i_widthEL1/2,
+				h->param.i_heightEL1/2);
+
 				h->mc.plane_copy_interleave( dst->planeEL1[1], dst->i_strideEL1[1],
                                          (pixel*)pixU, h->param.i_width,
                                          (pixel*)pixV, h->param.i_width,
-                                         h->param.i_widthEL2/((h->param.i_layer_number-1)*i_sample_width), h->param.i_heightEL2>>(v_shift*(h->param.i_layer_number-1)));
+                                         h->param.i_widthEL2>>1, h->param.i_heightEL2>>v_shift );
+
 				free(pixU);
 				free(pixV);
-				//UV downsample
-				//fileEL0 = fopen ("1EL0.yuv", "ab+" );
-				pixU = malloc(sizeof(pixel)*(h->param.i_width>>1)*(h->param.i_height>>1));
-				pixV = malloc(sizeof(pixel)*(h->param.i_width>>1)*(h->param.i_height>>1));
-				x264_frame_expand_layers(h,pixU,h->param.i_width>>1,
-				pixEL2[1],strideEL2[1],h->param.i_widthEL2>>1,
-				h->param.i_heightEL2>>1,h->param.i_width>>1,
-				h->param.i_height>>1);
-				//writeCsp1(pixU,fileEL0,h->param.i_width/2,h->param.i_height/2,h->param.i_width/2);
 
-				x264_frame_expand_layers(h,pixV,h->param.i_width>>1,
-				pixEL2[2],strideEL2[2],h->param.i_widthEL2>>1,
-				h->param.i_heightEL2>>1,h->param.i_width>>1,
-				h->param.i_height>>1);
-				//fileEL0 = fopen("1EL0.yuv", "ab+");
-				//writeCsp1(pixV,fileEL0,h->param.i_width/2,h->param.i_height/2,h->param.i_width/2);
+
+				pixU = malloc(sizeof(pixel)*(h->param.i_width/2)*(h->param.i_height/2));
+				pixV = malloc(sizeof(pixel)*(h->param.i_width/2)*(h->param.i_height/2));
+				x264_frame_expand_layers(h,pixU,h->param.i_width/2,
+				pixEL2[1],strideEL2[1],h->param.i_widthEL2/2,
+				h->param.i_heightEL2/2,h->param.i_width/2,
+				h->param.i_height/2);
+
+
+				x264_frame_expand_layers(h,pixV,h->param.i_width/2,
+				pixEL2[2],strideEL2[2],h->param.i_widthEL2/2,
+				h->param.i_heightEL2/2,h->param.i_width/2,
+				h->param.i_height/2);
+
 				h->mc.plane_copy_interleave( dst->plane[1], dst->i_stride[1],
-                                         (pixel*)pixU, h->param.i_width>>1,
-                                         (pixel*)pixV, h->param.i_width>>1,
-                                         h->param.i_widthEL2/(h->param.i_layer_number*i_sample_width), h->param.i_heightEL2>>(h->param.i_layer_number*v_shift));
+                                         (pixel*)pixU, h->param.i_width/2,
+                                         (pixel*)pixV, h->param.i_width/2,
+                                         h->param.i_widthEL2>>1>>1, h->param.i_heightEL2>>v_shift>>v_shift );
 				free(pixU);
 				free(pixV);
           
 			}
 			else{
+
             	int uv_swap = i_csp == X264_CSP_YV12 || i_csp == X264_CSP_YV16;//UV′?′￠?3Dòê?·?????
+
             	get_plane_ptr( h, src, &pix[1], &stride[1], uv_swap ? 2 : 1, 1, v_shift );
             	get_plane_ptr( h, src, &pix[2], &stride[2], uv_swap ? 1 : 2, 1, v_shift );
             	h->mc.plane_copy_interleave( dst->plane[1], dst->i_stride[1],
@@ -667,7 +699,61 @@ int x264_frame_copy_picture( x264_t *h, x264_frame_t *dst, x264_picture_t *src )
         }
     }
 
-	
+
+
+
+	/*set cPP from cRP -BY MING */
+
+
+
+ 	h->cRP.m_bRefLayerFrameMbsOnlyFlag   = 1;
+  	h->cRP.m_bFrameMbsOnlyFlag           = 1;
+    h->cRP.m_bRefLayerFieldPicFlag       = 0;
+    h->cRP.m_bFieldPicFlag               = 0;
+    h->cRP.m_bRefLayerBotFieldFlag       = 0;
+    h->cRP.m_bBotFieldFlag               = 0;
+    h->cRP.m_bRefLayerIsMbAffFrame       = 0;
+    h->cRP.m_bIsMbAffFrame               = 0;
+    h->cRP.m_iRefLayerChromaPhaseX       = -1;
+    h->cRP.m_iRefLayerChromaPhaseY       = 0;
+    h->cRP.m_iChromaPhaseX               = -1;
+    h->cRP.m_iChromaPhaseY               = 0;
+    h->cRP.m_iRefLayerFrmWidth           = h->param.i_width;
+    h->cRP.m_iRefLayerFrmHeight          = h->param.i_height;
+    h->cRP.m_iScaledRefFrmWidth          = 0;
+    h->cRP.m_iScaledRefFrmHeight         = 0;
+    h->cRP.m_iFrameWidth                 = h->param.i_widthEL1;
+    h->cRP.m_iFrameHeight                = h->param.i_heightEL1;
+    h->cRP.m_iLeftFrmOffset              = 0;
+    h->cRP.m_iTopFrmOffset               = 0;
+    h->cRP.m_iExtendedSpatialScalability = 0;
+    h->cRP.m_iLevelIdc                   = 0; 
+    h->cRP.m_iScaledRefFrmWidth  = gMax( h->cRP.m_iRefLayerFrmWidth,  h->cRP.m_iFrameWidth  );
+    h->cRP.m_iScaledRefFrmHeight = gMax( h->cRP.m_iRefLayerFrmHeight, h->cRP.m_iFrameHeight ); 
+
+
+	memcpy(h->mo_up->m_rc_resize_params,&(h->cRP),sizeof(ResizeParameters));
+
+    if(h->fdec)
+    {
+	h->fdec->cPP.m_iScaledRefFrmWidth = h->cRP.m_iScaledRefFrmWidth;
+	h->fdec->cPP.m_iScaledRefFrmHeight = h->cRP.m_iScaledRefFrmHeight;
+	h->fdec->cPP.m_iLeftFrmOffset = h->cRP.m_iLeftFrmOffset;
+	h->fdec->cPP.m_iTopFrmOffset = h->cRP.m_iTopFrmOffset;
+	h->fdec->cPP.m_iRefLayerChromaPhaseX = h->cRP.m_iRefLayerChromaPhaseX;
+	h->fdec->cPP.m_iRefLayerChromaPhaseY = h->cRP.m_iRefLayerChromaPhaseY;
+    }
+
+
+    if(h->fenc)
+    {
+	h->fenc->cPP.m_iScaledRefFrmWidth = h->cRP.m_iScaledRefFrmWidth;
+	h->fenc->cPP.m_iScaledRefFrmHeight = h->cRP.m_iScaledRefFrmHeight;
+	h->fenc->cPP.m_iLeftFrmOffset = h->cRP.m_iLeftFrmOffset;
+	h->fenc->cPP.m_iTopFrmOffset = h->cRP.m_iTopFrmOffset;
+	h->fenc->cPP.m_iRefLayerChromaPhaseX = h->cRP.m_iRefLayerChromaPhaseX;
+	h->fenc->cPP.m_iRefLayerChromaPhaseY = h->cRP.m_iRefLayerChromaPhaseY;
+    }
 	printf("copy end!\n");
 
     return 0;
@@ -839,7 +925,7 @@ void x264_frame_expand_border_chroma( x264_t *h, x264_frame_t *frame, int plane 
 void x264_frame_expand_border_mod16( x264_t *h, x264_frame_t *frame )
 {	printf("x264_frame_expand_border_mod16\n");
 	//b_Enable_SVC = 0;
-	if(b_Enable_SVC){
+	if(!b_Enable_SVC){
 		for( int i = 0; i < frame->i_plane; i++ )
     	{
     	/*BY MING*/
@@ -951,7 +1037,7 @@ void x264_frame_expand_border_mod16( x264_t *h, x264_frame_t *frame )
 void x264_expand_border_mbpair( x264_t *h, int mb_x, int mb_y )
 {
 	printf("x264_expand_border_mbpair\n");
-    if(b_Enable_SVC){
+    if(!b_Enable_SVC){
 		for( int i = 0; i < h->fenc->i_plane; i++ )
     	{
         	int v_shift = i && CHROMA_V_SHIFT;
@@ -1224,7 +1310,8 @@ int xClip( int iValue, int imin, int imax )
 }
 int CeilLog2( int i )
 {
-  int s = 0; i--;
+  int s = 0; 
+  i--;
   while( i > 0 )
   {
     s++;
@@ -1232,6 +1319,7 @@ int CeilLog2( int i )
   }
   return s;
 }
+
 
 void writeCsp(pixel* src, pixel* dst, int width, int height,int stride)
 {
@@ -1247,16 +1335,15 @@ void writeCsp(pixel* src, pixel* dst, int width, int height,int stride)
 
 
 
-
 int readColorComponent(pixel *p,pixel *src,int width,int height,int stride,int lines,int src_stride){
   int iMaxPadWidth  = gMin( stride, ( ( width  + 15 ) >> 4 ) << 4 );
-  int iMaxPadHeight = gMin( lines,  ( ( height + 31 ) >> 5 ) << 5 );
+  int iMaxPadHeight = gMin( lines,  ( ( height + 31 ) >> 5 ) << 5 ); 
   int i = 0;
   for( ; i < height; i++ )
   {
     unsigned char* buffer = p + i * stride;
-    //int            rsize  = (int)fread( buffer, sizeof(unsigned char), width, file );
-    memcpy(buffer,src,width*sizeof(unsigned char));
+   // int            rsize  = (int)fread( buffer, sizeof(unsigned char), width, file );
+	memcpy(buffer,src,width*sizeof(unsigned char));
     src += src_stride;
     int xp = width; 
     for( ;xp < iMaxPadWidth; xp++ )
@@ -1277,6 +1364,7 @@ int readColorComponent(pixel *p,pixel *src,int width,int height,int stride,int l
   }
   return 0;   
 }
+
 int readColorComponent1(pixel* p, FILE* file, int width, int height,int stride,int lines)
 {
   int iMaxPadWidth  = gMin( stride, ( ( width  + 15 ) >> 4 ) << 4 );
@@ -1310,6 +1398,7 @@ int readColorComponent1(pixel* p, FILE* file, int width, int height,int stride,i
   }
   return 0;
 }
+
 void xCopyToImageBuffer( unsigned char* pucSrc, int iWidth, int iHeight, int iStride,DownConvert* cDownConvert )
 {
   int* piDes = cDownConvert->m_paiImageBuffer;
@@ -2034,7 +2123,9 @@ void resampleFrame( pixel*         p,
 }
 
 void x264_frame_expand_layers(x264_t *h,pixel *dst,int dst_stride,pixel *src,int src_stride,int win,int hin,int wout,int hout){
-	//printf(" in x264_frame_expand_layers  src_stride = %d,win = %d,wout = %d\n",src_stride,win,wout);
+	printf(" in x264_frame_expand_layers  src_stride = %d,win = %d,wout = %d\n",src_stride,win,wout);
+
+
 
 	pixel* p;
     int maxWidth = gMax(win,wout);
@@ -2051,14 +2142,10 @@ void x264_frame_expand_layers(x264_t *h,pixel *dst,int dst_stride,pixel *src,int
     int maxheight = ( ( maxHeight + 15 ) >> 4 ) << 4;
     int size = maxwidth*maxheight;
     p = malloc(sizeof(pixel)*size);
-    //CHECKED_MALLOC( p, sizeof(pixel)*size );
     int stride  = maxwidth;
     int lines   = maxheight;
-    //readColorComponent(p,src,width,height,stride,lines);
-    
+    //readColorComponent(p,src,width,height,stride,lines);    
     readColorComponent(p,src, width, height, stride, lines, src_stride);
-  
-     
   	int   resamplingMethod            = 0;
   	int   resamplingMode              = 0;   
   	int   resampling                  = 0;   
@@ -2088,6 +2175,7 @@ void x264_frame_expand_layers(x264_t *h,pixel *dst,int dst_stride,pixel *src,int
     cRP.m_iLevelIdc                   = 0; 
     cRP.m_iScaledRefFrmWidth  = gMax( cRP.m_iRefLayerFrmWidth,  cRP.m_iFrameWidth  );
     cRP.m_iScaledRefFrmHeight = gMax( cRP.m_iRefLayerFrmHeight, cRP.m_iFrameHeight );   
+	
     upsampling  = ( cRP.m_iRefLayerFrmWidth < cRP.m_iFrameWidth ) || ( cRP.m_iRefLayerFrmHeight < cRP.m_iFrameHeight );
 
     DownConvert *cDownConvert = (DownConvert*)malloc(sizeof(DownConvert));//
@@ -2103,20 +2191,25 @@ void x264_frame_expand_layers(x264_t *h,pixel *dst,int dst_stride,pixel *src,int
   	  cDownConvertInit(maxWidth, maxHeight,0,cDownConvert); 
     } 
     resampleFrame(p, cDownConvert, cRP, resamplingMethod, resamplingMode, resampling, upsampling, 1,stride );
-    //writeCsp(p,outputFile,wout,hout,stride);
+
+    //h->cRP = cRP;
+    //memcpy(h->mo_up->m_rc_resize_params,&(h->cRP),sizeof(ResizeParameters));
+	//writeCsp(p,outputFile,wout,hout,stride);
    //writeCsp(pixel* src, pixel* dst, int width, int height,int stride)
- 	//h->mc.plane_copy(dst,dst_stride,(pixel*)p,stride, wout, hout);
-	h->mc.plane_copy(dst,dst_stride,(pixel*)p,stride, wout, hout);
- 	//writeCsp(p,outputfile,wout,hout,stride);
 
+   	//printf("writeCsp1:--%d---width%d--height%d\n",stride,width,height);
+   	//FILE* file = fopen("1TEST.yuv","wb");
+   	//writeCsp1(p,file,wout,hout,stride);
+	//fclose(file);
+	
+ 	h->mc.plane_copy(dst,dst_stride,(pixel*)p,stride, wout, hout);
 }
-
 
 void x264_frame_expand_layers1(int win,int hin,int wout,int hout){
     printf("in x264_frame_expand_layers1\n");
 	//printf("src_stride = %d,win = %d,wout = %d\n",src_stride,win,wout);
-    FILE *file = fopen( "1EL2.yuv", "rb" );
-    FILE *outputFile= fopen ("1EL2down.yuv", "wb" );
+    //FILE *file = fopen( "1EL2.yuv", "rb" );
+    //FILE *outputFile= fopen ("1EL2down.yuv", "wb" );
     pixel* p;
     int maxWidth = gMax(win,wout);
     int maxHeight = gMax(hin,hout);
@@ -2134,7 +2227,7 @@ void x264_frame_expand_layers1(int win,int hin,int wout,int hout){
     p = malloc(sizeof(pixel)*size);
     int stride  = maxwidth;
     int lines   = maxheight;
-    readColorComponent1(p,file,width,height,stride,lines);
+    //readColorComponent1(p,file,width,height,stride,lines);
     //readColorComponent(p,0, width, height, stride, lines, 0);
     //int readColorComponent(pixel *p,pixel *file,int width,int height,int stride,int lines,int src_stride)
   
@@ -2182,10 +2275,11 @@ void x264_frame_expand_layers1(int win,int hin,int wout,int hout){
     maxHeight     = ( ( maxHeight * minHRnd32 + ( minHeight << 4 ) - 1 ) / ( minHeight << 4 ) ) << 4;
 	cDownConvertInit(maxWidth, maxHeight,0,cDownConvert); 
   } 
+  
    resampleFrame(p, cDownConvert, cRP, resamplingMethod, resamplingMode, resampling, upsampling, 1,stride );
    //printf("caiyang hanshu zhong ::stride = %d\n",stride);
    //getchar();
-   writeCsp1(p,outputFile,wout,hout,stride);
+   //writeCsp1(p,outputFile,wout,hout,stride);
    //getchar();
    //writeCsp(pixel* src, pixel* dst, int width, int height,int stride)
   // h->mc.plane_copy( dst->planeEL1[0], dst->i_strideEL1[0], (pixel*)p,
@@ -2208,20 +2302,20 @@ void writeCsp1(pixel* p, FILE* file, int width, int height,int stride)
 }
 void x264_layer_upsample(x264_t *h,x264_frame_t *f,int level)
 {
-	//?????¨????DDé?2é?ù￡?2￠??é?2é?ùD??￠·?μ?frame?D??ó|μ?????
+	//对重建帧进行上采样，并将上采样信息放到frame中对应的位置
 	//Y upsample
 	if(level==0){
 		x264_frame_expand_layers(h,f->planeUpsampleEL1[0],f->i_strideEL1[0],
-				f->plane[0],f->i_stride[0],h->param.i_width/i_sample_width/i_sample_width,
-				h->param.i_height/i_sample_height/i_sample_height,h->param.i_width/i_sample_width,
-				h->param.i_height/i_sample_height);
-		uint8_t *pixU = malloc(sizeof(pixel)*(h->param.i_width/i_sample_width/i_sample_width/i_sample_width)*(h->param.i_height/i_sample_height/i_sample_height/i_sample_height));
-		uint8_t *pixV = malloc(sizeof(pixel)*(h->param.i_width/i_sample_width/i_sample_width/i_sample_width)*(h->param.i_height/i_sample_height/i_sample_height/i_sample_height));
-		uint8_t *pixUUPsample = malloc(sizeof(pixel)*(h->param.i_width/i_sample_width/i_sample_width)*(h->param.i_height/i_sample_height/i_sample_height));
-		uint8_t *pixVUPsample = malloc(sizeof(pixel)*(h->param.i_width/i_sample_width/i_sample_width)*(h->param.i_height/i_sample_height/i_sample_height));
+				f->plane[0],f->i_stride[0],h->param.i_width,
+				h->param.i_height,h->param.i_widthEL1,
+				h->param.i_heightEL1);
+		uint8_t *pixU = malloc(sizeof(pixel)*(h->param.i_width/2)*(h->param.i_height/2));
+		uint8_t *pixV = malloc(sizeof(pixel)*(h->param.i_width/2)*(h->param.i_height/2));
+		uint8_t *pixUUPsample = malloc(sizeof(pixel)*(h->param.i_widthEL1/2)*(h->param.i_heightEL1/2));
+		uint8_t *pixVUPsample = malloc(sizeof(pixel)*(h->param.i_widthEL1/2)*(h->param.i_heightEL1/2));
 		//get U , V
-		int height = h->param.i_height/i_sample_height/i_sample_height/i_sample_height;
-		int width = h->param.i_width/i_sample_width/i_sample_width/i_sample_width;
+		int height = h->param.i_height/2;
+		int width = h->param.i_width/2;
 		int stride = f->i_stride[1];
 		pixel *p = f->plane[1];
 		for(int y=0;y<height;y++,p+=stride)
@@ -2230,20 +2324,34 @@ void x264_layer_upsample(x264_t *h,x264_frame_t *f,int level)
 				pixU[x] = p[2*x];
 				pixV[x] = p[2*x+1];
 			}
-		x264_frame_expand_layers(h,pixUUPsample,h->param.i_width/i_sample_width/i_sample_width,
-				pixU,h->param.i_width/i_sample_width/i_sample_width/i_sample_width,h->param.i_width/i_sample_width/i_sample_width/i_sample_width,
-				h->param.i_height/i_sample_height/i_sample_height/i_sample_height,h->param.i_width/i_sample_width/i_sample_width,
-				h->param.i_height/i_sample_height/i_sample_height);
-		x264_frame_expand_layers(h,pixVUPsample,h->param.i_width/i_sample_width/i_sample_width,
-				pixV,h->param.i_width/i_sample_width/i_sample_width/i_sample_width,h->param.i_width/i_sample_width/i_sample_width/i_sample_width,
-				h->param.i_height/i_sample_height/i_sample_height/i_sample_height,h->param.i_width/i_sample_width/i_sample_width,
-				h->param.i_height/i_sample_height/i_sample_height);
+		x264_frame_expand_layers(h,pixUUPsample,h->param.i_width,
+				pixU,h->param.i_width/2,h->param.i_width/2,
+				h->param.i_height/2,h->param.i_width,
+				h->param.i_height);
+		x264_frame_expand_layers(h,pixVUPsample,h->param.i_width,
+				pixV,h->param.i_width/2,h->param.i_width/2,
+				h->param.i_height/2,h->param.i_width,
+				h->param.i_height);
 		h->mc.plane_copy_interleave( f->planeUpsampleEL1[1], f->i_strideEL1[1],
-                                         (pixel*)pixUUPsample, h->param.i_width/i_sample_width/i_sample_width,
-                                         (pixel*)pixVUPsample, h->param.i_width/i_sample_width/i_sample_width,
-                                         h->param.i_width/i_sample_width/i_sample_width, h->param.i_height/i_sample_height/i_sample_height);
+                                         (pixel*)pixUUPsample, h->param.i_width,
+                                         (pixel*)pixVUPsample, h->param.i_width,
+                                         h->param.i_width, h->param.i_height);
+
+        //FILE *fileUpEL1 = fopen("ttt2_ori.yuv","ab+");
+		//writeCsp1(f->plane[0],fileUpEL1,h->param.i_width,h->param.i_height,f->i_stride[0]/sizeof(pixel));
+       // fileUpEL1 = fopen("ttt_ori.yuv","ab+");
+		//writeCsp1(pixUUPsample,fileUpEL1,h->param.i_widthEL1/2,h->param.i_heightEL1/2,h->param.i_widthEL1/2);
+		//fileUpEL1 = fopen("ttt_ori.yuv","ab+");
+		//writeCsp1(pixVUPsample,fileUpEL1,h->param.i_widthEL1/2,h->param.i_heightEL1/2,h->param.i_widthEL1/2);
+        //fclose(fileUpEL1);
+		free(pixU);
+		free(pixV);
+		free(pixUUPsample);
+		free(pixVUPsample);
 				
 	}
+	/*当有三层数据时需要
+
 	else{
 		x264_frame_expand_layers(h,f->planeUpsampleEL2[0],f->i_strideEL2[0],
 				f->planeEL1[0],f->i_strideEL1[0],h->param.i_width/i_sample_width,
@@ -2278,13 +2386,11 @@ void x264_layer_upsample(x264_t *h,x264_frame_t *f,int level)
                                          h->param.i_width/i_sample_width, h->param.i_height/i_sample_height);
 
 
-	}
+
+	}*/
 	
-
+	
 }
-
-
-
 
 
 
@@ -2294,8 +2400,23 @@ int xIsInCropWindow(MotionUpsampling * mo_up)
   int i_field = (i_mbaff || mo_up->m_rc_resize_params->m_bFieldPicFlag?1:0);
   int i_mb_y0 = (mo_up->i_mby_curr >> i_mbaff) << i_field;
   int i_mb_y1 = i_mb_y0 + i_field;
-  ROFRS(mo_up->i_mbx_curr >= mo_up->i_mb_x0_crop_frm && mo_up->i_mbx_curr < mo_up->i_mb_x1_crop_frm,0);
-  ROFRS(i_mb_y0 >= mo_up->i_mb_y0_crop_frm && i_mb_y1 < mo_up->i_mb_y1_crop_frm,0);
+
+  if(!(mo_up->i_mbx_curr >= mo_up->i_mb_x0_crop_frm && mo_up->i_mbx_curr < mo_up->i_mb_x1_crop_frm))
+  {
+    return 0;
+  }
+
+  if(!(i_mb_y0 >= mo_up->i_mb_y0_crop_frm && i_mb_y1 < mo_up->i_mb_y1_crop_frm))
+  {
+   return 0;
+  }
+
+  
+  //printf("call function xIsCropWindow \n");
+
+  return 1;
+  //ROFRS(mo_up->i_mbx_curr >= mo_up->i_mb_x0_crop_frm && mo_up->i_mbx_curr < mo_up->i_mb_x1_crop_frm,0);
+  //ROFRS(i_mb_y0 >= mo_up->i_mb_y0_crop_frm && i_mb_y1 < mo_up->i_mb_y1_crop_frm,0);
   
 }
 
@@ -2306,6 +2427,13 @@ int xInitMb(MotionUpsampling* mo_up,int i_mbx_curr,int i_mby_curr,x264_t* h)
   mo_up->b_in_crop_window = xIsInCropWindow(mo_up);
   mo_up->b_intraBL = 0;
   //
+  mo_up->i_mb_type = h->sh.i_type == SLICE_TYPE_P?P_SKIP:B_SKIP;
+  mo_up->i_partition = -1;
+  mo_up->i_sub_partition[0] = D_L0_8x8;
+  mo_up->i_sub_partition[1] = D_L0_8x8;
+  mo_up->i_sub_partition[2] = D_L0_8x8;
+  mo_up->i_sub_partition[3] = D_L0_8x8;
+  
   mo_up->i_fwd_bwd = 0;
   mo_up->b_res_pred_safe = mo_up->b_in_crop_window;
   //
@@ -2315,14 +2443,14 @@ int xInitMb(MotionUpsampling* mo_up,int i_mbx_curr,int i_mby_curr,x264_t* h)
   mo_up->b_aa_base_intra[1][0] = 0;
   mo_up->b_aa_base_intra[1][1] = 0;
 
-  mo_up->i_aaai_ref_idx[0][0][0]  = BLOCK_NOT_PREDICTED;
-  mo_up->i_aaai_ref_idx[0][0][1]  = BLOCK_NOT_PREDICTED;
-  mo_up->i_aaai_ref_idx[0][1][0]  = BLOCK_NOT_PREDICTED;
-  mo_up->i_aaai_ref_idx[0][1][1]  = BLOCK_NOT_PREDICTED;
-  mo_up->i_aaai_ref_idx[1][0][0]  = BLOCK_NOT_PREDICTED;
-  mo_up->i_aaai_ref_idx[1][0][1]  = BLOCK_NOT_PREDICTED;
-  mo_up->i_aaai_ref_idx[1][1][0]  = BLOCK_NOT_PREDICTED;
-  mo_up->i_aaai_ref_idx[1][1][1]  = BLOCK_NOT_PREDICTED;
+  mo_up->i_aaai_ref_idx[0][0][0]  = -1;
+  mo_up->i_aaai_ref_idx[0][0][1]  = -1;
+  mo_up->i_aaai_ref_idx[0][1][0]  = -1;
+  mo_up->i_aaai_ref_idx[0][1][1]  = -1;
+  mo_up->i_aaai_ref_idx[1][0][0]  = -1;
+  mo_up->i_aaai_ref_idx[1][0][1]  = -1;
+  mo_up->i_aaai_ref_idx[1][1][0]  = -1;
+  mo_up->i_aaai_ref_idx[1][1][1]  = -1;
 
   /*set field mode for SNR scalability*/
   if(mo_up->b_in_crop_window && (mo_up->b_scoeff_pred || mo_up->b_tcoeff_pred))
@@ -2335,9 +2463,13 @@ int xInitMb(MotionUpsampling* mo_up,int i_mbx_curr,int i_mby_curr,x264_t* h)
 	int i_mb_offset_base = (mo_up->m_rc_resize_params->m_iRefLayerFrmWidth >> 4) * i_bot_field;
 	int i_mb_idx_base = i_mb_offset_base + i_mby_base * i_mb_stride_base + i_mbx_base;
  
-	int b_field_mb_flag = h->mbBL.field[i_mb_idx_base];
+	int b_field_mb_flag = PARAM_INTERLACED?h->mbBL.field[i_mb_idx_base]:0;
 	mo_up->b_curr_field_mb = b_field_mb_flag;
   }
+
+
+  return 0;
+ // printf("call function xInitMb \n");
 }
 
 
@@ -2350,21 +2482,34 @@ int xGetRefLayerPartIdc(MotionUpsampling* mo_up,int iXInsideCurrMB,int iYInsideC
    int iXInsideBaseMb = MSYS_INT_MAX;
    int iYInsideBaseMb = MSYS_INT_MAX;
 
+   //if((int ret = xGetRefLayerMb(mo_up,iXInsideCurrMB,iYInsideCurrMb,&iBaseMbIdx ,&iXInsideBaseMb,&iYInsideBaseMb,h)) != 0)
+   //	{
+   //	 return ret;
+   //	}
+ 
    RNOK(xGetRefLayerMb(mo_up,iXInsideCurrMB,iYInsideCurrMb,&iBaseMbIdx ,&iXInsideBaseMb,&iYInsideBaseMb,h));
 
-   
+  
    if(IS_INTRA(h->mbBL.type[iBaseMbIdx]))
    {
    	 *riPartIdc = -1;
 	 return m_nOK;
    }
+ 
 
    int iB8x8IdxBase = (( iYInsideBaseMb >> 3) << 1) + ( iXInsideBaseMb >> 3);
    int iB4x4IdxBase = ((( iYInsideBaseMb & 7 ) >> 2)  << 1) + (( iXInsideBaseMb & 7 ) >> 2);
-   int eMbModeBase = h->mbBL.mb_mode[iBaseMbIdx];
-   int eBlkModeBase = h->mbBL.blk_mode[iBaseMbIdx];
-   int b_skip_or_direct = (eMbModeBase == MODE_SKIP && h->sh.i_type == SLICE_TYPE_B);
+   //int eMbModeBase = h->mbBL.mb_mode[iBaseMbIdx];
+   //int eBlkModeBase = h->mbBL.blk_mode[iBaseMbIdx];
 
+   int eMbType = h->mbBL.type[iBaseMbIdx];
+   int ePartition = h->mbBL.partition[iBaseMbIdx];
+   int eSubPartition = h->mbBL.sub_partition[iBaseMbIdx][iB8x8IdxBase];
+   int b_skip_or_direct = ((IS_DIRECT(eMbType) || IS_SKIP(eMbType)) && h->sh.i_type == SLICE_TYPE_B);
+   	                           
+   //int b_skip_or_direct = (eMbModeBase == MODE_SKIP && h->sh.i_type == SLICE_TYPE_B);
+   
+   //printf("call function xGetRefLayerPartIdc BBBBBBBBBBBBBBBBBBBBB\n");
 
    if(b_skip_or_direct)
    {  //===== determine macroblock and sub-macroblock partition index for B_Skip and B_Direct_16x16 =====
@@ -2379,17 +2524,33 @@ int xGetRefLayerPartIdc(MotionUpsampling* mo_up,int iXInsideCurrMB,int iYInsideC
       const uint16_t aauiNxNPartIdx[6][4] = 
       {
       	   	{0,0,0,0},// MODE_SKIP (P Slice)
-      	   	{0,0,0,0},// MODE_16x16     or    BLK_8x8
-      	   	{0,0,2,2},// MODE_16x8      or    BLK_8x4
-      	   	{0,1,0,1},// MODE_8x16      or    BLK_4x8
-      	   	{0,1,2,3},// MODE_8x8       or    BLK_4x4
-      	   	{0,1,2,3}// MODE_8x8ref0
+      	   	{0,1,2,3},// D_8x8       or    D_4x4
+      	   	{0,0,2,2},// D_16x8      or    D_8x4
+      	   	{0,1,0,1},// D_8x16      or    D_4x8
+      	   	{0,0,0,0},//D_16x16     or    D_8x8
+      	   	{0,1,2,3}// D_8x8ref0
       };
+      
+      iBase8x8MbPartIdx = aauiNxNPartIdx[IS_SKIP(eMbType) && h->sh.i_type == SLICE_TYPE_P?0:ePartition - D_8x8 + 1][iB8x8IdxBase];
+	  //iBase8x8MbPartIdx = aauiNxNPartIdx[eMbModeBase][iB8x8IdxBase];
+      if(ePartition == D_8x8)
+      {
+        if(IS_SKIP(eMbType))
+        {
+          if(mo_up->i_ref_layer_dqid == 0)
+          {
+           iBase4x4SubMbPartIdx = iB4x4IdxBase;
+		   
+          }
+        }
+		else
+		{
+		  iBase4x4SubMbPartIdx = aauiNxNPartIdx[eSubPartition & 3][iB4x4IdxBase];
+		}
 
-
-	  iBase8x8MbPartIdx = aauiNxNPartIdx[eMbModeBase][iB8x8IdxBase];
-
-	  if(eMbModeBase == MODE_8x8 || eMbModeBase == MODE_8x8ref0)
+	
+      }
+	  /*if(eMbModeBase == MODE_8x8 || eMbModeBase == MODE_8x8ref0)
 	  {
 	    if(eBlkModeBase = BLK_SKIP)
 	    {
@@ -2403,7 +2564,7 @@ int xGetRefLayerPartIdc(MotionUpsampling* mo_up,int iXInsideCurrMB,int iYInsideC
 		{
 		  iBase4x4SubMbPartIdx = aauiNxNPartIdx[eBlkModeBase - BLK_8x8 + 1][iB4x4IdxBase];
 		}
-	  }
+	   }*/
    }
    
    //===== this function implements subclause G.8.6.1.1 =====
@@ -2411,27 +2572,377 @@ int xGetRefLayerPartIdc(MotionUpsampling* mo_up,int iXInsideCurrMB,int iYInsideC
    int iBase4x4BlkY = ((iBase8x8MbPartIdx >> 1) << 1) + (iBase4x4SubMbPartIdx >> 1);
    int iBase4x4BlkIdx = (iBase4x4BlkY << 2) + iBase4x4BlkX;
 
-   riPartIdc = (iBaseMbIdx << 4) + iBase4x4BlkIdx;
+   *riPartIdc = (iBaseMbIdx << 4) + iBase4x4BlkIdx;
+   //printf("call function xGetRefLayerPartIdc AAAAAAAAAAAAAAAAAAAA        *iBase8x8MbPartIdx :%d   iBase4x4BlkIdx:%d\n" ,iBase8x8MbPartIdx,iBase4x4BlkIdx);
 
+   //printf("call function xGetRefLayerPartIdc \n");
+   // printf("call function xGetRefLayerPartIdc CCCCCCCCCCCCCCCCCCCCCCCC\n");
    return m_nOK;
 
    
 }
 
-int xGetInitialBaseRefIdxAndMv(MotionUpsampling* mo_up,int i4x4BlkX,int i4x4BlkY,int eListIdx,int *riRefIdx,int *rcMv,x264_t* h)
+int xInitialMotionUpsampling(MotionUpsampling *mo_up,ResizeParameters* pcResizeParams,int b_field_resampling,
+                                                                        int b_residual_pred_check,int i_mv_threshold,x264_t* h)
 {
 
+ // printf("调用了xInitialMotionUpsampling函数\n");
+  /*CHECKED_MALLOC(mo_up->m_rc_resize_params,sizeof(ResizeParameters));
+  memset(mo_up->m_rc_resize_params,0,sizeof(ResizeParameters));
+ 
+
+  CHECKED_MALLOC(mo_up->m_cPosCalc,sizeof(PosCalcParam));
+  memset(mo_up->m_cPosCalc,0,sizeof(PosCalcParam));
+  
+  CHECKED_MALLOC(mo_up->m_cMvScale,sizeof(MvScaleParam));
+  memset(mo_up->m_cMvScale,0,sizeof(MvScaleParam));
+*/
+  
+  /*initial motionUpsampling struct - BY MING*/
+{
+   //ROF(h->sh);
+  
+   ROF(mo_up->m_rc_resize_params);
+   mo_up->b_check_residual_pred = b_residual_pred_check;
+   mo_up->b_direct8x8_inference = h->sh.pps->b_transform_8x8_mode;
+   mo_up->i_mv_threshold = i_mv_threshold;
+   mo_up->b_curr_field_mb = b_field_resampling;
+   mo_up->e_slice_type = h->sh.i_type;
+   mo_up->i_ref_layer_dqid = h->sh.i_ref_layer_dq_id;
+   mo_up->i_max_list_idx = mo_up->e_slice_type == SLICE_TYPE_B ? 2:(mo_up->e_slice_type == SLICE_TYPE_I?0:1);
+   mo_up->b_scoeff_pred = h->sh.b_scoeff_residual_pred_flag;
+   mo_up->b_tcoeff_pred = h->sh.b_tcoeff_level_pred_flag;
+
+   mo_up->m_rc_resize_params = pcResizeParams;
+  // , m_cPosCalc            ( rcResizeParameters )
+  //, m_cMvScale            ( rcResizeParameters, pcRefFrameList0, pcRefFrameList1 )
+  //, m_rcMbDataCtrlBase    ( rcMbDataCtrlBase )
+
+  mo_up->i_mb_x0_crop_frm = (pcResizeParams->m_iLeftFrmOffset + 15) / 16;
+  mo_up->i_mb_y0_crop_frm = (pcResizeParams->m_iTopFrmOffset + 15) / 16;
+  mo_up->i_mb_x1_crop_frm = (pcResizeParams->m_iLeftFrmOffset + pcResizeParams->m_iScaledRefFrmWidth) / 16;
+  mo_up->i_mb_y1_crop_frm = (pcResizeParams->m_iTopFrmOffset + pcResizeParams->m_iScaledRefFrmHeight) / 16;
 }
+
+
+
+/*initial PosCalcParam struct - BY MING*/
+{
+
+  // m_bRSChangeFlag = rcResizeParameters.getRestrictedSpatialResolutionChangeFlag();
+  mo_up->m_cPosCalc->m_iBaseMbAff = pcResizeParams->m_bRefLayerIsMbAffFrame ? 1: 0;
+  mo_up->m_cPosCalc->m_iCurrMbAff = pcResizeParams->m_bIsMbAffFrame ?1:0;
+  mo_up->m_cPosCalc->m_iBaseField = pcResizeParams->m_bRefLayerFieldPicFlag?1:0;
+  mo_up->m_cPosCalc->m_iCurrField = pcResizeParams->m_bFieldPicFlag?1:0;
+  mo_up->m_cPosCalc->m_iBaseBotField = pcResizeParams->m_bRefLayerBotFieldFlag?1:0;
+  mo_up->m_cPosCalc->m_iCurrBotField = pcResizeParams->m_bBotFieldFlag;
+  mo_up->m_cPosCalc->m_iRefW = pcResizeParams->m_iRefLayerFrmWidth;
+  mo_up->m_cPosCalc->m_iRefH = pcResizeParams->m_iRefLayerFrmHeight;
+  mo_up->m_cPosCalc->m_iScaledW = pcResizeParams->m_iScaledRefFrmWidth;
+  mo_up->m_cPosCalc->m_iScaledH = pcResizeParams->m_iScaledRefFrmHeight;
+  mo_up->m_cPosCalc->m_iOffsetX = pcResizeParams->m_iLeftFrmOffset;
+  mo_up->m_cPosCalc->m_iOffsetY = pcResizeParams->m_iTopFrmOffset;
+  mo_up->m_cPosCalc->m_iShiftX = pcResizeParams->m_iLevelIdc <= 30 ?16:31 - CeilLog2(mo_up->m_cPosCalc->m_iRefW);
+  mo_up->m_cPosCalc->m_iShiftY = pcResizeParams->m_iLevelIdc <= 30 ?16:31 - CeilLog2(mo_up->m_cPosCalc->m_iRefH);
+  mo_up->m_cPosCalc->m_iScaleX = ( ((uint8_t)mo_up->m_cPosCalc->m_iRefW << mo_up->m_cPosCalc->m_iShiftX) +
+  	                                     ((uint8_t)mo_up->m_cPosCalc->m_iScaledW >> 1)) /mo_up->m_cPosCalc->m_iScaledW;
+
+  mo_up->m_cPosCalc->m_iScaleY = ( ((uint8_t)mo_up->m_cPosCalc->m_iRefH<< mo_up->m_cPosCalc->m_iShiftY) +
+  	                                     ((uint8_t)mo_up->m_cPosCalc->m_iScaledH >> 1)) /mo_up->m_cPosCalc->m_iScaledH;
+
+  mo_up->m_cPosCalc->m_iAddX = (1 << (mo_up->m_cPosCalc->m_iShiftX - 1)) - mo_up->m_cPosCalc->m_iOffsetX*mo_up->m_cPosCalc->m_iScaleX;
+  mo_up->m_cPosCalc->m_iAddY = (1 << (mo_up->m_cPosCalc->m_iShiftY - 1)) - mo_up->m_cPosCalc->m_iOffsetY*mo_up->m_cPosCalc->m_iScaleY;
+}
+
+
+
+    
+  /*initial motionUpsampling struct - BY MING*/
+  {
+    //mo_up->m_cMvScale->m_bRSChangeFlag = pcResizeParams->RestrictedSpatialResolutionChangeFlag;
+    mo_up->m_cMvScale->m_bCropChangeFlag = pcResizeParams->m_iExtendedSpatialScalability == 2?1:0;
+	mo_up->m_cMvScale->m_iCurrMbAff = pcResizeParams->m_bIsMbAffFrame?1:0;
+	mo_up->m_cMvScale->m_iBaseField = pcResizeParams->m_bRefLayerFieldPicFlag?1:0;
+	mo_up->m_cMvScale->m_iCurrField = pcResizeParams->m_bFieldPicFlag;
+	mo_up->m_cMvScale->m_iRefW = pcResizeParams->m_iRefLayerFrmWidth;
+	mo_up->m_cMvScale->m_iRefH = pcResizeParams->m_iRefLayerFrmHeight;
+	mo_up->m_cMvScale->m_iScaledW = pcResizeParams->m_iScaledRefFrmWidth;
+	mo_up->m_cMvScale->m_iScaledH = pcResizeParams->m_iScaledRefFrmHeight;
+	mo_up->m_cMvScale->m_iOffsetX = pcResizeParams->m_iLeftFrmOffset;
+	mo_up->m_cMvScale->m_iOffsetY = pcResizeParams->m_iTopFrmOffset;
+	mo_up->m_cMvScale->m_iScaleX = (int) (((int64_t)mo_up->m_cMvScale->m_iScaledW << 16  
+		                                                 + (mo_up->m_cMvScale->m_iRefW >> 1))/mo_up->m_cMvScale->m_iRefW);
+	mo_up->m_cMvScale->m_iScaleY = (int) (((int64_t)mo_up->m_cMvScale->m_iScaledH<< 16  
+		                                                 + (mo_up->m_cMvScale->m_iRefH>> 1))/mo_up->m_cMvScale->m_iRefH);
+    if(mo_up->m_cMvScale->m_bCropChangeFlag)
+    {
+      int iCurrLO = pcResizeParams->m_iLeftFrmOffset;
+	  int iCurrTO = pcResizeParams->m_iTopFrmOffset;
+	  int iCurrRO = pcResizeParams->m_iFrameWidth - pcResizeParams->m_iTopFrmOffset - pcResizeParams->m_iScaledRefFrmHeight;
+	  int iCurrBO = pcResizeParams->m_iFrameHeight - pcResizeParams->m_iTopFrmOffset - pcResizeParams->m_iScaledRefFrmHeight;
+
+	  for(int iListIdx = 0;iListIdx < 2;iListIdx ++)
+	  { 
+
+	    mo_up->m_cMvScale->m_aiNumActive[iListIdx] = h->i_ref[iListIdx];
+		for(int iIdx= 0;iIdx < h->i_ref[iListIdx];iIdx++)
+		{
+		 // AOF(h->fref[iListIdx]);
+		  if(!h->fref[iListIdx])
+		  {
+		    printf("h->fref[iListIdx] is NULL\n");
+		  }
+		  PictureParameters cPP = h->fref[iListIdx][iIdx]->cPP;
+		  int iRefLO = cPP.m_iLeftFrmOffset;
+		  int iRefTO = cPP.m_iTopFrmOffset;
+		  int iRefRO = pcResizeParams->m_iFrameWidth - cPP.m_iLeftFrmOffset - cPP.m_iScaledRefFrmWidth;
+		  int iRefBO = pcResizeParams->m_iFrameHeight - cPP.m_iTopFrmOffset - cPP.m_iScaledRefFrmHeight;
+          mo_up->m_cMvScale->m_aaidOX[iListIdx][iIdx] = iCurrLO - iRefLO;
+		  mo_up->m_cMvScale->m_aaidOY[iListIdx][iIdx] = iCurrTO - iRefTO;
+		  mo_up->m_cMvScale->m_aaidSW[iListIdx][iIdx] = iCurrRO - iRefRO + mo_up->m_cMvScale->m_aaidOX[iListIdx][iIdx];
+		  mo_up->m_cMvScale->m_aaidSH[iListIdx][iIdx] = iCurrBO - iRefBO + mo_up->m_cMvScale->m_aaidOY[iListIdx][iIdx];
+		  
+		}
+	  }
+    }
+
+  }
+
+  //printf("call function xInitialMotionUpsampling \n");
+  
+}
+int xGetInitialBaseRefIdxAndMv(MotionUpsampling* mo_up,int i4x4BlkX,int i4x4BlkY,int eListIdx,int iPartIdc,int *riRefIdx,int *rcMv,x264_t* h)
+{
+   int iMbIdxBase = iPartIdc >> 4;
+   //int iMb8x8IdxBase = iPartIdc >> 2;
+   int s8x8 = h->mbBL.i_b8_stride;
+   int s4x4 = h->mbBL.i_b4_stride;
+   int c4x4IdxBase = iPartIdc & 15;
+   int iCurrFieldMb = mo_up->b_curr_field_mb ? 1:0;
+
+   int iMbXBase = iMbIdxBase % h->mbBL.i_mb_stride;
+   int iMbYBase = iMbIdxBase / h->mbBL.i_mb_stride; 
+   int iMb8x8IdxBase = 2*(iMbYBase*s8x8 + iMbXBase);
+   iMb8x8IdxBase += ((c4x4IdxBase >> 2) & 1) + (c4x4IdxBase >> 3) * s8x8;
+   
+   int iMb4x4IdxBase = 4*(iMbYBase*s4x4 + iMbXBase);
+   int iMb4x4XInBaseMb = ((c4x4IdxBase >> 2) & 1) << 1 + (c4x4IdxBase &1);
+   int iMb4x4YInBaseMb = (c4x4IdxBase >> 2) + (c4x4IdxBase >> 1) & 1;
+   iMb4x4IdxBase += iMb4x4XInBaseMb + s4x4*iMb4x4YInBaseMb;
+
+   int iBaseFieldMb = (mo_up->m_rc_resize_params->m_bRefLayerFieldPicFlag ||PARAM_INTERLACED?h->mbBL.field[iMbIdxBase]:0);
+
+   
+   int iRefIdxBase = h->mbBL.ref[eListIdx][iMb8x8IdxBase];
+   int rcMvBase[2];
+   rcMvBase[0] = h->mbBL.mv[eListIdx][iPartIdc][0];
+   rcMvBase[1] = h->mbBL.mv[eListIdx][iPartIdc][1];
+
+   if(iRefIdxBase < 1)
+   {
+     *riRefIdx = -1;
+	 rcMv[0] = 0;
+	 rcMv[1] = 0;
+	 return m_nOK;
+   }
+   
+
+
+   //===== set reference index and convert motion vector to frame motion vector =====
+   *riRefIdx = (((iRefIdxBase - 1) << (iCurrFieldMb - mo_up->m_cMvScale->m_iCurrField)) >> (iBaseFieldMb - mo_up->m_cMvScale->m_iBaseField )) + 1;
+   int iMvX = rcMvBase[0];
+   int iMvY = rcMvBase[1]*(1 + iBaseFieldMb);
+
+   
+   //get motion vector scaling factors
+   int bCropChange = (mo_up->m_cMvScale->m_bCropChangeFlag && (*riRefIdx) <= mo_up->m_cMvScale->m_aiNumActive[eListIdx]);
+   int idOX = 0;
+   int idOY = 0;
+   int idSW = 0;
+   int idSH = 0;
+   int iScaleX = mo_up->m_cMvScale->m_iScaleX;
+   int iScaleY = mo_up->m_cMvScale->m_iScaleY;
+   if(bCropChange)
+   {
+     idOX = mo_up->m_cMvScale->m_aaidOX[eListIdx][*riRefIdx - 1];
+	 idOY = mo_up->m_cMvScale->m_aaidOY[eListIdx][*riRefIdx- 1];
+	 idSW = mo_up->m_cMvScale->m_aaidSW[eListIdx][*riRefIdx - 1];
+	 idSH = mo_up->m_cMvScale->m_aaidSH[eListIdx][*riRefIdx - 1];
+
+	 iScaleX = (int)(((int64_t)((mo_up->m_cMvScale->m_iScaledW + idSW) << 16) + (mo_up->m_cMvScale->m_iRefW >> 1)) / mo_up->m_cMvScale->m_iRefW);
+	 iScaleY = (int)(((int64_t)((mo_up->m_cMvScale->m_iScaledH + idSH) << 16) + (mo_up->m_cMvScale->m_iRefH >> 1)) / mo_up->m_cMvScale->m_iRefH);
+
+   }
+
+   //get scaled motion vector components
+   iMvX = (iMvX * iScaleX + 32768) >> 16;
+   iMvY = (iMvY * iScaleY + 32768) >> 16;
+
+   // add correction vector
+   if(bCropChange)
+   {
+     int iFldInFrame = mo_up->m_cMvScale->m_iCurrMbAff && mo_up->b_curr_field_mb ? 1:0;
+	 int iMbPosX = mo_up->i_mbx_curr << 4;
+	 int iMbPosY = ((mo_up->i_mby_curr >> iFldInFrame) << (4 + iFldInFrame)) + (mo_up->i_mby_curr & iFldInFrame);
+	 int iXFrm = iMbPosX + ((i4x4BlkX << 2) + 1);
+	 int iYFrm = iMbPosY + (((i4x4BlkY << 2) + 1) << (mo_up->b_curr_field_mb - mo_up->m_cMvScale->m_iCurrField));
+
+	 int iX = iXFrm - mo_up->m_cMvScale->m_iOffsetX;
+	 int iY = iYFrm - mo_up->m_cMvScale->m_iOffsetY;
+	 iScaleX = (int)((((int64_t)(4*idSW) << 16) + (mo_up->m_cMvScale->m_iScaledW >> 1))/ mo_up->m_cMvScale->m_iScaledW);
+	 iScaleY = (int)((((int64_t)(4*idSH) << 16) + (mo_up->m_cMvScale->m_iScaledH >> 1))/ mo_up->m_cMvScale->m_iScaledH);
+     iMvX += ((iX * iScaleX + 32768) >> 16) - 4 * idOX;
+	 iMvY += ((iY * iScaleY + 32768) >> 16) - 4 * idOY;
+   }
+   //printf("call function xGetInitialBaseRefIdxAndMv NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\n");
+
+  return m_nOK;
+
+}
+
+
 
 int xGetRefLayerMb(MotionUpsampling *mo_up,int iXInsideCurrMb,int iYInsideCurrMb,int * riBaseMbIdx,int * riXInsideBaseMb,int *riYInsideBaseMb,x264_t *h)
 {
+ //===== reset output values =====
+ *riBaseMbIdx = MSYS_INT_MAX;
+ *riXInsideBaseMb = MSYS_INT_MAX;
+ *riYInsideBaseMb = MSYS_INT_MAX;
+ //===== get top-left luma sample location of macroblock =====
+ int iFieldMb = mo_up->b_curr_field_mb?1:0;
+ int iFldInFrame = (mo_up->m_rc_resize_params->m_bIsMbAffFrame && mo_up->b_curr_field_mb ?1:0);
+ int iMbPosX = (mo_up->i_mbx_curr << 4);
+ int iMbPosY = ((mo_up->i_mby_curr >> iFldInFrame) << (4 + iFldInFrame)) + (mo_up->i_mby_curr & iFldInFrame);
+
+ //===== get luma location in current picture =====
+ int iCurrPosX = iMbPosX + iXInsideCurrMb;
+ int iCurrPosY = iMbPosY + (iYInsideCurrMb << iFldInFrame);
+ 
+ 
+
+ //===== get luma location in reference picture =====
+ int iBasePosX = (int) ((int)(iCurrPosX * mo_up->m_cPosCalc->m_iScaleX + mo_up->m_cPosCalc->m_iAddX) >> mo_up->m_cPosCalc->m_iShiftX);
+ int iBasePosY = (int) ((int)(iCurrPosY * mo_up->m_cPosCalc->m_iScaleY + mo_up->m_cPosCalc->m_iAddY) >> mo_up->m_cPosCalc->m_iShiftY);
+
+ //printf("iCurrPosX  value %d	 iCurrPosY value: %d  \n ",iMbPosX,iMbPosY);
+
+ //printf("iBasePosX value %d	 iBasePosY value: %d   mo_up->m_cPosCalc->m_iScaleX: %d   mo_up->m_cPosCalc->m_iShitfX: %d\n ",iBasePosX,iBasePosY,mo_up->m_cPosCalc->m_iScaleX,mo_up->m_cPosCalc->m_iShiftX);
+//clip position
+iBasePosX = X264_MIN(iBasePosX,mo_up->m_cPosCalc->m_iRefW - 1);
+iBasePosY = X264_MIN(iBasePosY,mo_up->m_cPosCalc->m_iRefH - 1);
+
+//get virtual MbData
+int iMbStride = (mo_up->m_cPosCalc->m_iRefW >> 4) << mo_up->m_cPosCalc->m_iBaseField;
+int iMbOffset = (mo_up->m_cPosCalc->m_iRefW >> 4) * mo_up->m_cPosCalc->m_iBaseBotField;
+int iBaseMbX = (iBasePosX >> 4);
+int iBaseMbY = (iBasePosY >> 4);
+int iBaseMbIdx = iMbOffset + iBaseMbY * iMbStride + iBaseMbX;
+
+
+//printf("call function xGetRefLayerMb \n");
+
+//===== non - Mbaff to non-Mbaf resampling ===
+if(!mo_up->m_cPosCalc->m_iBaseMbAff && !mo_up->m_cPosCalc->m_iCurrMbAff)
+{
+  *riBaseMbIdx = iBaseMbIdx;
+  *riXInsideBaseMb = (iBasePosX & 15);
+  *riYInsideBaseMb = (iBasePosY & 15);
+ // printf("riBaseMbIdx has been valued here \n");
+  return m_nOK;
 }
+
+ //===== same frame/field type in base and current layer =====
+
+
+if(mo_up->b_curr_field_mb == 0 || mo_up->b_curr_field_mb == PARAM_INTERLACED?h->mbBL.field[iBaseMbIdx]:0)
+{
+  iBaseMbY = ((iBaseMbY >> iFieldMb ) << iFieldMb) + iFieldMb * (mo_up->i_mby_curr & 1);
+  *riBaseMbIdx = iMbOffset + iBaseMbY * iMbStride + iBaseMbX;
+  *riXInsideBaseMb = (iBasePosX & 15);
+  *riYInsideBaseMb = (iBasePosY &(15 + 16 * iFieldMb)) >> iFieldMb;
+  return m_nOK;
+}
+
+
+
+
+
+
+ //===== field-to-frame conversion (subclause G.6.1.1) =====
+if(!mo_up->b_curr_field_mb)
+{
+  int iBaseTopMbY = (iBaseMbY >> 1) << 1;
+  int iBaseBotMbY = iBaseTopMbY + 1;
+  int iTopMbIdx = iMbOffset + iBaseTopMbY * iMbStride + iBaseMbX;
+  int iBotMbIdx = iMbOffset + iBaseBotMbY * iMbStride + iBaseMbX;
+  *riBaseMbIdx = IS_INTRA(h->mbBL.type[(uint8_t)iTopMbIdx]) ? iBotMbIdx:iTopMbIdx;
+  *riXInsideBaseMb = (iBasePosX & 15);
+  *riYInsideBaseMb = ((iBasePosY >> 4) & 1) << 3  + ((iBasePosY & 15) >> 3 ) << 2;
+
+  return m_nOK;
+}
+
+
+
+
+// =====  frame- to -field conversion
+
+{
+  *riBaseMbIdx = iBaseMbIdx;
+  *riXInsideBaseMb = (iBasePosX & 15);
+  *riYInsideBaseMb = (iBasePosY & 15);
+
+  return m_nOK;
+}
+
+
+ 
+ 
+}
+
+
+int xResampleMotion(MotionUpsampling *mo_up,int iMbXCurr,int iMbYCurr,x264_t *h)
+{
+  RNOK(xInitMb(mo_up,iMbXCurr,iMbYCurr,h));
+  RNOK(xSetPartIdcArray(mo_up,h));
+
+  if(mo_up->b_in_crop_window && ! mo_up->b_intraBL)
+  {
+    for(int iListIdx = 0;iListIdx < mo_up->i_max_list_idx;iListIdx++)
+    {
+      RNOK(xGetRefIdxAndInitialMvPred(mo_up,iListIdx,h));
+    }
+	for(int iB8x8Idx = 0;iB8x8Idx < 4; iB8x8Idx++)
+	{
+	  RNOK(xDeriveBlockModeAndUpdateMv(mo_up,iB8x8Idx));
+	}
+
+
+	  RNOK( xDeriveMbMode(mo_up,h) );
+      //RNOK( xDeriveFwdBwd       () );
+      //RNOK( xSetInterIntraIdc   () );
+  }
+
+  if(mo_up->b_in_crop_window)
+  {
+   // RNOK(xSetPrsPredSafeFlag());
+  }
+
+  RNOK(xSetPredMbData(mo_up,h));
+ 
+  return m_nOK;
+}
+
 
 
 
 int xSetPartIdcArray(MotionUpsampling *mo_up,x264_t * h)
 {
-  ROFRS(mo_up->b_in_crop_window,m_nOK);
+ // ROFRS(mo_up->b_in_crop_window,m_nOK);
+  if(!(mo_up->b_in_crop_window))
+  	return 0;
+
+ 
 
   /*determine all 16 initial partition indices */
   	{
@@ -2439,18 +2950,24 @@ int xSetPartIdcArray(MotionUpsampling *mo_up,x264_t * h)
 	  for(int iY = 0;iY < 4;iY++)
 	  	for(int iX = 0;iX < 4;iX++)
 	  	{
+
+		// printf("call function xGetRefLayerPartIdc !!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+		 //printf("iXiXiXiXiXiX  iX: %d   iY:%d   i_aai[iX][iY] %d\n ",iX,iY,mo_up->i_aai_part_idc[iX][iY]);
 	  	  RNOK(xGetRefLayerPartIdc(mo_up,(iX << 2) + 1,(iY << 2) + 1,&(mo_up->i_aai_part_idc[iX][iY]),h));
+		 //printf("call function xGetRefLayerPartIdc xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  mo_up->i_aai_part_idc[iX][iY]: %d\n",mo_up->i_aai_part_idc[iX][iY]);
 		  b_intraBL = (b_intraBL && (mo_up->i_aai_part_idc[iX][iY] == -1));
+		  
 
 		  if(b_intraBL)
 		  {
-
+           //mo_up->i_mb_type = I_BL;
 		   mo_up->mb_mode = INTRA_BL;
+		   mo_up->b_intraBL = 1;
 
 		  }	
 
 	  	}
-
+      
 	  ROTRS(b_intraBL,m_nOK);
 	  //ROTRS( m_cPosCalc.m_bRSChangeFlag,  Err::m_nOK );
 
@@ -2547,6 +3064,9 @@ int xSetPartIdcArray(MotionUpsampling *mo_up,x264_t * h)
     }
 
 
+
+  //printf("call function xSetPartIdcArray \n");
+
   return m_nOK;
 
   
@@ -2557,12 +3077,14 @@ int xGetMinRefIdx(int iRefIdxA,int iRefIdxB)
   ROTRS(iRefIdxA < 1,iRefIdxB);
   ROTRS(iRefIdxB < 1	,iRefIdxA);
 
+  //printf("call function xGetMinRefIdx \n");
   return X264_MIN(iRefIdxA,iRefIdxB);
   
 }
 
 int xMvDiff(int* mvA,int* mvB)
 {
+  //printf("call function xMvDiff \n");
   return abs(mvA[0] - mvB[0]) + abs(mvA[1] - mvB[1]);
 }
 
@@ -2572,6 +3094,7 @@ int* xAddMv(int*  mvA,int * mvB)
   cNewMv[0] = mvA[0] + mvB[0];
   cNewMv[1] = mvA[1] + mvB[1];
 
+ //printf("call function xAddMv \n");
   return cNewMv;
 }
 
@@ -2579,6 +3102,7 @@ int xMvCopy(int *mvDes,int *mvSrc)
 {
   mvDes[0] = mvSrc[0];
   mvDes[1] = mvSrc[1];
+ // printf("call function xMvCopy \n");
   return m_nOK;
 }
 
@@ -2588,6 +3112,7 @@ int xMvLeftShift(int* mv,short s)
   mv[0] = mv[0] << s;
   mv[1] = mv[1] << s;
 
+ // printf("call function xMvLeftShift \n");
   return m_nOK;
 }
 
@@ -2596,6 +3121,7 @@ int xMvRightShift(int* mv,short s)
   mv[0] = mv[0] >> s;
   mv[1] = mv[1] >> s;
 
+  //printf("call function xMvRightShift \n");
   return m_nOK;
 }
 
@@ -2608,7 +3134,7 @@ int xGetRefIdxAndInitialMvPred(MotionUpsampling *mo_up,int eListIdx,x264_t * h)
 	   for(int i4x4BlkY = 0;i4x4BlkY < 4;i4x4BlkY++)
 	   for(int i4x4BlkX = 0;i4x4BlkX < 4;i4x4BlkX++)
 	   {
-	     RNOK(xGetInitialBaseRefIdxAndMv(mo_up,i4x4BlkX,i4x4BlkY,mo_up->i_aai_part_idc[i4x4BlkX][i4x4BlkY],
+	     RNOK(xGetInitialBaseRefIdxAndMv(mo_up,i4x4BlkX,i4x4BlkY,eListIdx,mo_up->i_aai_part_idc[i4x4BlkX][i4x4BlkY],
 		 	                                         &(mo_up->i_aai_ref_idx_temp[i4x4BlkX][i4x4BlkY]),&(mo_up->i_aaac_mv[eListIdx][i4x4BlkX][i4x4BlkY]),h));
 	   }
 	   
@@ -2620,10 +3146,10 @@ int xGetRefIdxAndInitialMvPred(MotionUpsampling *mo_up,int eListIdx,x264_t * h)
    mo_up->i_aaai_ref_idx[eListIdx][1][0] = mo_up->i_aai_ref_idx_temp[2][0];
    mo_up->i_aaai_ref_idx[eListIdx][1][1] = mo_up->i_aai_ref_idx_temp[2][2];
    
-   // ROTRS( m_cMvScale.m_bRSChangeFlag, Err::m_nOK );
+   ROTRS( mo_up->m_cMvScale->m_bRSChangeFlag,m_nOK );
 
   
-
+   
    //===== merge reference indices and modify motion vectors accordingly =====
    for( int i8x8BlkY = 0; i8x8BlkY < 2; i8x8BlkY++ )
    for( int i8x8BlkX = 0; i8x8BlkX < 2; i8x8BlkX++ )
@@ -2634,7 +3160,7 @@ int xGetRefIdxAndInitialMvPred(MotionUpsampling *mo_up,int eListIdx,x264_t * h)
 	 {
 	   int iY  = ( i8x8BlkY << 1 ) + i4x4BlkY;
 	   int iX  = ( i8x8BlkX << 1 ) + i4x4BlkX;
-	   mo_up->i_aaai_ref_idx[eListIdx][i8x8BlkX][i8x8BlkY] = xGetMinRefIdx(  mo_up->i_aai_ref_idx_temp[eListIdx][i8x8BlkX][i8x8BlkY],  mo_up->i_aai_ref_idx_temp[eListIdx][iX][iY] );
+	   mo_up->i_aaai_ref_idx[eListIdx][i8x8BlkX][i8x8BlkY] = xGetMinRefIdx(  mo_up->i_aaai_ref_idx[eListIdx][i8x8BlkX][i8x8BlkY],  mo_up->i_aai_ref_idx_temp[iX][iY] );
 	 }
    
 	 //----- update motion vectors -----
@@ -2661,19 +3187,110 @@ int xGetRefIdxAndInitialMvPred(MotionUpsampling *mo_up,int eListIdx,x264_t * h)
 		 }
 		 else
 		 {
-		   ROF( (mo_up->i_aaai_ref_idx[eListIdx][i8x8BlkX][i8x8BlkY] == mo_up->i_aai_ref_idx_temp[eListIdx][iXInv][iYInv]));
+
+		   ROF( (mo_up->i_aaai_ref_idx[eListIdx][i8x8BlkX][i8x8BlkY] == mo_up->i_aai_ref_idx_temp[iXInv][iYInv]));
 		   xMvCopy( mo_up->i_aaac_mv[eListIdx][iX][iY],mo_up->i_aaac_mv[eListIdx][iXInv][iYInv]);
 		   //mo_up->i_aaac_mv[eListIdx][iX][iY] = mo_up->i_aaac_mv[eListIdx][iXInv][iYInv];
 		 }
 	   }
 	 }
    }
-   
+ 
+
    return m_nOK;
 
   
 }
 
+
+int x8x8BlocksHaveSameMotion(MotionUpsampling* mo_up,int eListIdx,int i8x8IdxA,int i8x8IdxB)
+{
+
+  int bBlkASameMv = 1;
+  int bBlkBSameMv = 1;
+  int aaiComp[4][4] = { {0,1,4,5},{2,3,6,7},{8,9,12,13},{10,11,14,15} };
+  for(int i = 0;i < 3;i++)
+  {
+    if(mo_up->i_aaac_mv[eListIdx][ aaiComp[i8x8IdxA][i]%4 ][ aaiComp[i8x8IdxA][i] /4][0] != mo_up->i_aaac_mv[eListIdx][ aaiComp[i8x8IdxA][i+1] %4][aaiComp[i8x8IdxA][i+1] /4][0]
+	  &&mo_up->i_aaac_mv[eListIdx][ aaiComp[i8x8IdxA][i]%4 ][ aaiComp[i8x8IdxA][i] /4][1] != mo_up->i_aaac_mv[eListIdx][ aaiComp[i8x8IdxA][i+1] %4][aaiComp[i8x8IdxA][i+1] /4][1])
+    {
+      bBlkASameMv = 0;
+    }
+
+  }
+
+ for(int i = 0;i < 3;i++)
+  {
+    if(mo_up->i_aaac_mv[eListIdx][ aaiComp[i8x8IdxB][i]%4 ][ aaiComp[i8x8IdxB][i] /4][0] != mo_up->i_aaac_mv[eListIdx][ aaiComp[i8x8IdxB][i+1] %4][aaiComp[i8x8IdxB][i+1] /4][0]
+	   && mo_up->i_aaac_mv[eListIdx][ aaiComp[i8x8IdxB][i]%4 ][ aaiComp[i8x8IdxB][i] /4][1] != mo_up->i_aaac_mv[eListIdx][ aaiComp[i8x8IdxB][i+1] %4][aaiComp[i8x8IdxB][i+1] /4][1])
+    {
+      bBlkBSameMv = 0;
+    }
+
+  }
+ //check reference indices - BY MING
+ ROFRS(mo_up->i_aaai_ref_idx[eListIdx][i8x8IdxA &1][i8x8IdxA>>1] == mo_up->i_aaai_ref_idx[eListIdx][i8x8IdxB &1][i8x8IdxB>>1],0);
+
+ //check motion vector
+ ROFRS(bBlkASameMv,0);
+ ROFRS(bBlkBSameMv,0);
+ ROFRS(mo_up->i_aaac_mv[eListIdx][(i8x8IdxA&1)<<1][(i8x8IdxA>>1)<<1][0] == mo_up->i_aaac_mv[eListIdx][(i8x8IdxB&1)<<1][(i8x8IdxB>>1)<<1][0]
+ 	  && mo_up->i_aaac_mv[eListIdx][(i8x8IdxA&1)<<1][(i8x8IdxA>>1)<<1][1] == mo_up->i_aaac_mv[eListIdx][(i8x8IdxB&1)<<1][(i8x8IdxB>>1)<<1][1],0);
+
+//printf("call function x8x8BlocksHaveSameMotion\n");
+return 1;
+}
+
+
+int xDeriveMbMode(MotionUpsampling * mo_up,x264_t * h)
+{
+  int bHorMatch = 1;
+  int bVerMatch = 1;
+  for(int iListIdx = 0;iListIdx < mo_up->i_max_list_idx;iListIdx++)
+  {
+    bHorMatch = bHorMatch && x8x8BlocksHaveSameMotion(mo_up,iListIdx,0,1);
+	bHorMatch = bHorMatch && x8x8BlocksHaveSameMotion(mo_up,iListIdx,2,3);
+	bVerMatch = bVerMatch && x8x8BlocksHaveSameMotion(mo_up,iListIdx,0,2);
+	bVerMatch = bVerMatch && x8x8BlocksHaveSameMotion(mo_up,iListIdx,1,3);
+  }
+
+    
+  	#define partPredModeA \
+	   (mo_up->i_aaai_ref_idx[0][0][0] >= 0?2:0) +\ 
+	   (mo_up->i_aaai_ref_idx[0][0][1] >= 0?1:0)
+
+
+    #define partPredModeB \
+		(mo_up->i_aaai_ref_idx[1][1][0] >= 0?2:0) +\ 
+		(mo_up->i_aaai_ref_idx[1][1][1] >= 0?1:0)
+  
+
+  const int aiMbPartition[4] = {D_8x8,D_16x8,D_8x16,D_16x16};
+  int i_partition = aiMbPartition[(bVerMatch?2:0) + (bHorMatch?1:0)];
+
+  int i_mb_type = 3*(partPredModeA - 1) + (partPredModeB == 0?partPredModeB:partPredModeB - 1) + 8;
+
+  if(partPredModeA == 0&& partPredModeB == 0)
+  	{
+  	  if(i_partition == D_8x8 && h->sh.i_type == SLICE_TYPE_B)
+	  	i_mb_type = B_8x8;
+	  else if(i_partition == D_8x8 && h->sh.i_type == SLICE_TYPE_P)
+	  	i_mb_type = P_8x8;
+	  else
+	  	i_mb_type = P_L0;
+	  	
+  	}
+   
+  
+  const int aiMbMode[4] = {MODE_8x8,MODE_16x8,MODE_8x16,MODE_16x16};
+
+  mo_up->i_mb_type = i_mb_type;
+  mo_up->i_partition = i_partition;
+  mo_up->mb_mode = aiMbMode[(bVerMatch?2:0) + (bHorMatch ? 1:0)];
+
+  //printf("call function xDeriveMbMode \n");
+  return m_nOK;
+}
 
 int xDeriveBlockModeAndUpdateMv(MotionUpsampling *mo_up,int i8x8BlkIdx)
 {
@@ -2718,23 +3335,52 @@ int xDeriveBlockModeAndUpdateMv(MotionUpsampling *mo_up,int i8x8BlkIdx)
 		b_ver_match = b_ver_match && b_ver1_match && b_ver2_match;
 	  }
 
-	  const int aiBlkMode[4] = {BLK_4x4,BLK_8x4,BLK_4x8,BLK_8x8};
-	  mo_up->blk_mode[i8x8BlkIdx] = aiBlkMode[ b_8x8_match ? 3: b_hor_match? 1:b_ver_match?2:0];
+
+	  #define L0_AVALIABLE \
+	     (mo_up->i_aaai_ref_idx[0][0][0] >= 0 && mo_up->i_aaai_ref_idx[0][1][0] >= 0\
+	    &&mo_up->i_aaai_ref_idx[1][0][0] >= 0 && mo_up->i_aaai_ref_idx[1][1][0] >= 0)
+
+	  #define L1_AVALIABLE \
+	     (mo_up->i_aaai_ref_idx[0][0][1] >= 0 && mo_up->i_aaai_ref_idx[0][1][1] >= 0\
+	    &&mo_up->i_aaai_ref_idx[1][0][1] >= 0 && mo_up->i_aaai_ref_idx[1][1][1] >= 0)  
+
+
+	  
+	 /* int b_L0 = (mo_up->i_aaai_ref_idx[0][0][0] != -1 && mo_up->i_aaai_ref_idx[0][1][0] != -1
+	  	          &&mo_up->i_aaai_ref_idx[1][0][0] != -1&& mo_up->i_aaai_ref_idx[1][1][0] != -1);
+	  int b_L1 = (mo_up->i_aaai_ref_idx[0][0][1] != -1 && mo_up->i_aaai_ref_idx[0][1][1] != -1
+	  	          &&mo_up->i_aaai_ref_idx[1][0][1] != -1&& mo_up->i_aaai_ref_idx[1][1][1] != -1);
+	  int b_Bi = b_L0 && b_L1;
+     */
+	  
+	  int b_L0 = L0_AVALIABLE && !L1_AVALIABLE;
+	  int b_L1 = !L0_AVALIABLE && L1_AVALIABLE;
+	  int b_Bi = L0_AVALIABLE && L1_AVALIABLE;
+	  int p = b_L0?0:b_L1?1:2;
+	  ROT(p < 0);
+      int i_sub_partition = b_8x8_match?D_L0_8x8:b_hor_match?D_L0_8x4:b_ver_match?D_L0_4x8:D_L0_4x4;
+	  mo_up->i_sub_partition[i8x8BlkIdx] = i_sub_partition + 4*p;
+	  //const int aiBlkMode[4] = {BLK_4x4,BLK_8x4,BLK_4x8,BLK_8x8};
+	  
+	  //mo_up->blk_mode[i8x8BlkIdx] = aiBlkMode[ b_8x8_match ? 3: b_hor_match? 1:b_ver_match?2:0];
    	}
 
-
+   ROTRS(IS_SUB4x4(mo_up->i_sub_partition[i8x8BlkIdx]),m_nOK);
    //ROTRS( m_cMvScale.m_bRSChangeFlag,          Err::m_nOK );
-   ROTRS(mo_up->blk_mode[i8x8BlkIdx] == BLK_4x4,m_nOK);
+  // ROTRS(mo_up->blk_mode[i8x8BlkIdx] == BLK_4x4,m_nOK);
    //===== combine motion vectors ===== //===== combine motion vectors =====
    {
      for(int iListIdx = 0;iListIdx < mo_up->i_max_list_idx;iListIdx++)
      {
         int* cNewMv = {0,0}, *cNewMvA = {0,0},*cNewMvB = {0,0},*mv0 = {0,0},*mv1 = {1,1};
-       switch(mo_up->blk_mode[i8x8BlkIdx])
+       switch(mo_up->i_sub_partition[i8x8BlkIdx])
        	{
-       	  case BLK_8x8:
+       	  //case BLK_8x8:
 		  	 //int cNewMv[2] = {0,0};
 			 //int mv0[2] = {2,2};
+			 case D_L0_8x8:
+			 case D_L1_8x8:
+			 case D_BI_8x8:
 			 cNewMv = xAddMv(mo_up->i_aaac_mv[iListIdx][iXO][iYO],mo_up->i_aaac_mv[iListIdx][iXO + 1][iYO]);
 			 cNewMv = xAddMv(cNewMv,mo_up->i_aaac_mv[iListIdx][iXO][iYO + 1]);
 			 cNewMv = xAddMv(cNewMv,mo_up->i_aaac_mv[iListIdx][iXO + 1][iYO + 1]);
@@ -2746,11 +3392,14 @@ int xDeriveBlockModeAndUpdateMv(MotionUpsampling *mo_up,int i8x8BlkIdx)
 			 xMvCopy(mo_up->i_aaac_mv[iListIdx][iXO + 1][iYO + 1],cNewMv);
 			 
 		  	break;
-		  case BLK_8x4:
+		//  case BLK_8x4:
 
 			//int cNewMvA[2] = {0,0};
 			//int cNewMvB[2] = {0,0};
 			//int mv0[2] = {1,1};
+			case D_L0_8x4:
+			case D_L1_8x4:
+			case D_BI_8x4:
 			cNewMvA = xAddMv(mo_up->i_aaac_mv[iListIdx][iXO][iYO],mo_up->i_aaac_mv[iListIdx][iXO + 1][iYO]);
 			cNewMvA = xAddMv(cNewMvA,mv1);
             xMvRightShift(cNewMvA,1);
@@ -2765,8 +3414,11 @@ int xDeriveBlockModeAndUpdateMv(MotionUpsampling *mo_up,int i8x8BlkIdx)
 			xMvCopy(mo_up->i_aaac_mv[iListIdx][iXO + 1][iYO + 1],cNewMvB);
 			
 		  	break;
-		  case BLK_4x8:
+		  //case BLK_4x8:
 		  //	int cNewMvA[2] = {0,0},cNewMvB[2] = {0,0},mv0[2] = {1,1};
+		  case D_L0_4x8:
+		  case D_L1_4x8:
+		  case D_BI_4x8:
 			cNewMvA = xAddMv(mo_up->i_aaac_mv[iListIdx][iXO][iYO],mo_up->i_aaac_mv[iListIdx][iXO][iYO + 1]);
 			cNewMvA = xAddMv(cNewMvA,mv1);
             xMvRightShift(cNewMvA,1);
@@ -2793,27 +3445,41 @@ int xDeriveBlockModeAndUpdateMv(MotionUpsampling *mo_up,int i8x8BlkIdx)
    
 }
 
-int xMbdataClear(x264_t * h)
+int xMbdataClear(x264_t * h,int iMbIdx,int iMb8x8Idx,int iMb4x4Idx,int s8x8,int s4x4,int availability)
 {
-  h->mbEL1.mb_mode = MODE_SKIP;
-  h->mbEL1.b_BL_skip_flag = 0;
-  h->mbEL1.i_mb_mode = MODE_SKIP;
-  h->mbEL1.i_chroma_pred_mode = 0;
-  h->mbEL1.i_cbp_luma = 0;
-  h->mbEL1.i_cbp_chroma = 0;
-  h->mbEL1.b_residual_pred_flag = 0;
-  h->mbEL1.b_transform_8x8 = 0;
-  h->mbEL1.b_in_crop_window_flag = 0;
-  h->mbEL1.i_blk_mode[0] = h->mbEL1.i_blk_mode[1] = h->mbEL1.i_blk_mode[2]
-                             = h->mbEL1.i_blk_mode[3] = BLK_8x8;
+  h->mbEL1.type[iMbIdx] = h->sh.i_type == SLICE_TYPE_P? P_SKIP:B_SKIP;
+  //h->mbEL1.mb_mode[iMbIdx] = MODE_SKIP;
+  //h->mb.b_BL_skip_flag = 0;
+  //h->mbEL1.i_mb_mode = MODE_SKIP;
+  h->mbEL1.chroma_pred_mode[iMbIdx] = 0;
+  h->mbEL1.cbp[iMbIdx] = 0;
+  //h->mbEL1.i_cbp_chroma = 0;
+  //h->mbEL1.b_residual_pred_flag = 0;
+  h->mbEL1.mb_transform_size[iMbIdx] = 0;
+  //h->mbEL1.b_in_crop_window_flag = 0;
 
+
+  
+
+
+
+
+
+  
+  h->mbEL1.sub_partition[iMbIdx][0] = h->mbEL1.sub_partition[iMbIdx][1]
+  	= h->mbEL1.sub_partition[iMbIdx][2] = h->mbEL1.sub_partition[iMbIdx][3]
+  	=  availability == 0?D_L0_8x8:availability == 1?D_L1_8x8:D_BI_8x8;
+ // h->mbEL1.blk_mode[iMbIdx][0] = h->mb.blk_mode[iMbIdx][1] = h->mb.blk_mode[iMbIdx][2]
+          //                   = h->mb.blk_mode[iMbIdx][3] = BLK_8x8;
+  
 /* foreach intra4x4_pred_mode, its value is I_PRED_4x4_DC - BY -MING*/
   for(int i = 0;i < 16; i++)
   {
     
   }
 
-  return 0;
+//printf("call function xMbDataClear \n");
+  return m_nOK;
 }
 
 int xSetPredMbData(MotionUpsampling *mo_up,x264_t * h)
@@ -2824,12 +3490,31 @@ int xSetPredMbData(MotionUpsampling *mo_up,x264_t * h)
   int iMbStride = (mo_up->m_rc_resize_params->m_iFrameWidth >> 4) << iFieldPic;
   int iMbOffset = (mo_up->m_rc_resize_params->m_iFrameWidth >> 4) * iBotField;
   int iMbIdx = iMbOffset = mo_up->i_mby_curr* iMbStride + mo_up->i_mbx_curr;
-  int s8x8 = h->mbEL1.i_b8_stride;
-  int s4x4 = h->mbEL1.i_b4_stride;
+  //int s8x8 = h->mb.i_b8_stride;
+ // int s4x4 = h->mb.i_b4_stride;
+  int s8x8 = iMbStride * 2;
+  int s4x4 = iMbStride * 4;
   int iMb8x8Idx = 2*(mo_up->i_mby_curr * s8x8 + mo_up->i_mbx_curr);
   int iMb4x4Idx = 4*(mo_up->i_mby_curr * s4x4 + mo_up->i_mbx_curr);
 /*=== reset MbDataStruct data - BY MING*/
-  xMbdataClear(h);
+
+
+#define L0_AVALIABLE \
+  (mo_up->i_aaai_ref_idx[0][0][0] >= 0 && mo_up->i_aaai_ref_idx[0][1][0] >= 0\
+  &&mo_up->i_aaai_ref_idx[1][0][0] >= 0 && mo_up->i_aaai_ref_idx[1][1][0] >= 0)
+
+#define L1_AVALIABLE \
+	     (mo_up->i_aaai_ref_idx[0][0][1] >= 0 && mo_up->i_aaai_ref_idx[0][1][1] >= 0\
+	    &&mo_up->i_aaai_ref_idx[1][0][1] >= 0 && mo_up->i_aaai_ref_idx[1][1][1] >= 0)	  
+	  
+	  int b_L0 = L0_AVALIABLE && !L1_AVALIABLE;
+	  int b_L1 = !L0_AVALIABLE && L1_AVALIABLE;
+	  int b_Bi = L0_AVALIABLE && L1_AVALIABLE;
+	  int p = b_L0?0:b_L1?1:2;
+
+
+
+  xMbdataClear(h,iMbIdx,iMb8x8Idx,iMb4x4Idx,s8x8,s4x4,p);
 
   /*=== set motion data(ref idx & motion vectors) == - BY MING*/
   if(! mo_up->b_in_crop_window || mo_up->b_intraBL)
@@ -2837,8 +3522,24 @@ int xSetPredMbData(MotionUpsampling *mo_up,x264_t * h)
     for(int iListIdx = 0;iListIdx < 2; iListIdx++)
     {
       // apcMotion[iListIdx]->clear( BLOCK_NOT_PREDICTED );
-      
+      /*set all mv to zero - BY MING*/
+      for(int iX = 0; iX < 4;iX++)
+      {
+        for(int iY = 0;iY < 4;iY++)
+        {
+		 h->mbEL1.mv[iListIdx][iMb4x4Idx + iX + iY*s4x4][0] = 0;
+		 h->mbEL1.mv[iListIdx][iMb4x4Idx + iX + iY*s4x4][1] = 0;
+        }
+      }
+
+     /*set all ref to -1 - BY MING*/
+	  for(int iX = 0; iX < 2;iX++)
+      {
+        for(int iY = 0;iY < 2;iY++)
+		 h->mbEL1.ref[iListIdx][iMb8x8Idx + iX + iY*s8x8] = -1;
+      }
     }
+
   }
 
   else
@@ -2872,20 +3573,30 @@ int xSetPredMbData(MotionUpsampling *mo_up,x264_t * h)
   //  apcMotion[1]->setFieldMode( m_bCurrFieldMb );
 
   //set general Mb data - BY MING
-  h->mbEL1.b_in_crop_window_flag = mo_up->b_in_crop_window;
+  //h->mb.b_in_crop_window_flag = mo_up->b_in_crop_window;
+  if(mo_up->b_curr_field_mb)
   h->mbEL1.field[iMbIdx] = mo_up->b_curr_field_mb;
   //rcMbData.setSafeResPred     ( m_bResPredSafe );
   if(mo_up->b_in_crop_window)
   {
-    h->mbEL1.mb_mode[iMbIdx] = mo_up->mb_mode;
+    h->mbEL1.type[iMbIdx] = mo_up->i_mb_type;
+    //h->mbEL1.mb_mode[iMbIdx] = mo_up->mb_mode;
 	//rcMbData.setFwdBwd( (UShort)m_uiFwdBwd );
 	for(int  blk = 0;blk < 4; blk++)
 	{
-	  h->mbEL1.i_blk_mode[blk] =  mo_up->blk_mode[blk];
+	  h->mbEL1.sub_partition[iMbIdx][blk] = mo_up->i_sub_partition[blk];
+	  //h->mbEL1.blk_mode[iMbIdx][blk] = mo_up->blk_mode[blk];
+	 // h->mb.i_blk_mode[blk] =  mo_up->blk_mode[blk];
 	}
   }
 
 
+
+  /*set the situation of I_BL - BY MING*/
+  if(mo_up->b_intraBL && !mo_up->b_tcoeff_pred)
+  {
+    h->mbEL1.type[iMbIdx] = I_BL;
+  }
 
   if((mo_up->b_scoeff_pred || mo_up->b_tcoeff_pred) && mo_up->b_in_crop_window)
   {
@@ -2895,12 +3606,13 @@ int xSetPredMbData(MotionUpsampling *mo_up,x264_t * h)
     int     iMbOffsetBase = ( mo_up->m_rc_resize_params->m_iRefLayerFrmWidth >> 4 )  * iBotField;
     int     iMbIdxBase    = iMbOffsetBase + iMbYBase * iMbStrideBase + iMbXBase;
    // rcMbData.copyTCoeffs    ( rcMbDataBase );
-
    h->mbEL1.BL_skip[iMbIdx] = h->mbBL.BL_skip[iMbIdxBase];
    if(mo_up->b_intraBL)
-   {
-     h->mbEL1.mb_mode[iMbIdx] = h->mbBL.mb_mode[iMbIdxBase];
+   { 
+     h->mbEL1.type[iMbIdx] = h->mbBL.type[iMbIdxBase];
+     //h->mbEL1.mb_mode[iMbIdx] = h->mbBL.mb_mode[iMbIdxBase];
    }
+
    if(mo_up->b_tcoeff_pred)
    {
     h->mbEL1.intra16x16_pred_mode[iMbIdx] = h->mbBL.intra16x16_pred_mode[iMbIdxBase];
@@ -2912,7 +3624,10 @@ int xSetPredMbData(MotionUpsampling *mo_up,x264_t * h)
 	 //m_ucQp4LF = rcMbData.m_ucQp4LF;
    }
 
+
   }
+
+  //printf("call function xSetPredMbData \n");
   return m_nOK;
 }
 
@@ -2921,13 +3636,43 @@ int xSetPredMbData(MotionUpsampling *mo_up,x264_t * h)
 int xUpsampleMotion(MotionUpsampling *mo_up,ResizeParameters* pcResizeParams,int b_field_resampling,
                                                                         int b_residual_pred_check,int i_mv_threshold,x264_t* h)
 {
-   //ROF(h->sh);
-   ROF(pcResizeParams);
-   mo_up->b_check_residual_pred = b_residual_pred_check;
-   mo_up->b_direct8x8_inference = h->sh.pps->b_transform_8x8_mode;
-   mo_up->i_mv_threshold = i_mv_threshold;
-   mo_up->b_curr_field_mb = b_field_resampling;
-   mo_up->e_slice_type = h->sh.i_type;
-   mo_up->i_ref_layer_dqid = h->sh.i_ref_layer_dq_id;
-   mo_up->i_max_list_idx = mo_up->e_slice_type == SLICE_TYPE_B ? 2:(mo_up->e_slice_type == SLICE_TYPE_I?0:1);
+
+if(h->sh.i_type == SLICE_TYPE_I)
+{
+ // printf("This is a I slcie\n");
+  return 0;
 }
+
+if(pcResizeParams == NULL)
+{ 
+ // printf("pcResizeParams is NULL\n");
+  return 0;
+}
+
+
+xInitialMotionUpsampling(mo_up,pcResizeParams,b_field_resampling,b_residual_pred_check,i_mv_threshold,h);
+
+
+int iMbXMax = (pcResizeParams->m_iFrameWidth >> 4);
+int iMbYMax = (pcResizeParams->m_iFrameHeight >> 4) >> (pcResizeParams->m_bFieldPicFlag?1:0);
+printf("iMbXMax: %d    iMbYMax: %d  \n",iMbXMax,iMbYMax);
+
+for(int iMbY = 0;iMbY < iMbYMax; iMbY++)
+for(int iMbX = 0;iMbX < iMbXMax;iMbX++)
+{
+  xResampleMotion(mo_up,iMbX,iMbY,h);
+}
+
+
+
+
+//for(int i = 0;i < h->mbEL1.i_mb_count*16; i++)
+//{
+ //  printf("mbtype for mbEL1  mb_type: %d\n",h->mbEL1.type[i]);
+  // printf("mv for EL1  mv[0]:%d     mv[1]:%d \n",h->mb.mv[0][i][0],h->mb.mv[0][i][1]);;
+//}
+
+//printf("call function xUpsampleMotion \n");
+}
+
+
