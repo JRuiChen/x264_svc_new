@@ -967,6 +967,7 @@ static ALWAYS_INLINE void x264_macroblock_write_cabac_internal( x264_t *h, x264_
 {
     const int i_mb_type = h->mb.i_type;
 
+	 
 #if !RDO_SKIP_BS
     const int i_mb_pos_start = x264_cabac_pos( cb );
     int       i_mb_pos_tex;
@@ -984,6 +985,8 @@ if(h->i_layer_id)
 	//EL
 	//basemodeflag not present
 	// basemodeflag == 1
+	printf("x264_macroblock_write_cabac_internal in svc\n");
+	printf("const int i_mb_type = h->mb.i_type; %d \n",i_mb_type);
 }
 else
 {
@@ -1004,7 +1007,13 @@ NumMbPart( mb_type ) = = 4 )*/
 
     if( i_mb_type == I_PCM )
     {
-    
+        /*skytest0920*/
+		if(h->i_layer_id)
+			{
+				printf(" i_mb_type == I_PCM called\n");
+			}
+		
+		
         bs_t s;
         bs_init( &s, cb->p, cb->p_end - cb->p );
 	
@@ -1030,9 +1039,10 @@ NumMbPart( mb_type ) = = 4 )*/
 
     if( i_mb_type != I_16x16 )    // if( MbPartPredMode( mb_type, 0 ) != Intra_16x16 ) 
     {
-    /*skytest0916 ifesle*/
+    /*skytest0916 ifesle
 	if(h->i_layer_id)
 		{	
+			printf("if( i_mb_type != I_16x16 ) called\n");
 			h->mb.i_cbp_luma = 0;
 			h->mb.i_cbp_chroma = 0;
 			h->mb.cache.i_cbp_left = 0;
@@ -1041,7 +1051,7 @@ NumMbPart( mb_type ) = = 4 )*/
       			  if( chroma )
       			      x264_cabac_cbp_chroma( h, cb );
 		}
-	else
+	else*/
 		{
 			x264_cabac_cbp_luma( h, cb );  // 这个写入 他的后四位其实就写入了 coded_block_pattern余16的	情况
       			  if( chroma )
@@ -1050,38 +1060,57 @@ NumMbPart( mb_type ) = = 4 )*/
     }
 
     if( x264_mb_transform_8x8_allowed( h ) && h->mb.i_cbp_luma )
-    {
-        x264_cabac_transform_size( h, cb ); // 这在往里边写transform size
+    {		if(h->i_layer_id)
+		printf("x264_mb_transform_8x8_allowed( h ) && h->mb.i_cbp_luma called\n");
+		x264_cabac_transform_size( h, cb ); // 这在往里边写transform size
     }
 	
  /*sky if( CodedBlockPatternLuma > 0 | | CodedBlockPatternChroma > 0 | |
 MbPartPredMode( mb_type, 0 ) = = Intra_16x16 ) */
     if( h->mb.i_cbp_luma || (chroma && h->mb.i_cbp_chroma) || i_mb_type == I_16x16 )
     {
-        const int b_intra = IS_INTRA( i_mb_type );
+if(h->i_layer_id)
+		printf(" h->mb.i_cbp_luma || (chroma && h->mb.i_cbp_chroma) || i_mb_type == I_16x16 called\n");
+		const int b_intra = IS_INTRA( i_mb_type );
         x264_cabac_qp_delta( h, cb );
 
+
+		
+
         /* write residual */
-        if( i_mb_type == I_16x16 )
+		if(h->i_layer_id)
+			printf("h->mb.i_mb_xyh->mb.i_mb_xyh->mb.i_mb_xyh->mb.i_mb_xy %d\n",h->mb.i_mb_xy);
+
+
+		if( i_mb_type == I_16x16 ) // if( startIdx = = 0 && MbPartPredMode( mb_type, 0 ) = = Intra_16x16 )
         {
             /* DC Luma */
             for( int p = 0; p < plane_count; p++ )
             {
              /*skytest0916 ifesle*/
-		/**/if(h->i_layer_id)
+		/*if(h->i_layer_id)
 		{	
+			printf("if( i_mb_type == I_16x16 ) called\n");
 			x264_cabac_block_residual_dc_cbf( h, cb, ctx_cat_plane[DCT_LUMA_DC][p], LUMA_DC+p, 0, 1 );
 		}
-		else
+		else*/
+			//residual_block( i16x16DClevel, 0, 15, 16 )
 			x264_cabac_block_residual_dc_cbf( h, cb, ctx_cat_plane[DCT_LUMA_DC][p], LUMA_DC+p, h->dct.luma16x16_dc[p], 1 );
 
                 /* AC Luma */
+				//residual_block( i16x16AClevel[i8x8*4+ i4x4],Max( 0, startIdx . 1 ), endIdx . 1, 15)
                 if( h->mb.i_cbp_luma )  
                     for( int i = p*16; i < p*16+16; i++ )
-                        x264_cabac_block_residual_cbf( h, cb, ctx_cat_plane[DCT_LUMA_AC][p], i, h->dct.luma4x4[i]+1, 1 );
+						/*skytest0919
+						if(h->i_layer_id)
+							{
+							 x264_cabac_block_residual_cbf( h, cb, ctx_cat_plane[DCT_LUMA_AC][p], i, 0+1, 1 );
+							}
+						else*/
+                       			 x264_cabac_block_residual_cbf( h, cb, ctx_cat_plane[DCT_LUMA_AC][p], i, h->dct.luma4x4[i]+1, 1 );
             }
         }
-        else if( h->mb.b_transform_8x8 ) // i_mb_type  != i_16X16 这条线
+        else if( h->mb.b_transform_8x8 ) // i_mb_type  != i_16X16 这条线else if( CodedBlockPatternLuma & ( 1 << i8x8 ) )
         {
             if( plane_count == 3 )
             {
@@ -1123,9 +1152,15 @@ if( (h->mb.i_neighbour & MB_TOP) && !h->mb.mb_transform_size[h->mb.i_mb_top_xy] 
 }
 
                 MUNGE_8x8_NNZ( BACKUP )
-
+       //residual_block( level8x8[ i8x8 ], 4 * startIdx, 4 * endIdx + 3, 64 )
                 for( int p = 0; p < 3; p++ )
                     FOREACH_BIT( i, 0, h->mb.i_cbp_luma )
+                    /*skytest0919
+                    if(h->i_layer_id)
+                    	{
+                  	  	x264_cabac_block_residual_8x8_cbf( h, cb, ctx_cat_plane[DCT_LUMA_8x8][p], i*4+p*16, 0, b_intra );
+                    	}
+			else*/
                         x264_cabac_block_residual_8x8_cbf( h, cb, ctx_cat_plane[DCT_LUMA_8x8][p], i*4+p*16, h->dct.luma8x8[i+p*4], b_intra );
 
                 MUNGE_8x8_NNZ( RESTORE )
@@ -1133,14 +1168,28 @@ if( (h->mb.i_neighbour & MB_TOP) && !h->mb.mb_transform_size[h->mb.i_mb_top_xy] 
             else
             {
                 FOREACH_BIT( i, 0, h->mb.i_cbp_luma )
+					//residual_block( level8x8[ i8x8 ], 4 * startIdx, 4 * endIdx + 3, 64 )
+					  /*skytest0919
+                    if(h->i_layer_id)
+                    	{
+                  	  	 x264_cabac_block_residual_8x8( h, cb, DCT_LUMA_8x8, 0 );
+                    	}
+			else*/
                     x264_cabac_block_residual_8x8( h, cb, DCT_LUMA_8x8, h->dct.luma8x8[i] );
             }
         }
-        else // h->mb.b_transform_8X8 == 0
+        else // h->mb.b_transform_8X8 == 0    != intra16*16
         {
             for( int p = 0; p < plane_count; p++ )
                 FOREACH_BIT( i8x8, 0, h->mb.i_cbp_luma )
                     for( int i = 0; i < 4; i++ )
+						//residual_block( level[ i8x8 * 4 + i4x4 ], startIdx, endIdx, 16)
+		/*skytest0919
+                    if(h->i_layer_id)
+                    	{
+                  	  	  x264_cabac_block_residual_cbf( h, cb, ctx_cat_plane[DCT_LUMA_4x4][p], i+i8x8*4+p*16, 0, b_intra );
+                    	}
+			else*/
                         x264_cabac_block_residual_cbf( h, cb, ctx_cat_plane[DCT_LUMA_4x4][p], i+i8x8*4+p*16, h->dct.luma4x4[i+i8x8*4+p*16], b_intra );
         }
 

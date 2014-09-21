@@ -408,7 +408,7 @@ if(1)
         if( sh->b_num_ref_idx_override )
         {
             bs_write_ue( s, sh->i_num_ref_idx_l0_active - 1 );
-			printf("ggggggggggggggggggggsh->i_num_ref_idx_l0_active - 1 :%d\n",sh->i_num_ref_idx_l0_active -1);
+			
             if( sh->i_type == SLICE_TYPE_B )
                 bs_write_ue( s, sh->i_num_ref_idx_l1_active - 1 );
         }
@@ -457,7 +457,7 @@ if(1)
 	/*sky 0918添糹f( no_inter_layer_pred_flag | | !base_pred_weight_table_flag ) */
 	if(nal->i_type == NAL_SLICE || !sh->pps->b_base_pred_weight_table_flag )
 		{
-		printf("uuuuuuuuuuuuuuuuuuuuuuuuunal->i_type%d, sh->weight[0][0].i_denom %d",nal->i_type,sh->weight[0][0].i_denom);
+		
         bs_write_ue( s, sh->weight[0][0].i_denom );
         bs_write_ue( s, sh->weight[0][1].i_denom );
         for( int i = 0; i < sh->i_num_ref_idx_l0_active; i++ )
@@ -529,7 +529,7 @@ if(1)
         bs_write_ue( s, sh->i_cabac_init_idc );
 
     bs_write_se( s, sh->i_qp_delta );      /* slice qp delta */
-printf("ooooooooooooooooooooooooosh->i_cabac_init_idc %d,sh->i_qp_delta %d\n",sh->i_cabac_init_idc,sh->i_qp_delta );
+
     if( sh->pps->b_deblocking_filter_control )
     {
         bs_write_ue( s, sh->i_disable_deblocking_filter_idc );
@@ -553,7 +553,7 @@ printf("ooooooooooooooooooooooooosh->i_cabac_init_idc %d,sh->i_qp_delta %d\n",sh
   	{
 		sh->i_ref_layer_dq_id = ((nal ->i_dependency_id - 1) << 4 ) + nal ->i_quality_id ; // sky有待确定
 		bs_write_ue(s,sh->i_ref_layer_dq_id); // sh中的赋值，这个值与参考层的dqid
-		printf("hhhhhhhhhhhhhhhhhhhhhhhhhh %d\n",sh->i_ref_layer_dq_id);
+		
 		if(sh->sps->b_inter_layer_deblocking_present)
 			{
 				
@@ -595,7 +595,7 @@ printf("ooooooooooooooooooooooooosh->i_cabac_init_idc %d,sh->i_qp_delta %d\n",sh
 		if(sh->sps->b_adaptive_tcoeff_level_prediction_flag)
 			{
 				bs_write1(s,sh->b_tcoeff_level_pred_flag);
-				printf("ffffffffffffffffffffffffffffffffffff%d\n",sh->sps->b_seq_tcoeff_level_prediction_flag);
+			
 			}
   	}
 
@@ -605,6 +605,8 @@ printf("ooooooooooooooooooooooooosh->i_cabac_init_idc %d,sh->i_qp_delta %d\n",sh
 		bs_write( s, 4, 0); // "SH: scan_idx_start"这个值没有搞懂，赋值太麻烦
 		bs_write(s, 4, 15); // "SH: scan_idx_end"这个值没有搞懂，赋值太麻烦
 	}
+  /*skytest0919 断开扩展层*/
+ // bs_write(s,16,65535);
    }
 }
 
@@ -3541,7 +3543,11 @@ else{
     else
     {
         if( i_skip > 0 )
-            bs_write_ue( &h->out.bs, i_skip );  /* last skip run */
+        	{
+			bs_write_ue( &h->out.bs, i_skip );  /* last skip run */
+			printf("I_SKIP CALLED\n");
+		}
+            
         /* rbsp_slice_trailing_bits */
         bs_rbsp_trailing( &h->out.bs );
         bs_flush( &h->out.bs );
@@ -3764,7 +3770,7 @@ static void *x264_slices_write( x264_t *h )
        h->mb.b_reencode_mb = 0;	
 	h->i_layer_id = 0;
 	/*skytest 0916 mbBL -> mb*/
-		printf("rrrrrrrrrrrrrrrrrrrrrrrrr111111111111111 %dh->i_frame_num",h->i_frame_num);
+		
 	x264_copy_mb_info_before_encode(h,1);
 	   WRITE_ALL_SLICES
 	   	
@@ -3782,10 +3788,10 @@ static void *x264_slices_write( x264_t *h )
 /*skytest917验证不能直接调用slice init*/
 	
 	 x264_slice_header_init( h, &h->sh,& h->sps[h->i_layer_id],& h->pps[h->i_layer_id], h->i_idr_pic_id, h->i_frame_num,x264_ratecontrol_qp( h ));
-	printf("rrrrrrrrrrrrrrrrrrrrrrrrr 22222222222222%dh->i_frame_num",h->i_frame_num);
+	
 	last_thread_mb = h->sh.i_last_mb;
 		
-	//WRITE_ALL_SLICES
+	WRITE_ALL_SLICES
 		
 		
 	h->mb.i_mb_width = h->mbBL.i_mb_width ;
