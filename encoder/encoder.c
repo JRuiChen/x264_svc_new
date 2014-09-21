@@ -3263,7 +3263,7 @@ else
         mb_xy = i_mb_x + i_mb_y * h->mb.i_mb_width;
         int mb_spos = bs_pos(&h->out.bs) + x264_cabac_pos(&h->cabac);
 
-	printf("qqqqqqqqqqqqqqqqqqqqq %d %d\n",mb_xy,h->i_frame);
+	
         if( i_mb_x == 0 )
         {
             if( x264_bitstream_check_buffer( h ) )
