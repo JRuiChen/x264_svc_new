@@ -123,6 +123,7 @@ static ALWAYS_INLINE int array_non_zero( dctcoef *v, int i_count )
 /* This means that decimation can be done merely by adjusting the CBP and NNZ
  * rather than memsetting the coefficients. */
 
+
 /*encode the I_BL macroblock -  BY MING*/
 static void x264_mb_encode_iBL(x264_t* h ,int p,int i_qp)
 {
@@ -720,6 +721,16 @@ static ALWAYS_INLINE void x264_macroblock_encode_internal( x264_t *h, int plane_
                 h->mb.i_type = B_DIRECT;
         }
     }
+
+   if(h->mb.i_type == I_BL)
+   {
+     /*if I_BL is chosen, we will get the pixels from the base layer and get the residual - BY MING*/
+     for(int p = 0; p < plane_count; p++, i_qp = h->mb.i_chroma_qp)
+     	{
+	     x264_mb_encode_iBL(h,p,i_qp);
+     	}
+   }
+
 
     if( h->mb.i_type == P_SKIP )
     {

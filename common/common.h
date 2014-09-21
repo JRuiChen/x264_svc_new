@@ -131,7 +131,6 @@ extern const int  m_nDataNotAvailable;
 
 
 
-
 #define CHECKED_MALLOC_NO_FAIL( var, size )\
 do {\
     var = x264_malloc( size );\
@@ -667,6 +666,7 @@ typedef struct
 	int b_scoeff_residual_pred_flag;
 	int b_tcoeff_level_pred_flag;
     int b_base_layer_flag;//标记是否是基本层，临时变量- BY MING
+
 	int i_scan_start;
 	int i_scan_end;
 	// sh扩展结束
@@ -821,7 +821,9 @@ typedef struct
         int8_t  *qp;                        /* mb qp */
         int16_t *cbp;                       /* mb cbp: 0x0?: luma, 0x?0: chroma, 0x100: luma dc, 0x0200 and 0x0400: chroma dc  (all set for PCM)*/
         int8_t  (*intra4x4_pred_mode)[8];   /* intra4x4 pred mode. for non I4x4 set to I_PRED_4x4_DC(2) */
-                                            /* actually has only 7 entries; set to 8 for write-combining optimizations */
+                                           /* actually has only 7 entries; set to 8 for write-combining optimizations */
+        /*extenstion mb table - BY MING */
+		uint8_t (*sub_partition)[4];
         uint8_t (*non_zero_count)[16*3];    /* nzc. for I_PCM set to 16 */
         int8_t  *chroma_pred_mode;          /* chroma_pred_mode. cabac only. for non intra I_PRED_CHROMA_DC(0) */
         int16_t (*mv[2])[2];                /* mb mv. set to 0 for intra mb */
@@ -840,7 +842,6 @@ typedef struct
         int8_t* BL_skip;                /*bl_skip - BY MING*/
 		int8_t* transform8x8_size;       /* BY MING*/
 		int8_t* intra16x16_pred_mode;/*BY MING*/
-	    uint8_t (*sub_partition)[4];        /* sub_partition - BY MING*/
         
          /* buffer for weighted versions of the reference frames */
         pixel *p_weight_buf[X264_REF_MAX];
@@ -1007,11 +1008,11 @@ typedef struct
 
 
 
+
 struct x264_t
 {
     /* encoder parameters */
     x264_param_t    param;
-
     x264_t          *thread[X264_THREAD_MAX+1];
     x264_t          *lookahead_thread[X264_LOOKAHEAD_THREAD_MAX];
     int             b_thread_active;

@@ -1047,7 +1047,9 @@ static void ALWAYS_INLINE x264_macroblock_load_pic_pointers( x264_t *h, int mb_x
     int i_pix_offset = mb_interlaced
                      ? 16 * mb_x + height * (mb_y&~1) * i_stride + (mb_y&1) * i_stride
                      : 16 * mb_x + height * mb_y * i_stride;
+
     pixel *plane_fdec = h->i_layer_id == 0?(&h->fdec->plane[i][i_pix_offset]):(&h->fdec->planeEL1[i][i_pix_offset]);
+
     int fdec_idx = b_mbaff ? (mb_interlaced ? (3 + (mb_y&1)) : (mb_y&1) ? 2 : 4) : !(mb_y&1);
     pixel *intra_fdec = &h->intra_border_backup[fdec_idx][i][mb_x*16];
     int ref_pix_offset[2] = { i_pix_offset, i_pix_offset };
@@ -1059,6 +1061,7 @@ static void ALWAYS_INLINE x264_macroblock_load_pic_pointers( x264_t *h, int mb_x
 
 		
 	if( b_chroma )
+
     {
         h->mc.load_deinterleave_chroma_fenc( h->mb.pic.p_fenc[1], h->mb.pic.p_fenc_plane[1], i_stride2, height );
         memcpy( h->mb.pic.p_fdec[1]-FDEC_STRIDE, intra_fdec, 8*sizeof(pixel) );
@@ -1090,12 +1093,14 @@ static void ALWAYS_INLINE x264_macroblock_load_pic_pointers( x264_t *h, int mb_x
         if( mb_interlaced )
         {
             plane_src = h->i_layer_id == 0?h->fref[0][j>>1]->plane_fld[i]:h->fref[0][j>>1]->plane_fldEL1[i];
+
             filtered_src = h->fref[0][j>>1]->filtered_fld[i];
         }
         else
         {
             plane_src = h->i_layer_id == 0?h->fref[0][j]->plane[i]:h->fref[0][j]->planeEL1[i];
-            filtered_src = h->i_layer_id == 0?h->fref[0][j]->filtered[i]:h->fref[0][j]->filtered[i];
+
+            filtered_src = h->i_layer_id == 0?h->fref[0][j]->filtered[i]:h->fref[0][j]->filteredEL1[i];
         }
         h->mb.pic.p_fref[0][j][i*4] = plane_src + ref_pix_offset[j&1];
 
@@ -1122,7 +1127,9 @@ static void ALWAYS_INLINE x264_macroblock_load_pic_pointers( x264_t *h, int mb_x
             }
             else
             {
+
                 plane_src = h->i_layer_id == 0?h->fref[1][j]->plane[i]:h->fref[1][j]->planeEL1[i];
+
                 filtered_src = h->fref[1][j]->filtered[i];
             }
             h->mb.pic.p_fref[1][j][i*4] = plane_src + ref_pix_offset[j&1];
@@ -1430,7 +1437,9 @@ static void ALWAYS_INLINE x264_macroblock_cache_load_EL(x264_t* h,int mb_x,int m
       int i_mb_xy = mb_y*h->mb.i_mb_width + mb_x;
 	  int i_qp = h->mb.qp[i_mb_xy];
 	  h->mb.i_qp = i_qp;
-	  h->mb.i_chroma_qp = h->chroma_qp_table[i_qp];  
+	  h->mb.i_chroma_qp = h->chroma_qp_table[i_qp]; 
+
+	  printf("call function x264_macroblock_cache_load_EL \n");
 }
 
 

@@ -108,7 +108,10 @@ static void x264_frame_dump( x264_t *h )
     fclose( f );
 }
 
-/* Fill "default" values */
+
+
+
+
 static void x264_slice_header_init( x264_t *h, x264_slice_header_t *sh,
                                     x264_sps_t *sps, x264_pps_t *pps,
                                     int i_idr_pic_id, int i_frame, int i_qp )
@@ -121,6 +124,8 @@ static void x264_slice_header_init( x264_t *h, x264_slice_header_t *sh,
 
     sh->i_first_mb  = 0;
     sh->i_last_mb   = h->mb.i_mb_count - 1;
+
+	
     sh->i_pps_id    = pps->i_id;
 
     sh->i_frame_num = i_frame;
@@ -139,11 +144,6 @@ static void x264_slice_header_init( x264_t *h, x264_slice_header_t *sh,
 
     sh->i_redundant_pic_cnt = 0;
 
-/*BY MING*/
-    sh->b_scoeff_residual_pred_flag = 0;
-	sh->b_tcoeff_level_pred_flag = 0;
-
-	
     h->mb.b_direct_auto_write = h->param.analyse.i_direct_mv_pred == X264_DIRECT_PRED_AUTO
                                 && h->param.i_bframe
                                 && ( h->param.rc.b_stat_write || !h->param.rc.b_stat_read );
@@ -217,13 +217,14 @@ static void x264_slice_header_init( x264_t *h, x264_slice_header_t *sh,
 	/*sky 2014.08.28  sh init extension*/
 
     sh->i_ref_layer_dq_id = -1; // 这个值初值为-1 ，具体还要赋值
-	
+    sh->b_constrained_intra_resampling_flag = 0;
   // 这个地方是不是还会扩展啊
     sh->i_num_mbs_in_slice = h ->mb.i_mb_count;
     sh->b_slice_skip_flag = 0; // 初值0;
     sh->i_scan_start = 0;
     sh->i_scan_end = 15;
 
+    sh->b_tcoeff_level_pred_flag = 0;
     sh->b_adaptive_base_mode_flag = 0;
     sh->b_default_base_mode_flag = 1;
 	/*sky 考虑到解码端 以下值设为0*/
@@ -233,6 +234,18 @@ static void x264_slice_header_init( x264_t *h, x264_slice_header_t *sh,
     sh->b_default_residual_prediction_flag = 0;
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /* init Enhance Layer slice header - BY MING*/
@@ -335,7 +348,8 @@ static void x264_slice_header_init_EL(x264_t* h,x264_slice_header_t* sh,x264_sps
 
 
 
-/*sky 2014.08.28 add &h->out.nal[h->out.i_nal]*/
+
+
 static void x264_slice_header_write( bs_t *s, x264_slice_header_t *sh, int i_nal_ref_idc, x264_nal_t *nal) 
 //static void x264_slice_header_write( bs_t *s, x264_slice_header_t *sh, int i_nal_ref_idc) 
 {
@@ -343,8 +357,10 @@ static void x264_slice_header_write( bs_t *s, x264_slice_header_t *sh, int i_nal
 	/*sky 2014.08.28 add sh writer nal扩展头*/
 	if(nal->i_type == NAL_UNIT_CODED_SLICE_SCALABLE)
 		{
-			  bs_realign( s ); // 这个对齐 能不能有啊，应该是没问题的吧
-  			  bs_write1( s , nal ->b_svc_extension);
+		/*skytest 0916*/
+			 // bs_realign( s ); // 这个对齐 能不能有啊，应该是没问题的吧
+
+		bs_write1( s , nal ->b_svc_extension);
   			  bs_write1( s , nal ->b_idr_flag);
     			  bs_write( s , 6 , nal ->i_priority_id);
                           bs_write1(s, nal ->b_no_inter_layer_pred_flag);
@@ -369,7 +385,7 @@ if( sh->b_mbaff )
     bs_write_ue( s, sh->i_type + 5 );   /* same type things */
     bs_write_ue( s, sh->i_pps_id );
     bs_write( s, sh->sps->i_log2_max_frame_num, sh->i_frame_num & ((1<<sh->sps->i_log2_max_frame_num)-1) );
-
+printf("-----------------------%d ,%d",sh->sps->i_log2_max_frame_num,sh->i_frame_num & ((1<<sh->sps->i_log2_max_frame_num)-1));
     if( !sh->sps->b_frame_mbs_only )
     {
         bs_write1( s, sh->b_field_pic );
@@ -394,11 +410,11 @@ if( sh->b_mbaff )
     	}
 /*sky 2014.08.23 添加nal ->i_quality_id == 0*/
 /*skytest*/
+   if( sh->pps->b_redundant_pic_cnt )
+        bs_write_ue( s, sh->i_redundant_pic_cnt );
 if(1)
 {
-    if( sh->pps->b_redundant_pic_cnt )
-        bs_write_ue( s, sh->i_redundant_pic_cnt );
-
+ 
     if( sh->i_type == SLICE_TYPE_B )
         bs_write1( s, sh->b_direct_spatial_mv_pred );
 
@@ -408,6 +424,7 @@ if(1)
         if( sh->b_num_ref_idx_override )
         {
             bs_write_ue( s, sh->i_num_ref_idx_l0_active - 1 );
+			
             if( sh->i_type == SLICE_TYPE_B )
                 bs_write_ue( s, sh->i_num_ref_idx_l1_active - 1 );
         }
@@ -442,14 +459,21 @@ if(1)
     }
 
     sh->b_weighted_pred = 0;
-    if( sh->pps->b_weighted_pred && sh->i_type == SLICE_TYPE_P )
+    if(( sh->pps->b_weighted_pred && sh->i_type == SLICE_TYPE_P )
+		||( sh->pps->b_weighted_bipred == 1 && sh->i_type == SLICE_TYPE_B )
+	)
     {
         sh->b_weighted_pred = sh->weight[0][0].weightfn || sh->weight[0][1].weightfn || sh->weight[0][2].weightfn;
 	if(nal->i_type == NAL_UNIT_CODED_SLICE_SCALABLE)
 	{/*sky 2014.08.23 添   if(!nal->b_no_inter_layer_pred_flag)*/
 		if(!nal->b_no_inter_layer_pred_flag)
 			bs_write1(s, sh->pps->b_base_pred_weight_table_flag); // 这个值在pps中填加值是多少不知道
-	}	/* pred_weight_table() */
+	}	
+	/* pred_weight_table() */
+	/*sky 0918添糹f( no_inter_layer_pred_flag | | !base_pred_weight_table_flag ) */
+	if(nal->i_type == NAL_SLICE || !sh->pps->b_base_pred_weight_table_flag )
+		{
+		
         bs_write_ue( s, sh->weight[0][0].i_denom );
         bs_write_ue( s, sh->weight[0][1].i_denom );
         for( int i = 0; i < sh->i_num_ref_idx_l0_active; i++ )
@@ -472,12 +496,14 @@ if(1)
                 }
             }
         }
+		}//sky0918
     }
-    else if( sh->pps->b_weighted_bipred == 1 && sh->i_type == SLICE_TYPE_B )
-    {
+/*skytest0918*/
+   // else if( sh->pps->b_weighted_bipred == 1 && sh->i_type == SLICE_TYPE_B )
+   // {
       /* TODO */
-    }
-
+    //}
+//}
     if( i_nal_ref_idc != 0 )
     {
         if( sh->i_idr_pic_id >= 0 )
@@ -543,8 +569,10 @@ if(1)
   	{
 		sh->i_ref_layer_dq_id = ((nal ->i_dependency_id - 1) << 4 ) + nal ->i_quality_id ; // sky有待确定
 		bs_write_ue(s,sh->i_ref_layer_dq_id); // sh中的赋值，这个值与参考层的dqid
+		
 		if(sh->sps->b_inter_layer_deblocking_present)
 			{
+				
 				//deblockwrite 不走这条线
 			}
 		bs_write1(s,sh->b_constrained_intra_resampling_flag); // 这个值不能确定，涉及到mb编码
@@ -554,39 +582,77 @@ if(1)
 			}
   	}
   if(!nal->b_no_inter_layer_pred_flag)
-  	{
-		bs_write1(s, sh->b_slice_skip_flag); // 这个值怎么赋?暂时0?
-		if(sh->b_slice_skip_flag)
-			{
+	  {
+			bs_write1(s, sh->b_slice_skip_flag); // 这个值怎么赋?暂时0?
+		if(sh->b_slice_skip_flag)		
 				bs_write_ue(s,sh->i_num_mbs_in_slice - 1); // 这个值要init，init完成
-			}
 		else
-			{
+			{		
 				bs_write1(s,sh->b_adaptive_base_mode_flag);
 				if( !sh->b_adaptive_base_mode_flag )
-					{
+					
 						bs_write1(s, sh->b_default_base_mode_flag);
-						if(sh->b_default_base_mode_flag)
-							bs_write1(s,sh->b_default_base_mode_flag);
+						
+						
+						if(!sh->b_default_base_mode_flag)
+							{
+							bs_write1(s,sh->b_adaptive_motion_prediction_flag);
 							if(!sh->b_adaptive_motion_prediction_flag)
 								bs_write1(s,sh->b_default_motion_prediction_flag);
-					}
+							}
+
+
+						
 				bs_write1(s,sh->b_adaptive_residual_prediction_flag);
-				if(sh->b_adaptive_residual_prediction_flag)
+				if(!sh->b_adaptive_residual_prediction_flag)
 					bs_write1(s,sh->b_default_residual_prediction_flag);
 			}
 		
 		if(sh->sps->b_adaptive_tcoeff_level_prediction_flag)
-			bs_write1(s,sh->sps->b_seq_tcoeff_level_prediction_flag);
+			{
+				bs_write1(s,sh->b_tcoeff_level_pred_flag);
+			
+			}
   	}
+
+  
   if(!sh->sps->b_slice_header_restriction_flag  && !sh->b_slice_skip_flag)
   	{
 		bs_write( s, 4, 0); // "SH: scan_idx_start"这个值没有搞懂，赋值太麻烦
 		bs_write(s, 4, 15); // "SH: scan_idx_end"这个值没有搞懂，赋值太麻烦
-			
-  	}
-		}
+	}
+  /*skytest0919 断开扩展层*/
+ // bs_write(s,16,65535);
+   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* If we are within a reasonable distance of the end of the memory allocated for the bitstream, */
 /* reallocate, adding an arbitrary amount of space. */
@@ -2693,6 +2759,7 @@ static inline void x264_reference_build_list( x264_t *h, int i_poc )
 
 static void x264_fdec_filter_row( x264_t *h, int mb_y, int pass )
 {
+
     /* mb_y is the mb to be encoded next, not the mb to be filtered here */
     int b_hpel = h->fdec->b_kept_as_ref;
     int b_deblock = h->sh.i_disable_deblocking_filter_idc != 1;
@@ -2809,6 +2876,9 @@ static void x264_fdec_filter_row( x264_t *h, int mb_y, int pass )
             h->stat.frame.i_ssim_cnt += ssim_cnt;
         }
     }
+
+
+	printf("call function x264_fdec_filter_row HHHHHHHHHHHHHHHHH \n");
 }
 
 static inline int x264_reference_update( x264_t *h )
@@ -3269,7 +3339,7 @@ else
             if( !(i_mb_y & SLICE_MBAFF) && h->param.rc.i_vbv_buffer_size )
                 x264_bitstream_backup( h, &bs_bak[BS_BAK_ROW_VBV], i_skip, 1 );
             if( !h->mb.b_reencode_mb )
-                x264_fdec_filter_row( h, i_mb_y, 0 );
+                x264_fdec_filter_row( h, i_mb_y, 0 );/*Point 1*/
         }
 
         if( !(i_mb_y & SLICE_MBAFF) && back_up_bitstream )
@@ -3414,6 +3484,7 @@ cont:
         h->mb.b_reencode_mb = 0;
 
         /* save cache */
+		if(h->i_layer_id == 0)
         x264_macroblock_cache_save( h );
 
         if( x264_ratecontrol_mb( h, mb_size ) < 0 )
@@ -3877,8 +3948,9 @@ static void *x264_slices_write( x264_t *h )
 
 	
 	/*write all slices of base layer - BY MING*/
-    
-	//x264_copy_mb_info_before_encode(h,BASE_LAYER);
+    h->mb.b_reencode_mb = 0;	
+	h->i_layer_id = 0;
+	x264_copy_mb_info_before_encode(h,BASE_LAYER);
 	//memcpy(&(h->mb),&(h->mbBL),sizeof(h->mb));
     h->sh.b_base_layer_flag = BASE_LAYER;
 	h->mb.b_reencode_mb = 0;
@@ -3903,7 +3975,31 @@ static void *x264_slices_write( x264_t *h )
         xUpsampleMotion(h->mo_up,&h->cRP, h->cRP.m_bFieldPicFlag,0,MV_THRESHOLD,h);
 	}
 	
-	
+
+
+
+
+   
+   /*skytest  0916 添加增强层空跑内容*/
+   h->i_layer_id = 1;
+   h->mb.b_reencode_mb = 0;
+   x264_copy_mb_info_before_encode(h,ENHANCE_LAYER);
+
+   /*printf test info - BY MING*/
+   printf("HHHHHHHHHHHHHHHHHHHHHH  i_mb_count:%d \n",h->mb.i_mb_count);
+   
+   x264_slice_header_init( h, &h->sh,& h->sps[h->i_layer_id],& h->pps[h->i_layer_id], h->i_idr_pic_id, h->i_frame_num,x264_ratecontrol_qp( h ));
+   last_thread_mb = h->sh.i_last_mb;
+		
+   WRITE_ALL_SLICES
+
+ 
+   h->mb.i_mb_width = h->mbBL.i_mb_width ;
+   h->mb.i_mb_height = h->mbBL.i_mb_height ;
+   h->mb.i_mb_count = h->mbBL.i_mb_count ;
+   h->mb.i_mb_stride = h->mbBL.i_mb_stride;
+   //x264_copy_mb_info_before_encode(h,1);
+	 h->i_layer_id = 0;
 
 
 	//writeCsp1(h->fdec->planeUpsampleEL1[0], file_dst2, h->param.i_widthEL1, h->param.i_heightEL1, h->fdec->i_strideEL1[0]/sizeof(pixel));
@@ -3911,13 +4007,6 @@ static void *x264_slices_write( x264_t *h )
 
 	//fclose(file_dst2);
 
-    /*write all slices of enhance layer - BY MING*/
-	/*h->mb.b_reencode_mb = 0;
-    x264_copy_mb_info_before_encode(h,ENHANCE_LAYER);
-	h->sh.b_base_layer_flag = ENHANCE_LAYER;
-    h->sh.i_first_mb = 0;
-	h->sh.i_last_mb = h->mb.i_mb_count - 1;
-    WRITE_ALL_SLICES*/
     return (void *)0;
 
 fail:

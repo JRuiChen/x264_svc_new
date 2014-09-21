@@ -161,6 +161,10 @@ typedef struct MvScaleParam
 
 
 
+
+
+
+
 /* an user-defined struct for motion upsampling - BY -MING*/
 
 typedef struct MOTIONUPSAMPLING
@@ -211,7 +215,13 @@ typedef struct MOTIONUPSAMPLING
 }MotionUpsampling;
 
 
+
  MotionUpsampling * mo_up;
+
+
+
+
+
 
 /*xIsInCropWIndow - BY MING*/
 
@@ -260,7 +270,6 @@ int xUpsampleMotion(MotionUpsampling*,ResizeParameters*,int ,int ,int ,x264_t*);
 int xDeriveMbMode(MotionUpsampling* ,x264_t*);
 
 int x8x8BlocksHaveSameMotion(MotionUpsampling*,int,int,int);
-
 
 
 
@@ -375,7 +384,9 @@ typedef struct x264_frame
     uint8_t *fieldEL1;
     uint8_t *effective_qpEL1;
 
+
  	/*extentend params of struct type PictureParameters - BY MING*/
+
 	PictureParameters cPP;
 
     /* Stored as (lists_used << LOWRES_COST_SHIFT) + (cost).
