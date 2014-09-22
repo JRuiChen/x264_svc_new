@@ -3666,10 +3666,10 @@ for(int iMbX = 0;iMbX < iMbXMax;iMbX++)
 
 
 
-//for(int i = 0;i < h->mbEL1.i_mb_count*16; i++)
+//for(int i = 0;i < h->mbBL.i_mb_count*16; i++)
 //{
  //  printf("mbtype for mbEL1  mb_type: %d\n",h->mbEL1.type[i]);
-  // printf("mv for EL1  mv[0]:%d     mv[1]:%d \n",h->mb.mv[0][i][0],h->mb.mv[0][i][1]);;
+//  printf("mv for EL1  mv[0]:%d     mv[1]:%d \n",h->mbBL.mv[0][i][0],h->mbBL.mv[0][i][1]);;
 //}
 
 //printf("call function xUpsampleMotion \n");

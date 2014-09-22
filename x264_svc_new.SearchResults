@@ -1,7 +1,10 @@
-<<<<<<< HEAD
----- internal error (MV out of thread range) Matches (1 in 1 files) ----
-Analyse.c (encoder):                x264_log( h, X264_LOG_WARNING, "internal error (MV out of thread range)\n");
-=======
----- TTTTTTTTTTTTTTTTTTTTTTTTTT Matches (1 in 1 files) ----
-Frame.c (common):     printf("call function xDeriveBlockModeAndUpdateMv TTTTTTTTTTTTTTTTTTTTTTTTTT \n");
->>>>>>> origin/MING
+---- h->mb.mv_min[0] Matches (9 in 3 files) ----
+Analyse.c (encoder):        h->mb.mv_min[0] = 4*( -16*h->mb.i_mb_x - 24 );
+Analyse.c (encoder):        h->mb.mv_min_spel[0] = CLIP_FMV( h->mb.mv_min[0] );
+Macroblock.c (common):    int mvx   = x264_clip3( h->mb.cache.mv[0][i8][0], h->mb.mv_min[0], h->mb.mv_max[0] ) + 4*4*x;
+Macroblock.c (common):	//printf("777777777777777777777777777  mv_min[0]:%d  mv_max[0]:%d \n",h->mb.mv_min[0],h->mb.mv_max[0]);
+Macroblock.c (common):    int mvx   = x264_clip3( h->mb.cache.mv[1][i8][0], h->mb.mv_min[0], h->mb.mv_max[0] ) + 4*4*x;
+Macroblock.c (common):    int mvx0   = x264_clip3( h->mb.cache.mv[0][i8][0], h->mb.mv_min[0], h->mb.mv_max[0] ) + 4*4*x;
+Macroblock.c (common):    int mvx1   = x264_clip3( h->mb.cache.mv[1][i8][0], h->mb.mv_min[0], h->mb.mv_max[0] ) + 4*4*x;
+Macroblock.c (encoder):                                  h->mb.mv_min[0], h->mb.mv_max[0] );
+Macroblock.c (encoder):            mvp[0] = x264_clip3( h->mb.cache.pskip_mv[0], h->mb.mv_min[0], h->mb.mv_max[0] );

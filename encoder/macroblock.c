@@ -836,6 +836,7 @@ static ALWAYS_INLINE void x264_macroblock_encode_internal( x264_t *h, int plane_
             }
         }
     }
+
     else    /* Inter MB */
     {
         int i_decimate_mb = 0;
@@ -843,6 +844,7 @@ static ALWAYS_INLINE void x264_macroblock_encode_internal( x264_t *h, int plane_
         /* Don't repeat motion compensation if it was already done in non-RD transform analysis */
         if( !h->mb.b_skip_mc )
             x264_mb_mc( h );
+		//printf("11111111111111111111111111111111111  i_frame:%d    h->mb.i_mb_xy:%d \n",h->i_frame,h->mb.i_mb_xy);
 
         if( h->mb.b_lossless )
         {
@@ -867,6 +869,9 @@ static ALWAYS_INLINE void x264_macroblock_encode_internal( x264_t *h, int plane_
                         h->mb.cache.non_zero_count[x264_scan8[p*16+i4x4]] = nz;
                         h->mb.i_cbp_luma |= nz << (i4x4>>2);
                     }
+
+					
+		//printf("444444444444444444444444444444444444444444444  i_frame:%d    h->mb.i_mb_xy:%d \n",h->i_frame,h->mb.i_mb_xy);	
         }
         else if( h->mb.b_transform_8x8 )
         {
@@ -910,9 +915,16 @@ static ALWAYS_INLINE void x264_macroblock_encode_internal( x264_t *h, int plane_
                     }
                 }
             }
+			//printf("2222222222222222222222222222222222222 i_frame:%d	i_mb_xy:%d \n",h->i_frame,h->mb.i_mb_xy);
+
+			
         }
         else
         {
+			//printf("3333333333333333333333333333333333333333 i_mb_xy:%d \n",h->mb.i_mb_xy);
+
+
+		
             ALIGNED_ARRAY_N( dctcoef, dct4x4,[16],[16] );
             for( int p = 0; p < plane_count; p++, i_qp = h->mb.i_chroma_qp )
             {
@@ -989,14 +1001,14 @@ static ALWAYS_INLINE void x264_macroblock_encode_internal( x264_t *h, int plane_
         }
     }
 
+    
     /* encode chroma */
     if( chroma )
     {
          /*if mb_type is I_BL,then we don't need to predict - BY MING*/
         if( IS_INTRA( h->mb.i_type ) && h->mb.i_type != I_BL )
         {
-           
-				
+           	
             int i_mode = h->mb.i_chroma_pred_mode;
             if( h->mb.b_lossless )
                 x264_predict_lossless_chroma( h, i_mode );
@@ -1040,6 +1052,7 @@ static ALWAYS_INLINE void x264_macroblock_encode_internal( x264_t *h, int plane_
             h->mb.i_type = B_SKIP;
         }
     }
+	
 }
 
 void x264_macroblock_encode( x264_t *h )
