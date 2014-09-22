@@ -374,7 +374,7 @@ if( sh->b_mbaff )
     bs_write_ue( s, sh->i_type + 5 );   /* same type things */
     bs_write_ue( s, sh->i_pps_id );
     bs_write( s, sh->sps->i_log2_max_frame_num, sh->i_frame_num & ((1<<sh->sps->i_log2_max_frame_num)-1) );
-printf("-----------------------%d ,%d",sh->sps->i_log2_max_frame_num,sh->i_frame_num & ((1<<sh->sps->i_log2_max_frame_num)-1));
+
     if( !sh->sps->b_frame_mbs_only )
     {
         bs_write1( s, sh->b_field_pic );
@@ -3933,7 +3933,7 @@ static void *x264_slices_write( x264_t *h )
 	last_thread_mb = h->sh.i_last_mb;
 	
 		
-	//WRITE_ALL_SLICES
+	WRITE_ALL_SLICES
 
 	h->mb.i_mb_width = h->mbBL.i_mb_width ;
 	h->mb.i_mb_height = h->mbBL.i_mb_height ;
