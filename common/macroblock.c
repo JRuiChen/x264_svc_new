@@ -35,10 +35,12 @@
                    mvx, mvy, 4*width, 4*height, \
                    list ? x264_weight_none : &h->sh.weight[i_ref][p] );
 
+                   
+
 static NOINLINE void x264_mb_mc_0xywh( x264_t *h, int x, int y, int width, int height )
 {
 
-	printf("22222222222222222222222222222  i_frame:%d  h->mb.i_mb_xy:%d \n",h->i_frame,h->mb.i_mb_xy);
+	//printf("22222222222222222222222222222  i_frame:%d  h->mb.i_mb_xy:%d \n",h->i_frame,h->mb.i_mb_xy);
 
     int i8    = x264_scan8[0]+x+8*y;
     int i_ref = h->mb.cache.ref[0][i8];
@@ -46,7 +48,7 @@ static NOINLINE void x264_mb_mc_0xywh( x264_t *h, int x, int y, int width, int h
     int mvy   = x264_clip3( h->mb.cache.mv[0][i8][1], h->mb.mv_min[1], h->mb.mv_max[1] ) + 4*4*y;
 
     MC_LUMA( 0, 0 );
-	printf("333333333333333333333333333333  i_frame:%d  h->mb.i_mb_xy:%d \n",h->i_frame,h->mb.i_mb_xy);
+	//printf("333333333333333333333333333333  i_frame:%d  h->mb.i_mb_xy:%d \n",h->i_frame,h->mb.i_mb_xy);
 
     if( CHROMA444 )
     {
@@ -80,7 +82,7 @@ static NOINLINE void x264_mb_mc_0xywh( x264_t *h, int x, int y, int width, int h
 }
 static NOINLINE void x264_mb_mc_1xywh( x264_t *h, int x, int y, int width, int height )
 {
-	printf("666666666666666666666666  i_frame:%d  h->mb.i_mb_xy:%d \n",h->i_frame,h->mb.i_mb_xy);
+	//printf("666666666666666666666666  i_frame:%d  h->mb.i_mb_xy:%d \n",h->i_frame,h->mb.i_mb_xy);
 
     int i8    = x264_scan8[0]+x+8*y;
     int i_ref = h->mb.cache.ref[1][i8];
@@ -100,7 +102,7 @@ static NOINLINE void x264_mb_mc_1xywh( x264_t *h, int x, int y, int width, int h
 	
     MC_LUMA( 1, 0 );
 	
-	printf("777777777777777777777777777  i_frame:%d  h->mb.i_mb_xy:%d \n",h->i_frame,h->mb.i_mb_xy);
+	//printf("777777777777777777777777777  i_frame:%d  h->mb.i_mb_xy:%d \n",h->i_frame,h->mb.i_mb_xy);
 
     if( CHROMA444 )
     {
@@ -129,9 +131,10 @@ static NOINLINE void x264_mb_mc_1xywh( x264_t *h, int x, int y, int width, int h
     h->mc.avg[i_mode]( &h->mb.pic.p_fdec[p][4*y*FDEC_STRIDE+4*x], FDEC_STRIDE, \
                        src0, i_stride0, src1, i_stride1, weight );
 
+
 static NOINLINE void x264_mb_mc_01xywh( x264_t *h, int x, int y, int width, int height )
 {
-	printf("00000000000000000000000  i_frame:%d  h->mb.i_mb_xy:%d \n",h->i_frame,h->mb.i_mb_xy);
+	//printf("00000000000000000000000  i_frame:%d  h->mb.i_mb_xy:%d \n",h->i_frame,h->mb.i_mb_xy);
 
     int i8 = x264_scan8[0]+x+8*y;
     int i_ref0 = h->mb.cache.ref[0][i8];
@@ -146,13 +149,13 @@ static NOINLINE void x264_mb_mc_01xywh( x264_t *h, int x, int y, int width, int 
     ALIGNED_ARRAY_N( pixel, tmp0,[16*16] );
     ALIGNED_ARRAY_N( pixel, tmp1,[16*16] );
     pixel *src0, *src1;
-	printf("111111111111111111111111111111111  i_frame:%d  h->mb.i_mb_xy:%d \n",h->i_frame,h->mb.i_mb_xy);
+	//printf("111111111111111111111111111111111  i_frame:%d  h->mb.i_mb_xy:%d \n",h->i_frame,h->mb.i_mb_xy);
 
     MC_LUMA_BI( 0 );
 
     if( CHROMA444 )
     {
-        MC_LUMA_BI( 1 );
+       MC_LUMA_BI( 1 );
         MC_LUMA_BI( 2 );
     }
     else
@@ -537,6 +540,7 @@ int x264_macroblock_thread_allocate( x264_t *h, int b_lookahead )
         for( int i = 0; i < (PARAM_INTERLACED ? 5 : 2); i++ )
             for( int j = 0; j < (CHROMA444 ? 3 : 2); j++ )
             {
+            /*BY MING*/
                 CHECKED_MALLOC( h->intra_border_backup[i][j], (h->sps->i_mb_width*16+32) * sizeof(pixel) );
                 h->intra_border_backup[i][j] += 16;
             }
@@ -1389,6 +1393,13 @@ static void ALWAYS_INLINE x264_macroblock_cache_load_EL(x264_t* h,int mb_x,int m
     }
 
 
+    /* let fdec->planeEL1 = fdec->planeUpsamplingEL1 according to the mb_type - BY MING*/
+	int i_mb_type = h->mb.i_type;
+   	if(i_mb_type == I_BL)
+	{
+	  for(int p = 0;p < 3;p++)
+	   h->fdec->planeEL1[p] = h->fdec->planeUpsampleEL1[p];
+	}
 
 	
     if(!b_mbaff)

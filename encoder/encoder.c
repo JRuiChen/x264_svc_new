@@ -374,7 +374,7 @@ if( sh->b_mbaff )
     bs_write_ue( s, sh->i_type + 5 );   /* same type things */
     bs_write_ue( s, sh->i_pps_id );
     bs_write( s, sh->sps->i_log2_max_frame_num, sh->i_frame_num & ((1<<sh->sps->i_log2_max_frame_num)-1) );
-printf("-----------------------%d ,%d",sh->sps->i_log2_max_frame_num,sh->i_frame_num & ((1<<sh->sps->i_log2_max_frame_num)-1));
+   printf("----------------------- i_frame:%d    %d ,%d\n",sh->i_frame_num,sh->sps->i_log2_max_frame_num,sh->i_frame_num & ((1<<sh->sps->i_log2_max_frame_num)-1));
     if( !sh->sps->b_frame_mbs_only )
     {
         bs_write1( s, sh->b_field_pic );
@@ -2969,11 +2969,11 @@ static inline void x264_slice_init( x264_t *h, int i_nal_type, int i_global_qp )
         /* Nothing to do ? */
     }
 /*sky 增强层调用考虑*/
-if(h->i_layer_id)
-{
+//if(h->i_layer_id)
+//{
 	
-}
-else
+//}
+//else
     x264_macroblock_slice_init( h );
 }
 
@@ -3389,7 +3389,7 @@ else
         /* encode this macroblock -> be careful it can change the mb type to P_SKIP if needed */
 reencode:
         x264_macroblock_encode( h );
-        DEBUG_TEST
+        //DEBUG_TEST
         if( h->param.b_cabac )
         {
             if( mb_xy > h->sh.i_first_mb && !(SLICE_MBAFF && (i_mb_y&1)) )
@@ -3496,7 +3496,7 @@ cont:
 
 
         /* save cache */
-if(h->i_layer_id == 0)
+  if(h->i_layer_id == 0)
         x264_macroblock_cache_save( h );
 
         if( x264_ratecontrol_mb( h, mb_size ) < 0 )
@@ -3980,7 +3980,7 @@ static void *x264_slices_write( x264_t *h )
 	last_thread_mb = h->sh.i_last_mb;
 	
 		
-	//WRITE_ALL_SLICES
+	WRITE_ALL_SLICES
 
 	h->mb.i_mb_width = h->mbBL.i_mb_width ;
 	h->mb.i_mb_height = h->mbBL.i_mb_height ;
