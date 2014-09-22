@@ -349,9 +349,9 @@ static void x264_slice_header_write( bs_t *s, x264_slice_header_t *sh, int i_nal
 		/*skytest 0916*/
 			 // bs_realign( s ); // 这个对齐 能不能有啊，应该是没问题的吧
 
-		bs_write1( s , nal ->b_svc_extension);
-  			  bs_write1( s , nal ->b_idr_flag);
-    			  bs_write( s , 6 , nal ->i_priority_id);
+				bs_write1( s , nal ->b_svc_extension);
+  				bs_write1( s , nal ->b_idr_flag);
+    			      bs_write( s , 6 , nal ->i_priority_id);
                           bs_write1(s, nal ->b_no_inter_layer_pred_flag);
                           bs_write(s, 3, nal ->i_dependency_id);
                           bs_write(s, 4, nal ->i_quality_id);
@@ -360,6 +360,7 @@ static void x264_slice_header_write( bs_t *s, x264_slice_header_t *sh, int i_nal
                           bs_write1(s, nal ->b_discardable_flag);
                           bs_write1(s, nal ->b_output_flag);
                           bs_write(s, 2, nal ->i_reserved_three_2bits);
+		printf("nal->i_type == NAL_UNIT_CODED_SLICE_SCALABLE");
 		}	
 if( sh->b_mbaff )
     {
@@ -374,7 +375,7 @@ if( sh->b_mbaff )
     bs_write_ue( s, sh->i_type + 5 );   /* same type things */
     bs_write_ue( s, sh->i_pps_id );
     bs_write( s, sh->sps->i_log2_max_frame_num, sh->i_frame_num & ((1<<sh->sps->i_log2_max_frame_num)-1) );
-	printf(" sh->i_frame_num & ((1<<sh->sps->i_log2_max_frame_num)-1) %d", sh->i_frame_num & ((1<<sh->sps->i_log2_max_frame_num)-1) );
+   printf("----------------------- i_frame:%d    %d ,%d\n",sh->i_frame_num,sh->sps->i_log2_max_frame_num,sh->i_frame_num & ((1<<sh->sps->i_log2_max_frame_num)-1));
     if( !sh->sps->b_frame_mbs_only )
     {
         bs_write1( s, sh->b_field_pic );
@@ -2921,14 +2922,16 @@ static inline void x264_slice_init( x264_t *h, int i_nal_type, int i_global_qp )
     if( i_nal_type == NAL_SLICE_IDR )
     {
     /*sky 2014.08.29 add slice header init sps[h->i_layer_id]*/
-        x264_slice_header_init( h, &h->sh,& h->sps[h->i_layer_id],& h->pps[h->i_layer_id], h->i_idr_pic_id, h->i_frame_num, i_global_qp );
-
+	
+	x264_slice_header_init( h, &h->sh,& h->sps[h->i_layer_id],& h->pps[h->i_layer_id], h->i_idr_pic_id, h->i_frame_num, i_global_qp );
+	
         /* alternate id */
         h->i_idr_pic_id ^= 1;
     }
     else
     {
        /*sky 2014.08.29 add slice header init sps[h->i_layer_id]*/
+	   
         x264_slice_header_init( h, &h->sh, &h->sps[h->i_layer_id], &h->pps[h->i_layer_id], -1, h->i_frame_num, i_global_qp );
 
         h->sh.i_num_ref_idx_l0_active = h->i_ref[0] <= 0 ? 1 : h->i_ref[0];
@@ -2969,11 +2972,11 @@ static inline void x264_slice_init( x264_t *h, int i_nal_type, int i_global_qp )
         /* Nothing to do ? */
     }
 /*sky 增强层调用考虑*/
-if(h->i_layer_id)
-{
+//if(h->i_layer_id)
+//{
 	
-}
-else
+//}
+//else
     x264_macroblock_slice_init( h );
 }
 
@@ -3302,6 +3305,7 @@ else
     while( 1 )
     {
         mb_xy = i_mb_x + i_mb_y * h->mb.i_mb_width;
+		
         int mb_spos = bs_pos(&h->out.bs) + x264_cabac_pos(&h->cabac);
 
      /* BY MING*/
@@ -3317,6 +3321,7 @@ else
                 return -1;
             if( !(i_mb_y & SLICE_MBAFF) && h->param.rc.i_vbv_buffer_size )
                 x264_bitstream_backup( h, &bs_bak[BS_BAK_ROW_VBV], i_skip, 1 );
+
             if( !h->mb.b_reencode_mb )
                 x264_fdec_filter_row( h, i_mb_y, 0 );
         }
@@ -3358,7 +3363,6 @@ else
 
 		
 
-
 		/*print test info - BY MING*/
 	#define DEBUG_TEST\
 			if(h->i_layer_id)\
@@ -3389,7 +3393,9 @@ else
         /* encode this macroblock -> be careful it can change the mb type to P_SKIP if needed */
 reencode:
         x264_macroblock_encode( h );
+
       //  DEBUG_TEST
+
         if( h->param.b_cabac )
         {
             if( mb_xy > h->sh.i_first_mb && !(SLICE_MBAFF && (i_mb_y&1)) )
@@ -3496,7 +3502,7 @@ cont:
 
 
         /* save cache */
-if(h->i_layer_id == 0)
+  if(h->i_layer_id == 0)
         x264_macroblock_cache_save( h );
 
         if( x264_ratecontrol_mb( h, mb_size ) < 0 )
@@ -3957,9 +3963,10 @@ static void *x264_slices_write( x264_t *h )
 	x264_copy_mb_info_before_encode(h,BASE_LAYER);
 	
        h->sh.b_base_layer_flag = BASE_LAYER;	
+	   
 
-    WRITE_ALL_SLICES
-    
+	
+    WRITE_ALL_SLICES    
 	if( h->param.b_sliced_threads )
 		x264_wait_up_sampling_finish(h->param.i_threads);
 	else
@@ -3976,7 +3983,11 @@ static void *x264_slices_write( x264_t *h )
 
 	h->i_layer_id = 1;
 	h->mb.b_reencode_mb = 0;
- 	x264_slice_header_init( h, &h->sh,& h->sps[h->i_layer_id],& h->pps[h->i_layer_id], h->i_idr_pic_id, h->i_frame_num,x264_ratecontrol_qp( h ));
+	
+	if(h->i_nal_ref_idc != NAL_PRIORITY_DISPOSABLE)
+ 		x264_slice_header_init( h, &h->sh,& h->sps[h->i_layer_id],& h->pps[h->i_layer_id], h->i_idr_pic_id, h->i_frame_num - 1,x264_ratecontrol_qp( h ));
+	else
+		x264_slice_header_init( h, &h->sh,& h->sps[h->i_layer_id],& h->pps[h->i_layer_id], h->i_idr_pic_id, h->i_frame_num ,x264_ratecontrol_qp( h ));
 	last_thread_mb = h->sh.i_last_mb;
 	
 		
@@ -4655,7 +4666,7 @@ int     x264_encoder_encode( x264_t *h,
     x264_weighted_pred_init( h );
 
     if( i_nal_ref_idc != NAL_PRIORITY_DISPOSABLE )
-        h->i_frame_num++;
+	        h->i_frame_num++;
 
     /* Write frame */
     h->i_threadslice_start = 0;
