@@ -1078,7 +1078,7 @@ if(h->i_layer_id)
 		
 
         /* write residual */
-		if(h->i_layer_id)
+	//	if(h->i_layer_id)
 			printf("h->mb.i_mb_xyh->mb.i_mb_xyh->mb.i_mb_xyh->mb.i_mb_xy %d\n",h->mb.i_mb_xy);
 
 

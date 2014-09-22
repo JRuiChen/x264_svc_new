@@ -1,5 +1,0 @@
----- x264_macroblock_thread_allocate Matches (4 in 4 files) ----
-Encoder.c (encoder):        if( x264_macroblock_thread_allocate( h->thread[i], 0 ) < 0 )
-Lookahead.c (encoder):    if( x264_macroblock_thread_allocate( look_h, 1 ) < 0 )
-Macroblock.c (common):int x264_macroblock_thread_allocate( x264_t *h, int b_lookahead )
-Macroblock.h (common):int  x264_macroblock_thread_allocate( x264_t *h, int b_lookahead );

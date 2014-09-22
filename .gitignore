@@ -36,6 +36,7 @@ checkasm
 *.PS
 *.WK3
 *.SearchResults
+*.PR
 
 *.264
 *.h264
