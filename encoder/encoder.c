@@ -3267,7 +3267,13 @@ else
     h->sh.i_qp = SPEC_QP( h->sh.i_qp );
     h->sh.i_qp_delta = h->sh.i_qp - h->pps->i_pic_init_qp;
    /*sky 2014.08.28 &h->out.nal[h->out.i_nal]*/
+
+
+
+
     x264_slice_header_write( &h->out.bs, &h->sh, h->i_nal_ref_idc,&h->out.nal[h->out.i_nal] );
+
+
 
     if( h->param.b_cabac )
     {
@@ -3289,12 +3295,22 @@ else
     i_mb_x = h->sh.i_first_mb % h->mb.i_mb_width;
     i_skip = 0;
 
+
+
+
+    
     while( 1 )
     {
         mb_xy = i_mb_x + i_mb_y * h->mb.i_mb_width;
         int mb_spos = bs_pos(&h->out.bs) + x264_cabac_pos(&h->cabac);
 
-	
+     /* BY MING*/
+		if(h->i_layer_id)
+		 {
+		   h->mb.i_type == h->mb.type[h->mb.i_mb_xy];
+		 }
+
+
         if( i_mb_x == 0 )
         {
             if( x264_bitstream_check_buffer( h ) )
@@ -3305,12 +3321,15 @@ else
                 x264_fdec_filter_row( h, i_mb_y, 0 );
         }
 
+
+
         if( !(i_mb_y & SLICE_MBAFF) && back_up_bitstream )
         {
             x264_bitstream_backup( h, &bs_bak[BS_BAK_SLICE_MAX_SIZE], i_skip, 0 );
             if( slice_max_size && (thread_last_mb+1-mb_xy) == h->param.i_slice_min_mbs )
                 x264_bitstream_backup( h, &bs_bak[BS_BAK_SLICE_MIN_MBS], i_skip, 0 );
         }
+
 
         if( PARAM_INTERLACED )
         {
@@ -3328,11 +3347,39 @@ else
             h->mb.field[mb_xy] = MB_INTERLACED;
         }
 
+
+
+
         /* load cache */
         if( SLICE_MBAFF )
             x264_macroblock_cache_load_interlaced( h, i_mb_x, i_mb_y );
         else
             x264_macroblock_cache_load_progressive( h, i_mb_x, i_mb_y );
+
+		
+
+
+		/*print test info - BY MING*/
+	#define DEBUG_TEST\
+			if(h->i_layer_id)\
+			{\
+				printf("print continue  frame_num:%d  i_mb_xy:%d    last_mb:%d\n",h->i_frame,mb_xy,h->sh.i_last_mb );\
+				  if( mb_xy == h->sh.i_last_mb )\
+					return 0;\
+				  if( SLICE_MBAFF )\
+				  {\
+					i_mb_x += i_mb_y & 1;\
+					i_mb_y ^= i_mb_x < h->mb.i_mb_width;\
+				  }\
+				  else\
+					i_mb_x++;\
+				  if( i_mb_x == h->mb.i_mb_width )\
+				  {\
+					i_mb_y++;\
+					i_mb_x = 0;\
+				  }\			  
+				  continue;\
+			}
 
 
         /*only when it is base layer, do we have the macroblock analysed - BY MING*/
@@ -3342,7 +3389,7 @@ else
         /* encode this macroblock -> be careful it can change the mb type to P_SKIP if needed */
 reencode:
         x264_macroblock_encode( h );
-
+        DEBUG_TEST
         if( h->param.b_cabac )
         {
             if( mb_xy > h->sh.i_first_mb && !(SLICE_MBAFF && (i_mb_y&1)) )
