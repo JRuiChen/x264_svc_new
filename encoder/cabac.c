@@ -985,8 +985,7 @@ if(h->i_layer_id)
 	//EL
 	//basemodeflag not present
 	// basemodeflag == 1
-	printf("x264_macroblock_write_cabac_internal in svc\n");
-	printf("const int i_mb_type = h->mb.i_type; %d \n",i_mb_type);
+
 }
 else
 {
@@ -1060,8 +1059,7 @@ NumMbPart( mb_type ) = = 4 )*/
     }
 
     if( x264_mb_transform_8x8_allowed( h ) && h->mb.i_cbp_luma )
-    {		if(h->i_layer_id)
-		printf("x264_mb_transform_8x8_allowed( h ) && h->mb.i_cbp_luma called\n");
+    {	
 		x264_cabac_transform_size( h, cb ); // ÕâÔÚÍùÀï±ßÐ´transform size
     }
 	
@@ -1069,8 +1067,8 @@ NumMbPart( mb_type ) = = 4 )*/
 MbPartPredMode( mb_type, 0 ) = = Intra_16x16 ) */
     if( h->mb.i_cbp_luma || (chroma && h->mb.i_cbp_chroma) || i_mb_type == I_16x16 )
     {
-if(h->i_layer_id)
-		printf(" h->mb.i_cbp_luma || (chroma && h->mb.i_cbp_chroma) || i_mb_type == I_16x16 called\n");
+
+		
 		const int b_intra = IS_INTRA( i_mb_type );
         x264_cabac_qp_delta( h, cb );
 
@@ -1078,8 +1076,7 @@ if(h->i_layer_id)
 		
 
         /* write residual */
-	//	if(h->i_layer_id)
-			printf("h->mb.i_mb_xyh->mb.i_mb_xyh->mb.i_mb_xyh->mb.i_mb_xy %d\n",h->mb.i_mb_xy);
+	
 
 
 		if( i_mb_type == I_16x16 ) // if( startIdx = = 0 && MbPartPredMode( mb_type, 0 ) = = Intra_16x16 )

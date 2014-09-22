@@ -374,7 +374,7 @@ if( sh->b_mbaff )
     bs_write_ue( s, sh->i_type + 5 );   /* same type things */
     bs_write_ue( s, sh->i_pps_id );
     bs_write( s, sh->sps->i_log2_max_frame_num, sh->i_frame_num & ((1<<sh->sps->i_log2_max_frame_num)-1) );
-
+	printf(" sh->i_frame_num & ((1<<sh->sps->i_log2_max_frame_num)-1) %d", sh->i_frame_num & ((1<<sh->sps->i_log2_max_frame_num)-1) );
     if( !sh->sps->b_frame_mbs_only )
     {
         bs_write1( s, sh->b_field_pic );
@@ -3389,7 +3389,7 @@ else
         /* encode this macroblock -> be careful it can change the mb type to P_SKIP if needed */
 reencode:
         x264_macroblock_encode( h );
-        DEBUG_TEST
+      //  DEBUG_TEST
         if( h->param.b_cabac )
         {
             if( mb_xy > h->sh.i_first_mb && !(SLICE_MBAFF && (i_mb_y&1)) )

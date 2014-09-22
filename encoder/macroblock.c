@@ -767,7 +767,7 @@ static ALWAYS_INLINE void x264_macroblock_encode_internal( x264_t *h, int plane_
     if( h->mb.i_type == B_SKIP )
     {
         /* don't do bskip motion compensation if it was already done in macroblock_analyse */
-        if( !h->mb.b_skip_mc )
+        if( !h->mb.b_skip_mc && h->i_layer_id == 0)
             x264_mb_mc( h );
         x264_macroblock_encode_skip( h );
         return;
