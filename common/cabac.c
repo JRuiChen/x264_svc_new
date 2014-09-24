@@ -1479,7 +1479,7 @@ void x264_cabac_encode_flush( x264_t *h, x264_cabac_t *cb )
     cb->i_queue = 0;
     x264_cabac_putbyte( cb );
 //	printf("  x264_cabac_putbyte( cb );cb->p3 %d;\n",*(cb->p));
- //   printf("call x264_cabac_encode_flush  %d \n",h->i_layer_id);
+   printf("call x264_cabac_encode_flush  %d \n",h->i_layer_id);
     while( cb->i_bytes_outstanding > 0 )
     {
         *(cb->p++) = 0xff;

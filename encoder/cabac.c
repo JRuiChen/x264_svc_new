@@ -120,6 +120,9 @@ static void x264_cabac_cbp_luma( x264_t *h, x264_cabac_t *cb )
     int cbp = h->mb.i_cbp_luma;
     int cbp_l = h->mb.cache.i_cbp_left;
     int cbp_t = h->mb.cache.i_cbp_top;
+	/*sky0924*/
+//	if(h->i_layer_id)
+	printf("cbp---------h->mb.i_cbp_luma: %dh->i_mb_xy:%d:\n",h->mb.i_cbp_luma,h->mb.i_mb_xy);
     x264_cabac_encode_decision     ( cb, 76 - ((cbp_l >> 1) & 1) - ((cbp_t >> 1) & 2), (cbp >> 0) & 1 );
     x264_cabac_encode_decision     ( cb, 76 - ((cbp   >> 0) & 1) - ((cbp_t >> 2) & 2), (cbp >> 1) & 1 );
     x264_cabac_encode_decision     ( cb, 76 - ((cbp_l >> 3) & 1) - ((cbp   << 1) & 2), (cbp >> 2) & 1 );
@@ -134,6 +137,9 @@ static void x264_cabac_cbp_chroma( x264_t *h, x264_cabac_t *cb )
 
     if( cbp_a && h->mb.cache.i_cbp_left != -1 ) ctx++;
     if( cbp_b && h->mb.cache.i_cbp_top  != -1 ) ctx+=2;
+	/*sky0924*/
+	//if(h->i_layer_id)
+   	printf("cbp------------ h->mb.i_cbp_chroma:%d h->mb.i_mb_xy:%d\n", h->mb.i_cbp_chroma,h->mb.i_mb_xy);
     if( h->mb.i_cbp_chroma == 0 )
         x264_cabac_encode_decision_noup( cb, 77 + ctx, 0 );
     else
@@ -1038,20 +1044,9 @@ NumMbPart( mb_type ) = = 4 )*/
 
     if( i_mb_type != I_16x16 )    // if( MbPartPredMode( mb_type, 0 ) != Intra_16x16 ) 
     {
-    /*skytest0916 ifesle
-	if(h->i_layer_id)
-		{	
-			printf("if( i_mb_type != I_16x16 ) called\n");
-			h->mb.i_cbp_luma = 0;
-			h->mb.i_cbp_chroma = 0;
-			h->mb.cache.i_cbp_left = 0;
-			h->mb.cache.i_cbp_top = 0;
-			x264_cabac_cbp_luma( h, cb );  // 这个写入 他的后四位其实就写入了 coded_block_pattern余16的	情况
-      			  if( chroma )
-      			      x264_cabac_cbp_chroma( h, cb );
-		}
-	else*/
-		{
+    		{
+				/*sky0924*/
+		//printf("  if( i_mb_type != I_16x16 ) call  x264_cabac_cbp_luma( h, cb );\n");
 			x264_cabac_cbp_luma( h, cb );  // 这个写入 他的后四位其实就写入了 coded_block_pattern余16的	情况
       			  if( chroma )
       			      x264_cabac_cbp_chroma( h, cb ); // 这个地方应该就是除16了 
@@ -1221,9 +1216,16 @@ if( (h->mb.i_neighbour & MB_TOP) && !h->mb.mb_transform_size[h->mb.i_mb_top_xy] 
 void x264_macroblock_write_cabac( x264_t *h, x264_cabac_t *cb )
 {
     if( CHROMA444 )
+    	{
         x264_macroblock_write_cabac_internal( h, cb, 3, 0 );
+//	printf("CHROMA444  call x264_macroblock_write_cabac_internal( h, cb, 3, 0 );i_mb_xy:%d\n",h->mb.i_mb_xy);
+	}
     else
+    	{
+    	//printf("111111111111111111111else  call x264_macroblock_write_cabac_internal( h, cb, 1, 0 );i_mb_xy:%d\n",h->mb.i_mb_xy);
         x264_macroblock_write_cabac_internal( h, cb, 1, 1 );
+//	printf("else  call x264_macroblock_write_cabac_internal( h, cb, 1, 0 );i_mb_xy:%d\n",h->mb.i_mb_xy);
+		}
 }
 
 #if RDO_SKIP_BS
@@ -1320,6 +1322,8 @@ static void x264_partition_i8x8_size_cabac( x264_t *h, x264_cabac_t *cb, int i8,
     const int i_pred = x264_mb_predict_intra4x4_mode( h, 4*i8 );
     i_mode = x264_mb_pred_mode4x4_fix( i_mode );
     x264_cabac_intra4x4_pred_mode( cb, i_pred, i_mode );
+	/*sky0924*/
+	printf("x264_partition_i8x8_size_cabac call  x264_cabac_cbp_luma( h, cb );\n");
     x264_cabac_cbp_luma( h, cb );
     if( h->mb.i_cbp_luma & (1 << i8) )
     {

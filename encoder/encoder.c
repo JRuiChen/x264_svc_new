@@ -3312,7 +3312,8 @@ else
      /* BY MING*/
 		if(h->i_layer_id)
 		 {
-		   h->mb.i_type == h->mb.type[h->mb.i_mb_xy];
+		   h->mb.i_type = h->mb.type[h->mb.i_mb_xy];
+		   printf("--------------------  h->mb.i_type :%d\n",  h->mb.i_type);
 		 }
 
 
@@ -3395,15 +3396,19 @@ else
 reencode:
         x264_macroblock_encode( h );
 
-      //  DEBUG_TEST
+    //    DEBUG_TEST
 
         if( h->param.b_cabac )
         {
         //mb_xy == 1Ö´ĞĞ end_of_slice_flag 
             if( mb_xy > h->sh.i_first_mb && !(SLICE_MBAFF && (i_mb_y&1)) )
             	{
-			if((!h->i_layer_id && mb_xy >=97 &&  mb_xy<100) || (h->i_layer_id && mb_xy >=393 &&  mb_xy<397)  )
-				printf("call x264_cabac_encode_terminal mbxy:%d \n",mb_xy);
+			if(h->i_layer_id)
+				{
+				printf("call x264_cabac_encode_terminal mb_xy:%d mb_type:%d \n",mb_xy,h->mb.i_type);
+				//if(mb_xy == 1)
+				//break;
+				}
 				x264_cabac_encode_terminal( &h->cabac );
 				
             	}
@@ -3414,6 +3419,8 @@ reencode:
             {
                 if( h->sh.i_type != SLICE_TYPE_I )
                     x264_cabac_mb_skip( h, 0 );
+				/*skt0924*/
+		//printf("while 1 call x264_macroblock_write_cabac( h, &h->cabac );mb_xy:%d\n******",mb_xy);
                 x264_macroblock_write_cabac( h, &h->cabac );
             }
         }
@@ -3975,6 +3982,7 @@ static void *x264_slices_write( x264_t *h )
 
 	
     WRITE_ALL_SLICES    
+		
 	if( h->param.b_sliced_threads )
 		x264_wait_up_sampling_finish(h->param.i_threads);
 	else
@@ -3991,11 +3999,77 @@ static void *x264_slices_write( x264_t *h )
 
 	h->i_layer_id = 1;
 	h->mb.b_reencode_mb = 0;
+
+	int i_frame_num_temp;
+	if(h->i_nal_ref_idc != NAL_PRIORITY_DISPOSABLE   )
+		{
+			i_frame_num_temp = h->i_frame_num - 1;
+		}
+	else
+		{
+			i_frame_num_temp = h->i_frame_num ;
+		}
+
+
+/* ------------------------ Create slice header  ----------------------- */
+    if(h->i_nal_type == NAL_SLICE_IDR )
+    {
+    /*sky 2014.08.29 add slice header init sps[h->i_layer_id]*/
+	 h->i_idr_pic_id ^= 1;
+	x264_slice_header_init( h, &h->sh,& h->sps[h->i_layer_id],& h->pps[h->i_layer_id], h->i_idr_pic_id, i_frame_num_temp, x264_ratecontrol_qp( h ) );
 	
-	if(h->i_nal_ref_idc != NAL_PRIORITY_DISPOSABLE)
- 		x264_slice_header_init( h, &h->sh,& h->sps[h->i_layer_id],& h->pps[h->i_layer_id], h->i_idr_pic_id, h->i_frame_num - 1,x264_ratecontrol_qp( h ));
+        /* alternate id */
+        h->i_idr_pic_id ^= 1;
+    }
+    else
+    {
+       /*sky 2014.08.29 add slice header init sps[h->i_layer_id]*/
+	   
+        x264_slice_header_init( h, &h->sh, &h->sps[h->i_layer_id], &h->pps[h->i_layer_id], -1, i_frame_num_temp, x264_ratecontrol_qp( h ) );
+
+        h->sh.i_num_ref_idx_l0_active = h->i_ref[0] <= 0 ? 1 : h->i_ref[0];
+        h->sh.i_num_ref_idx_l1_active = h->i_ref[1] <= 0 ? 1 : h->i_ref[1];
+        if( h->sh.i_num_ref_idx_l0_active != h->pps[h->i_layer_id].i_num_ref_idx_l0_default_active ||
+            (h->sh.i_type == SLICE_TYPE_B && h->sh.i_num_ref_idx_l1_active != h->pps[h->i_layer_id].i_num_ref_idx_l1_default_active) )
+        {
+            h->sh.b_num_ref_idx_override = 1;
+        }
+    }
+
+	if( h->fenc->i_type == X264_TYPE_BREF && h->param.b_bluray_compat && h->sh.i_mmco_command_count )
+    {
+        h->b_sh_backup = 1;
+        h->sh_backup = h->sh;
+    }
+
+    h->fdec->i_frame_num = h->sh.i_frame_num;
+
+	/*sky 2014.08.28 [h->i_layer_id]*/
+
+    if( h->sps[h->i_layer_id].i_poc_type == 0 )    
+		//if(h->sps->i_poc_type == 0) Ô­´úÂë
+    {
+        h->sh.i_poc = h->fdec->i_poc;
+        if( PARAM_INTERLACED )
+        {
+            h->sh.i_delta_poc_bottom = h->param.b_tff ? 1 : -1;
+            h->sh.i_poc += h->sh.i_delta_poc_bottom == -1;
+        }
+        else
+            h->sh.i_delta_poc_bottom = 0;
+        h->fdec->i_delta_poc[0] = h->sh.i_delta_poc_bottom == -1;
+        h->fdec->i_delta_poc[1] = h->sh.i_delta_poc_bottom ==  1;
+    }
+		/*if()
+ 		{
+			
+			x264_slice_header_init( h, &h->sh,& h->sps[h->i_layer_id],& h->pps[h->i_layer_id], h->i_idr_pic_id, h->i_frame_num - 1,x264_ratecontrol_qp( h ));
+		}
 	else
 		x264_slice_header_init( h, &h->sh,& h->sps[h->i_layer_id],& h->pps[h->i_layer_id], h->i_idr_pic_id, h->i_frame_num ,x264_ratecontrol_qp( h ));
+
+*/
+
 	last_thread_mb = h->sh.i_last_mb;
 	
 		
