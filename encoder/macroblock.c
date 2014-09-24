@@ -844,7 +844,7 @@ static ALWAYS_INLINE void x264_macroblock_encode_internal( x264_t *h, int plane_
         /* Don't repeat motion compensation if it was already done in non-RD transform analysis */
         if( !h->mb.b_skip_mc && h->i_layer_id == 0)
             x264_mb_mc( h );
-		printf("11111111111111111111111111111111111  i_frame:%d    h->mb.i_mb_xy:%d \n",h->i_frame,h->mb.i_mb_xy);
+		//printf("11111111111111111111111111111111111  i_frame:%d    h->mb.i_mb_xy:%d \n",h->i_frame,h->mb.i_mb_xy);
 
         if( h->mb.b_lossless )
         {
