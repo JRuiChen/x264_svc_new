@@ -3339,12 +3339,12 @@ int xDeriveBlockModeAndUpdateMv(MotionUpsampling *mo_up,int i8x8BlkIdx)
 
 
 	  #define L0_AVALIABLE \
-	     (mo_up->i_aaai_ref_idx[0][0][0] >= 0 && mo_up->i_aaai_ref_idx[0][1][0] >= 0\
-	    &&mo_up->i_aaai_ref_idx[1][0][0] >= 0 && mo_up->i_aaai_ref_idx[1][1][0] >= 0)
+	     (mo_up->i_aaai_ref_idx[0][0][0] >= 0 && mo_up->i_aaai_ref_idx[0][0][1] >= 0\
+	    &&mo_up->i_aaai_ref_idx[0][1][0] >= 0 && mo_up->i_aaai_ref_idx[0][1][1] >= 0)
 
 	  #define L1_AVALIABLE \
-	     (mo_up->i_aaai_ref_idx[0][0][1] >= 0 && mo_up->i_aaai_ref_idx[0][1][1] >= 0\
-	    &&mo_up->i_aaai_ref_idx[1][0][1] >= 0 && mo_up->i_aaai_ref_idx[1][1][1] >= 0)  
+	     (mo_up->i_aaai_ref_idx[1][0][0] >= 0 && mo_up->i_aaai_ref_idx[1][0][1] >= 0\
+	    &&mo_up->i_aaai_ref_idx[1][1][0] >= 0 && mo_up->i_aaai_ref_idx[1][1][1] >= 0)  
 
 
 	  
@@ -3504,12 +3504,12 @@ int xSetPredMbData(MotionUpsampling *mo_up,x264_t * h)
 
 
 #define L0_AVALIABLE \
-  (mo_up->i_aaai_ref_idx[0][0][0] >= 0 && mo_up->i_aaai_ref_idx[0][1][0] >= 0\
-  &&mo_up->i_aaai_ref_idx[1][0][0] >= 0 && mo_up->i_aaai_ref_idx[1][1][0] >= 0)
+  (mo_up->i_aaai_ref_idx[0][0][0] >= 0 && mo_up->i_aaai_ref_idx[0][0][1] >= 0\
+  &&mo_up->i_aaai_ref_idx[0][1][0] >= 0 && mo_up->i_aaai_ref_idx[0][1][1] >= 0)
 
 #define L1_AVALIABLE \
-	     (mo_up->i_aaai_ref_idx[0][0][1] >= 0 && mo_up->i_aaai_ref_idx[0][1][1] >= 0\
-	    &&mo_up->i_aaai_ref_idx[1][0][1] >= 0 && mo_up->i_aaai_ref_idx[1][1][1] >= 0)	  
+	     (mo_up->i_aaai_ref_idx[1][0][0] >= 0 && mo_up->i_aaai_ref_idx[1][0][1] >= 0\
+	    &&mo_up->i_aaai_ref_idx[1][1][0] >= 0 && mo_up->i_aaai_ref_idx[1][1][1] >= 0)	  
 	  
 	  int b_L0 = L0_AVALIABLE && !L1_AVALIABLE;
 	  int b_L1 = !L0_AVALIABLE && L1_AVALIABLE;
@@ -3645,15 +3645,16 @@ int xUpsampleMotion(MotionUpsampling *mo_up,ResizeParameters* pcResizeParams,int
                                                                         int b_residual_pred_check,int i_mv_threshold,x264_t* h)
 {
 
-if(h->sh.i_type == SLICE_TYPE_I)
-{
+//if(h->sh.i_type == SLICE_TYPE_I)
+//{
  // printf("This is a I slcie\n");
-  return 0;
-}
+  
+  //return 0;
+//}
 
 if(pcResizeParams == NULL)
 { 
- // printf("pcResizeParams is NULL\n");
+  printf("pcResizeParams is NULL\n");
   return 0;
 }
 
