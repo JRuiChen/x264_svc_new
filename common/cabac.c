@@ -1394,6 +1394,7 @@ static inline void x264_cabac_putbyte( x264_cabac_t *cb )
                 bytes_outstanding--;
             }
             *(cb->p++) = out;
+			
             cb->i_bytes_outstanding = 0;
         }
     }
@@ -1470,12 +1471,15 @@ void x264_cabac_encode_flush( x264_t *h, x264_cabac_t *cb )
     cb->i_low <<= 9;
     cb->i_queue += 9;
     x264_cabac_putbyte( cb );
+	//printf("  x264_cabac_putbyte( cb );cb->p1 %d;\n",*(cb->p));
     x264_cabac_putbyte( cb );
+//	printf("  x264_cabac_putbyte( cb );cb->p2 %d;\n",*(cb->p));
     cb->i_low <<= -cb->i_queue;
     cb->i_low |= (0x35a4e4f5 >> (h->i_frame & 31) & 1) << 10;
     cb->i_queue = 0;
     x264_cabac_putbyte( cb );
-
+//	printf("  x264_cabac_putbyte( cb );cb->p3 %d;\n",*(cb->p));
+   printf("call x264_cabac_encode_flush  %d \n",h->i_layer_id);
     while( cb->i_bytes_outstanding > 0 )
     {
         *(cb->p++) = 0xff;
