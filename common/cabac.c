@@ -1394,7 +1394,8 @@ static inline void x264_cabac_putbyte( x264_cabac_t *cb )
                 bytes_outstanding--;
             }
             *(cb->p++) = out;
-			
+			//if(h->i_layer_id ==0 && h->mb.i_mb_xy == 0 && h->i_frame_num == 0)
+			//	printf("%d",out);
             cb->i_bytes_outstanding = 0;
         }
     }

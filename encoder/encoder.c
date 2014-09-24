@@ -3283,7 +3283,15 @@ else
     {
         /* alignment needed */
         bs_align_1( &h->out.bs );
-
+	/*sky0924*/
+	/*bs_write1(&h->out.bs ,1);
+	bs_write1(&h->out.bs ,0);
+	bs_write1(&h->out.bs ,0);
+	bs_write1(&h->out.bs ,0);
+	bs_write1(&h->out.bs ,0);
+	bs_write1(&h->out.bs ,0);
+	bs_write1(&h->out.bs ,0);
+	bs_write1(&h->out.bs ,0);*/
         /* init cabac */
         x264_cabac_context_init( h, &h->cabac, h->sh.i_type, x264_clip3( h->sh.i_qp-QP_BD_OFFSET, 0, 51 ), h->sh.i_cabac_init_idc );
         x264_cabac_encode_init ( &h->cabac, h->out.bs.p, h->out.bs.p_end );
