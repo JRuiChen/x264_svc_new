@@ -534,9 +534,9 @@ if(1)
 
     if( sh->pps->b_cabac && sh->i_type != SLICE_TYPE_I )
         bs_write_ue( s, sh->i_cabac_init_idc );
-	printf(" sh->i_cabac_init_idc; %d", sh->i_cabac_init_idc);
+	printf(" sh->i_cabac_init_idc; %d \n", sh->i_cabac_init_idc);
     bs_write_se( s, sh->i_qp_delta );      /* slice qp delta */
-	 printf("bs_write_se( s, sh->i_qp_delta ); %d",sh->i_qp_delta);
+	 printf("bs_write_se( s, sh->i_qp_delta ); %d \n",sh->i_qp_delta);
     if( sh->pps->b_deblocking_filter_control )
     {
         bs_write_ue( s, sh->i_disable_deblocking_filter_idc );
@@ -3636,7 +3636,8 @@ cont:
         bs_rbsp_trailing( &h->out.bs );
         bs_flush( &h->out.bs );
     }
-    	bs_write(&h->out.bs, 16, 65535);
+	//skytest0924
+   // 	bs_write(&h->out.bs, 16, 65535);
     if( x264_nal_end( h ) )
         return -1;
 
