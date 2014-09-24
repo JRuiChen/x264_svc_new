@@ -202,7 +202,8 @@ static void x264_frame_dump( x264_t *h )
     sh->i_cabac_init_idc = param->i_cabac_init_idc;
 
     sh->i_qp = SPEC_QP(i_qp);
-    sh->i_qp_delta = sh->i_qp - pps->i_pic_init_qp;
+
+    sh->i_qp_delta = sh->i_qp - pps->i_pic_init_qp ;
     sh->b_sp_for_swidth = 0;
     sh->i_qs_delta = 0;
 
@@ -533,9 +534,9 @@ if(1)
 
     if( sh->pps->b_cabac && sh->i_type != SLICE_TYPE_I )
         bs_write_ue( s, sh->i_cabac_init_idc );
-
+	printf(" sh->i_cabac_init_idc; %d", sh->i_cabac_init_idc);
     bs_write_se( s, sh->i_qp_delta );      /* slice qp delta */
-
+	 printf("bs_write_se( s, sh->i_qp_delta ); %d",sh->i_qp_delta);
     if( sh->pps->b_deblocking_filter_control )
     {
         bs_write_ue( s, sh->i_disable_deblocking_filter_idc );
@@ -612,7 +613,7 @@ if(1)
 		bs_write(s, 4, 15); // "SH: scan_idx_end"这个值没有搞懂，赋值太麻烦
 	}
   /*skytest0919 断开扩展层*/
- // bs_write(s,16,65535);
+// bs_write(s,16,65535);
    }
 }
 
@@ -3398,9 +3399,15 @@ reencode:
 
         if( h->param.b_cabac )
         {
+        //mb_xy == 1执行 end_of_slice_flag 
             if( mb_xy > h->sh.i_first_mb && !(SLICE_MBAFF && (i_mb_y&1)) )
-                x264_cabac_encode_terminal( &h->cabac );
-
+            	{
+			if((!h->i_layer_id && mb_xy >=97 &&  mb_xy<100) || (h->i_layer_id && mb_xy >=393 &&  mb_xy<397)  )
+				printf("call x264_cabac_encode_terminal mbxy:%d \n",mb_xy);
+				x264_cabac_encode_terminal( &h->cabac );
+				
+            	}
+			
             if( IS_SKIP( h->mb.i_type ) )
                 x264_cabac_mb_skip( h, 1 );
             else
@@ -3629,7 +3636,7 @@ cont:
         bs_rbsp_trailing( &h->out.bs );
         bs_flush( &h->out.bs );
     }
-    	
+    	bs_write(&h->out.bs, 16, 65535);
     if( x264_nal_end( h ) )
         return -1;
 
