@@ -226,8 +226,7 @@ void x264_mb_mc_8x8( x264_t *h, int i8 )
 void x264_mb_mc( x264_t *h )
 {
 
-  
-
+    //printf("AAAAAAAAAAAAAAAAAAAAAAAAAA  h->i_frame:%d\n",h->i_frame);
     if( h->mb.i_partition == D_8x8 )
     {
        

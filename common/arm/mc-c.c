@@ -128,11 +128,16 @@ static void mc_luma_neon( uint8_t *dst,    intptr_t i_dst_stride,
                           int mvx, int mvy,
                           int i_width, int i_height, const x264_weight_t *weight )
 {
+
+    printf("AAAAAAAAAAAAAAAAAAAAAA i_dst_stride:%d     i_src_stride:%d \n");
+
     int qpel_idx = ((mvy&3)<<2) + (mvx&3);
     intptr_t offset = (mvy>>2)*i_src_stride + (mvx>>2);
     uint8_t *src1 = src[hpel_ref0[qpel_idx]] + offset;
     if ( (mvy&3) == 3 )             // explict if() to force conditional add
         src1 += i_src_stride;
+	printf("BBBBBBBBBBBBBBBBBBBBBB i_dst_stride:%d	   i_src_stride:%d \n");
+
 
     if( qpel_idx & 5 ) /* qpel interpolation needed */
     {
@@ -147,6 +152,8 @@ static void mc_luma_neon( uint8_t *dst,    intptr_t i_dst_stride,
         weight->weightfn[i_width>>2]( dst, i_dst_stride, src1, i_src_stride, weight, i_height );
     else
         x264_mc_copy_wtab_neon[i_width>>2]( dst, i_dst_stride, src1, i_src_stride, i_height );
+	printf("CCCCCCCCCCCCCCCCCCCCCCCC  i_dst_stride:%d	   i_src_stride:%d \n");
+	
 }
 
 static uint8_t *get_ref_neon( uint8_t *dst,   intptr_t *i_dst_stride,

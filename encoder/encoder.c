@@ -27,7 +27,6 @@
 
 #include "common/common.h"
 
-
 #include "set.h"
 #include "analyse.h"
 #include "ratecontrol.h"
@@ -3316,14 +3315,15 @@ else
         mb_xy = i_mb_x + i_mb_y * h->mb.i_mb_width;
 		
         int mb_spos = bs_pos(&h->out.bs) + x264_cabac_pos(&h->cabac);
-
+		
      /* BY MING*/
+	 
 		if(h->i_layer_id)
 		 {
 		   h->mb.i_type = h->mb.type[h->mb.i_mb_xy];
 		   printf("--------------------  h->mb.i_type :%d\n",  h->mb.i_type);
-		 }
 
+		 }
 
         if( i_mb_x == 0 )
         {
@@ -4008,6 +4008,7 @@ static void *x264_slices_write( x264_t *h )
 	h->i_layer_id = 1;
 	h->mb.b_reencode_mb = 0;
 
+
 	int i_frame_num_temp;
 	if(h->i_nal_ref_idc != NAL_PRIORITY_DISPOSABLE   )
 		{
@@ -4077,6 +4078,7 @@ static void *x264_slices_write( x264_t *h )
 		x264_slice_header_init( h, &h->sh,& h->sps[h->i_layer_id],& h->pps[h->i_layer_id], h->i_idr_pic_id, h->i_frame_num ,x264_ratecontrol_qp( h ));
 
 */
+
 
 	last_thread_mb = h->sh.i_last_mb;
 	
