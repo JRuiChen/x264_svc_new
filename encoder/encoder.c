@@ -3414,8 +3414,8 @@ reencode:
 			if(h->i_layer_id)
 				{
 				printf("call x264_cabac_encode_terminal mb_xy:%d mb_type:%d \n",mb_xy,h->mb.i_type);
-				if(mb_xy == 1)
-				break;
+				//if(mb_xy == 1)
+				//break;
 				}
 				x264_cabac_encode_terminal( &h->cabac );
 				
@@ -3424,7 +3424,7 @@ reencode:
             if( IS_SKIP( h->mb.i_type ) )
             	{
 
-		printf("while 1 call x264_cabac_mb_skip( h, 1 );mb_xy:%d\n******",mb_xy);
+		printf("while 1 call x264_cabac_mb_skip( h, 1 );mb_xy:%d******\n",mb_xy);
 				x264_cabac_mb_skip( h, 1 );
             	}
             else
@@ -3432,7 +3432,7 @@ reencode:
                 if( h->sh.i_type != SLICE_TYPE_I )
                     x264_cabac_mb_skip( h, 0 );
 				/*skt0924*/
-		printf("while 1 call x264_cabac_mb_skip( h, 0 ); && x264_macroblock_write_cabac( h, &h->cabac );mb_xy:%d\n******",mb_xy);
+		printf("while 1 call x264_cabac_mb_skip( h, 0 ); && x264_macroblock_write_cabac( h, &h->cabac );mb_xy:%d******\n",mb_xy);
                 x264_macroblock_write_cabac( h, &h->cabac );
             }
         }
@@ -3999,10 +3999,11 @@ static void *x264_slices_write( x264_t *h )
 		x264_wait_up_sampling_finish(h->param.i_threads);
 	else
 	{
-		printf (" Call up-sampling function!!!!!!!!!!!!!!!!!!!!\n");
+		//printf (" Call up-sampling function!!!!!!!!!!!!!!!!!!!!\n");
 
 		x264_layer_upsample(h,h->fenc,0);
-		
+
+		//printf("h->sh.i_type:%d JJJJJJJJJJJJJJ \n",h->sh.i_type);
         xUpsampleMotion(h->mo_up,&h->cRP, h->cRP.m_bFieldPicFlag,0,MV_THRESHOLD,h);
 	}
 

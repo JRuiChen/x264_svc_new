@@ -3285,7 +3285,7 @@ int xDeriveMbMode(MotionUpsampling * mo_up,x264_t * h)
   
   const int aiMbMode[4] = {MODE_8x8,MODE_16x8,MODE_8x16,MODE_16x16};
 
-  if(h->sh.i_type == SLICE_TYPE_I);
+  if(h->sh.i_type == SLICE_TYPE_I)
   	return m_nOK;
   mo_up->i_mb_type = i_mb_type;
   mo_up->i_partition = i_partition;
@@ -3585,6 +3585,8 @@ int xSetPredMbData(MotionUpsampling *mo_up,x264_t * h)
   if(mo_up->b_in_crop_window)
   {
     h->mbEL1.type[iMbIdx] = mo_up->i_mb_type;
+
+	//printf("call function xSetPredMbData        mo_up->i_mb_type:%d        slice_type:%d\n",mo_up->i_mb_type,h->sh.i_type);
     //h->mbEL1.mb_mode[iMbIdx] = mo_up->mb_mode;
 	//rcMbData.setFwdBwd( (UShort)m_uiFwdBwd );
 	for(int  blk = 0;blk < 4; blk++)
@@ -3634,9 +3636,10 @@ int xSetPredMbData(MotionUpsampling *mo_up,x264_t * h)
    }
 
 
+
   }
 
- 
+   //printf("call function xSetPredMbData \n");
   return m_nOK;
 }
 
@@ -3676,11 +3679,12 @@ for(int iMbX = 0;iMbX < iMbXMax;iMbX++)
 
 
 
-for(int i = 0;i < h->mbEL1.i_mb_count; i++)
-{
+
+//for(int i = 0;i < h->mbEL1.i_mb_count; i++)
+//{
    //printf("mbtype for mbEL1  mb_type: %d\n",h->mbEL1.type[i]);
 //  printf("mv for EL1  mv[0]:%d     mv[1]:%d \n",h->mbBL.mv[0][i][0],h->mbBL.mv[0][i][1]);;
-}
+//}
 
 //printf("call function xUpsampleMotion \n");
 }
