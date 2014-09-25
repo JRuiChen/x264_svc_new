@@ -1776,7 +1776,7 @@ static void parse_qpfile( cli_opt_t *opt, x264_picture_t *pic, int i_frame )
 
 static int encode_frame( x264_t *h, hnd_t hout, x264_picture_t *pic, int64_t *last_dts )
 {
-    printf ("encode_frame()***************\n");
+  //  printf ("encode_frame()***************\n");
     x264_picture_t pic_out;
     x264_nal_t *nal;
     int i_nal;

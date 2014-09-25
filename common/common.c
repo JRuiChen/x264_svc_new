@@ -1458,15 +1458,15 @@ void x264_threadpool_up_sampling()
 	{
 		//x264_pthread_mutex_lock( &mutex_slice_encode_threads_finished );
 		//x264_pthread_cond_wait( &cv_start_up_sampling, &mutex_slice_encode_threads_finished );
-		printf (" in while 00000000000000000000000000000000000000\n");
+	//	printf (" in while 00000000000000000000000000000000000000\n");
 		x264_pthread_mutex_lock( &mutex_start_up_sampling );
 		x264_pthread_cond_wait( &cv_start_up_sampling, &mutex_start_up_sampling );
 		
-		printf("x264_threadpool_up_sampling()------------------------\n");
+	//	printf("x264_threadpool_up_sampling()------------------------\n");
 		//void x264_frame_expand_layers(x264_t *h,          pixel *dst,          int dst_stride,         pixel *src,         int src_stride,       int win,int hin,int wout,int hout);
         x264_layer_upsample(up_sampling_arg.pH,up_sampling_arg.pH->fdec,up_sampling_arg.pH->i_layer_id);
 		//x264_frame_expand_layers(up_sampling_arg.pH, file_dst, dst_s, up_sampling_arg.pH->fdec->plane[0], up_sampling_arg.pH->fdec->i_stride[0], up_sampling_arg.pH->param.i_width, up_sampling_arg.pH->param.i_height, up_sampling_arg.pH->param.i_width<<1, up_sampling_arg.pH->param.i_height<<1);
-		printf ("after x264_frame_expand_layers.....................\n");
+//		printf ("after x264_frame_expand_layers.....................\n");
 		//x264_pthread_mutex_unlock( &mutex_slice_encode_threads_finished );
 
 		x264_pthread_mutex_unlock( &mutex_start_up_sampling );
