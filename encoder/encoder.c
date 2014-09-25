@@ -3470,7 +3470,7 @@ cont:
 
 
         /* save cache */
-  if(h->i_layer_id == 0)
+  //if(h->i_layer_id == 0)
         x264_macroblock_cache_save( h );
 
 /*++++++++++++++++++++++++*/

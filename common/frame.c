@@ -2345,10 +2345,10 @@ void x264_layer_upsample(x264_t *h,x264_frame_t *f,int level)
 		//fileUpEL1 = fopen("ttt_ori.yuv","ab+");
 		//writeCsp1(pixVUPsample,fileUpEL1,h->param.i_widthEL1/2,h->param.i_heightEL1/2,h->param.i_widthEL1/2);
         //fclose(fileUpEL1);
-		free(pixU);
-		free(pixV);
-		free(pixUUPsample);
-		free(pixVUPsample);
+		//free(pixU);
+		//free(pixV);
+		//free(pixUUPsample);
+		//free(pixVUPsample);
 				
 	}
 	/*当有三层数据时需要
