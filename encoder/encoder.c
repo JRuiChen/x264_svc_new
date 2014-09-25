@@ -3409,10 +3409,11 @@ reencode:
             	{
 			if(h->i_layer_id)
 				{
-				printf("call x264_cabac_encode_terminal mb_xy:%d mb_type:%d \n",mb_xy,h->mb.i_type);
-				if(mb_xy == 1)
+				
+				if( mb_xy == 1)
 					break;
 				}
+				printf("call x264_cabac_encode_terminal mb_xy:%d mb_type:%d \n",mb_xy,h->mb.i_type);
 				x264_cabac_encode_terminal( &h->cabac );
 				
             	}

@@ -120,11 +120,16 @@ static void x264_cabac_cbp_luma( x264_t *h, x264_cabac_t *cb )
     int cbp = h->mb.i_cbp_luma;
     int cbp_l = h->mb.cache.i_cbp_left;
     int cbp_t = h->mb.cache.i_cbp_top;
-	/*sky0924*/
-	//if(h->i_layer_id)
-      //     cbp = 13;
-	printf("cbp %d---------h->mb.i_cbp_luma: %dh->i_mb_xy:%d:\n",cbp,h->mb.i_cbp_luma,h->mb.i_mb_xy);
-    x264_cabac_encode_decision     ( cb, 76 - ((cbp_l >> 1) & 1) - ((cbp_t >> 1) & 2), (cbp >> 0) & 1 );
+	/*sky0924
+	if(h->i_layer_id && !h->mb.i_mb_xy)
+        {
+        	
+		cbp_l = -1;
+		cbp_t =-1;
+		
+	}*/
+	x264_cabac_encode_decision     ( cb, 76 - ((cbp_l >> 1) & 1) - ((cbp_t >> 1) & 2), (cbp >> 0) & 1 );
+	
     x264_cabac_encode_decision     ( cb, 76 - ((cbp   >> 0) & 1) - ((cbp_t >> 2) & 2), (cbp >> 1) & 1 );
     x264_cabac_encode_decision     ( cb, 76 - ((cbp_l >> 3) & 1) - ((cbp   << 1) & 2), (cbp >> 2) & 1 );
     x264_cabac_encode_decision_noup( cb, 76 - ((cbp   >> 2) & 1) - ((cbp   >> 0) & 2), (cbp >> 3) & 1 );
@@ -135,10 +140,21 @@ static void x264_cabac_cbp_chroma( x264_t *h, x264_cabac_t *cb )
     int cbp_a = h->mb.cache.i_cbp_left & 0x30;
     int cbp_b = h->mb.cache.i_cbp_top  & 0x30;
     int ctx = 0;
-
-    if( cbp_a && h->mb.cache.i_cbp_left != -1 ) ctx++;
-    if( cbp_b && h->mb.cache.i_cbp_top  != -1 ) ctx+=2;
+/*sky0925
+if(h->i_layer_id)
+{
+	cbp_a = -1& 0x30;
+	cbp_b = -1& 0x30;
+}
+else
+	{
+*/
 	
+    		if( cbp_a && h->mb.cache.i_cbp_left != -1 ) ctx++;
+    		if( cbp_b && h->mb.cache.i_cbp_top  != -1 ) ctx+=2;
+
+			
+	//}// sky0925
    	printf("cbp------------ h->mb.i_cbp_chroma:%d h->mb.i_mb_xy:%d\n", h->mb.i_cbp_chroma,h->mb.i_mb_xy);
     if( h->mb.i_cbp_chroma == 0 )
         x264_cabac_encode_decision_noup( cb, 77 + ctx, 0 );
@@ -621,19 +637,55 @@ static int ALWAYS_INLINE x264_cabac_cbf_ctxidxinc( x264_t *h, int i_cat, int i_i
 {
     static const uint16_t base_ctx[14] = {85,89,93,97,101,1012,460,464,468,1016,472,476,480,1020};
 
+
     if( b_dc )
     {
+    		int i_nza;
+		int i_nzb;
         i_idx -= LUMA_DC;
         if( i_cat == DCT_CHROMA_DC )
         {
-            int i_nza = h->mb.cache.i_cbp_left != -1 ? (h->mb.cache.i_cbp_left >> (8 + i_idx)) & 1 : b_intra;
-            int i_nzb = h->mb.cache.i_cbp_top  != -1 ? (h->mb.cache.i_cbp_top  >> (8 + i_idx)) & 1 : b_intra;
-            return base_ctx[i_cat] + 2*i_nzb + i_nza;
-        }
+
+		
+		/*sky0925
+    	    if(h->i_layer_id && h->mb.i_mb_xy==0)
+        	{
+        		i_nza = b_intra ;
+			 i_nzb = b_intra ;
+        	}
+		else{
+*/
+
+			
+                i_nza = h->mb.cache.i_cbp_left != -1 ? (h->mb.cache.i_cbp_left >> (8 + i_idx)) & 1 : b_intra;
+           	  i_nzb = h->mb.cache.i_cbp_top  != -1 ? (h->mb.cache.i_cbp_top  >> (8 + i_idx)) & 1 : b_intra;
+
+
+
+
+		  //   } //sky else
+	printf("  2  i_nza = (h->mb.cache.i_cbp_left >> (8 + i_idx)) & 1;%d,%d\n",h->mb.cache.i_cbp_left,h->mb.cache.i_cbp_top);
+			return base_ctx[i_cat] + 2*i_nzb + i_nza;
+        	}
         else
         {
-            int i_nza = (h->mb.cache.i_cbp_left >> (8 + i_idx)) & 1;
-            int i_nzb = (h->mb.cache.i_cbp_top  >> (8 + i_idx)) & 1;
+
+
+			/*sky0925
+        if(h->i_layer_id && h->mb.i_mb_xy==0)
+        	{
+        		    i_nza = (-1 >> (8 + i_idx)) & 1;
+            			 i_nzb = (-1  >> (8 + i_idx)) & 1;
+        	}
+		else{
+*/
+
+			printf("  1  i_nza = (h->mb.cache.i_cbp_left >> (8 + i_idx)) & 1;%d,%d\n",h->mb.cache.i_cbp_left,h->mb.cache.i_cbp_top);
+			
+            i_nza = (h->mb.cache.i_cbp_left >> (8 + i_idx)) & 1;
+             i_nzb = (h->mb.cache.i_cbp_top  >> (8 + i_idx)) & 1;
+
+			//   } //sky else
             return base_ctx[i_cat] + 2*i_nzb + i_nza;
         }
     }
@@ -948,7 +1000,7 @@ static void x264_cabac_block_residual_422_dc( x264_t *h, x264_cabac_t *cb, int c
 do\
 {\
     int ctxidxinc = x264_cabac_cbf_ctxidxinc( h, ctx_block_cat, i_idx, b_intra, b_dc );\
-    if( h->mb.cache.non_zero_count[x264_scan8[i_idx]] )\
+        if( h->mb.cache.non_zero_count[x264_scan8[i_idx]] )\		
     {\
         x264_cabac_encode_decision( cb, ctxidxinc, 1 );\
         x264_cabac_block_residual##name( h, cb, ctx_block_cat, l );\
@@ -1081,32 +1133,20 @@ MbPartPredMode( mb_type, 0 ) = = Intra_16x16 ) */
             /* DC Luma */
             for( int p = 0; p < plane_count; p++ )
             {
-             /*skytest0916 ifesle*/
-		/*if(h->i_layer_id)
-		{	
-			printf("if( i_mb_type == I_16x16 ) called\n");
-			x264_cabac_block_residual_dc_cbf( h, cb, ctx_cat_plane[DCT_LUMA_DC][p], LUMA_DC+p, 0, 1 );
-		}
-		else*/
-			//residual_block( i16x16DClevel, 0, 15, 16 )
+            
 			x264_cabac_block_residual_dc_cbf( h, cb, ctx_cat_plane[DCT_LUMA_DC][p], LUMA_DC+p, h->dct.luma16x16_dc[p], 1 );
-
                 /* AC Luma */
 				//residual_block( i16x16AClevel[i8x8*4+ i4x4],Max( 0, startIdx . 1 ), endIdx . 1, 15)
                 if( h->mb.i_cbp_luma )  
                     for( int i = p*16; i < p*16+16; i++ )
-						/*skytest0919
-						if(h->i_layer_id)
-							{
-							 x264_cabac_block_residual_cbf( h, cb, ctx_cat_plane[DCT_LUMA_AC][p], i, 0+1, 1 );
-							}
-						else*/
-                       			 x264_cabac_block_residual_cbf( h, cb, ctx_cat_plane[DCT_LUMA_AC][p], i, h->dct.luma4x4[i]+1, 1 );
+					x264_cabac_block_residual_cbf( h, cb, ctx_cat_plane[DCT_LUMA_AC][p], i, h->dct.luma4x4[i]+1, 1 );
             }
         }
         else if( h->mb.b_transform_8x8 ) // i_mb_type  != i_16X16 这条线else if( CodedBlockPatternLuma & ( 1 << i8x8 ) )
         {
-            if( plane_count == 3 )
+        if(h->i_layer_id)
+		printf(" else if( h->mb.b_transform_8x8 ) \n");
+			if( plane_count == 3 )
             {
                 ALIGNED_4( uint8_t nnzbak[3][8] );
 
@@ -1149,12 +1189,7 @@ if( (h->mb.i_neighbour & MB_TOP) && !h->mb.mb_transform_size[h->mb.i_mb_top_xy] 
        //residual_block( level8x8[ i8x8 ], 4 * startIdx, 4 * endIdx + 3, 64 )
                 for( int p = 0; p < 3; p++ )
                     FOREACH_BIT( i, 0, h->mb.i_cbp_luma )
-                    /*skytest0919
-                    if(h->i_layer_id)
-                    	{
-                  	  	x264_cabac_block_residual_8x8_cbf( h, cb, ctx_cat_plane[DCT_LUMA_8x8][p], i*4+p*16, 0, b_intra );
-                    	}
-			else*/
+            
                         x264_cabac_block_residual_8x8_cbf( h, cb, ctx_cat_plane[DCT_LUMA_8x8][p], i*4+p*16, h->dct.luma8x8[i+p*4], b_intra );
 
                 MUNGE_8x8_NNZ( RESTORE )
@@ -1162,28 +1197,17 @@ if( (h->mb.i_neighbour & MB_TOP) && !h->mb.mb_transform_size[h->mb.i_mb_top_xy] 
             else
             {
                 FOREACH_BIT( i, 0, h->mb.i_cbp_luma )
-					//residual_block( level8x8[ i8x8 ], 4 * startIdx, 4 * endIdx + 3, 64 )
-					  /*skytest0919
-                    if(h->i_layer_id)
-                    	{
-                  	  	 x264_cabac_block_residual_8x8( h, cb, DCT_LUMA_8x8, 0 );
-                    	}
-			else*/
+			
                     x264_cabac_block_residual_8x8( h, cb, DCT_LUMA_8x8, h->dct.luma8x8[i] );
             }
         }
         else // h->mb.b_transform_8X8 == 0    != intra16*16
         {
+           if(h->i_layer_id)
+		printf("  else // h->mb.b_transform_8X8 == 0    != intra16*16 \n");
             for( int p = 0; p < plane_count; p++ )
                 FOREACH_BIT( i8x8, 0, h->mb.i_cbp_luma )
-                    for( int i = 0; i < 4; i++ )
-						//residual_block( level[ i8x8 * 4 + i4x4 ], startIdx, endIdx, 16)
-		/*skytest0919
-                    if(h->i_layer_id)
-                    	{
-                  	  	  x264_cabac_block_residual_cbf( h, cb, ctx_cat_plane[DCT_LUMA_4x4][p], i+i8x8*4+p*16, 0, b_intra );
-                    	}
-			else*/
+                    for( int i = 0; i < 4; i++ )	
                         x264_cabac_block_residual_cbf( h, cb, ctx_cat_plane[DCT_LUMA_4x4][p], i+i8x8*4+p*16, h->dct.luma4x4[i+i8x8*4+p*16], b_intra );
         }
 
@@ -1191,17 +1215,23 @@ if( (h->mb.i_neighbour & MB_TOP) && !h->mb.mb_transform_size[h->mb.i_mb_top_xy] 
         {
             if( CHROMA_FORMAT == CHROMA_422 )
             {
+              if(h->i_layer_id)
+			printf("  CHROMA_FORMAT == CHROMA_422\n");
                 x264_cabac_block_residual_422_dc_cbf( h, cb, 0, b_intra );
                 x264_cabac_block_residual_422_dc_cbf( h, cb, 1, b_intra );
             }
+			//第一帧增强层其实走的是这条
             else
             {
+              if(h->i_layer_id)
+			printf("  CHROMA_FORMAT == CHROMA_422 else\n");
                 x264_cabac_block_residual_dc_cbf( h, cb, DCT_CHROMA_DC, CHROMA_DC+0, h->dct.chroma_dc[0], b_intra );
                 x264_cabac_block_residual_dc_cbf( h, cb, DCT_CHROMA_DC, CHROMA_DC+1, h->dct.chroma_dc[1], b_intra );
             }
 
             if( h->mb.i_cbp_chroma == 2 ) /* Chroma AC residual present */
             {
+            printf(" h->mb.i_cbp_chroma == 2 \n");
                 int step = 8 << CHROMA_V_SHIFT;
                 for( int i = 16; i < 3*16; i += step )
                     for( int j = i; j < i+4; j++ )
