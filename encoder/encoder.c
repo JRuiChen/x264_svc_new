@@ -350,6 +350,7 @@ static void x264_slice_header_write( bs_t *s, x264_slice_header_t *sh, int i_nal
 			 // bs_realign( s ); // 这个对齐 能不能有啊，应该是没问题的吧
 
 				bs_write1( s , nal ->b_svc_extension);
+		printf("nal ->b_svc_extension %d",nal ->b_svc_extension);
   				bs_write1( s , nal ->b_idr_flag);
     			      bs_write( s , 6 , nal ->i_priority_id);
                           bs_write1(s, nal ->b_no_inter_layer_pred_flag);
@@ -360,6 +361,7 @@ static void x264_slice_header_write( bs_t *s, x264_slice_header_t *sh, int i_nal
                           bs_write1(s, nal ->b_discardable_flag);
                           bs_write1(s, nal ->b_output_flag);
                           bs_write(s, 2, nal ->i_reserved_three_2bits);
+					//	  bs_write(s,16,66535);
 		printf("nal->i_type == NAL_UNIT_CODED_SLICE_SCALABLE");
 		}	
 if( sh->b_mbaff )
@@ -535,7 +537,7 @@ if(1)
         bs_write_ue( s, sh->i_cabac_init_idc );
 	//printf(" sh->i_cabac_init_idc; %d \n", sh->i_cabac_init_idc);
     bs_write_se( s, sh->i_qp_delta );      /* slice qp delta */
-	// printf("bs_write_se( s, sh->i_qp_delta ); %d \n",sh->i_qp_delta);
+	 printf("bs_write_se( s, sh->i_qp_delta ); %d \n",sh->i_qp_delta);
     if( sh->pps->b_deblocking_filter_control )
     {
         bs_write_ue( s, sh->i_disable_deblocking_filter_idc );
@@ -3275,6 +3277,10 @@ else
 
 
     x264_slice_header_write( &h->out.bs, &h->sh, h->i_nal_ref_idc,&h->out.nal[h->out.i_nal] );
+//sky0925 debug
+//if(h->i_layer_id == 0)
+//{
+
 
 
 
@@ -3282,15 +3288,7 @@ else
     {
         /* alignment needed */
         bs_align_1( &h->out.bs );
-	/*sky0924*/
-	/*bs_write1(&h->out.bs ,1);
-	bs_write1(&h->out.bs ,0);
-	bs_write1(&h->out.bs ,0);
-	bs_write1(&h->out.bs ,0);
-	bs_write1(&h->out.bs ,0);
-	bs_write1(&h->out.bs ,0);
-	bs_write1(&h->out.bs ,0);
-	bs_write1(&h->out.bs ,0);*/
+	
         /* init cabac */
         x264_cabac_context_init( h, &h->cabac, h->sh.i_type, x264_clip3( h->sh.i_qp-QP_BD_OFFSET, 0, 51 ), h->sh.i_cabac_init_idc );
         x264_cabac_encode_init ( &h->cabac, h->out.bs.p, h->out.bs.p_end );
@@ -3321,10 +3319,8 @@ else
 		if(h->i_layer_id)
 		 {
 		   h->mb.i_type = h->mb.type[h->mb.i_mb_xy];
-		 
-
 		 }
-  printf("--------------------  h->mb.i_type :%d,h->i_mb_xy:%d\n",  h->mb.i_type,mb_xy);
+  printf("1--------------------  h->mb.i_type :%d,h->i_mb_xy:%d\n",  h->mb.i_type,mb_xy);
         if( i_mb_x == 0 )
         {
             if( x264_bitstream_check_buffer( h ) )
@@ -3414,13 +3410,13 @@ reencode:
 			if(h->i_layer_id)
 				{
 				printf("call x264_cabac_encode_terminal mb_xy:%d mb_type:%d \n",mb_xy,h->mb.i_type);
-				//if(mb_xy == 1)
-				//break;
+				if(mb_xy == 1)
+					break;
 				}
 				x264_cabac_encode_terminal( &h->cabac );
 				
             	}
-			
+			printf("2--------------------  h->mb.i_type :%d,h->i_mb_xy:%d\n",  h->mb.i_type,mb_xy);
             if( IS_SKIP( h->mb.i_type ) )
             	{
 
@@ -3430,10 +3426,12 @@ reencode:
             else
             {
                 if( h->sh.i_type != SLICE_TYPE_I )
-                    x264_cabac_mb_skip( h, 0 );
+                 {
+                  	x264_cabac_mb_skip( h, 0 );
 				/*skt0924*/
-		printf("while 1 call x264_cabac_mb_skip( h, 0 ); && x264_macroblock_write_cabac( h, &h->cabac );mb_xy:%d******\n",mb_xy);
-                x264_macroblock_write_cabac( h, &h->cabac );
+				printf("while 1 call x264_cabac_mb_skip( h, 0 ); && x264_macroblock_write_cabac( h, &h->cabac );mb_xy:%d******\n",mb_xy);
+       		}
+		  x264_macroblock_write_cabac( h, &h->cabac );
             }
         }
         else
@@ -3463,6 +3461,7 @@ reencode:
 
         int total_bits = bs_pos(&h->out.bs) + x264_cabac_pos(&h->cabac);
         int mb_size = total_bits - mb_spos;
+		printf("total_bits :%d,mb_size :%d\n",total_bits,mb_size);
 
         if( slice_max_size && (!SLICE_MBAFF || (i_mb_y&1)) )
         {
@@ -3633,10 +3632,15 @@ cont:
         }
     
 }
+
+
+
     if( h->sh.i_last_mb < h->sh.i_first_mb )
         return 0;
 
     h->out.nal[h->out.i_nal].i_last_mb = h->sh.i_last_mb;
+
+
 
     if( h->param.b_cabac )
     {
@@ -3650,13 +3654,15 @@ cont:
 			bs_write_ue( &h->out.bs, i_skip );  /* last skip run */
 			printf("I_SKIP CALLED\n");
 		}
-            
+     
         /* rbsp_slice_trailing_bits */
         bs_rbsp_trailing( &h->out.bs );
         bs_flush( &h->out.bs );
     }
+
+//}//sky debug0925
 	//skytest0924
-   // 	bs_write(&h->out.bs, 16, 65535);
+   	//bs_write(&h->out.bs, 7, 11);
     if( x264_nal_end( h ) )
         return -1;
 

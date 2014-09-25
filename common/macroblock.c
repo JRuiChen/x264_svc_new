@@ -2046,16 +2046,16 @@ void x264_macroblock_cache_load_progressive( x264_t *h, int mb_x, int mb_y )
 {
     if(h->i_layer_id == 0)
     x264_macroblock_cache_load( h, mb_x, mb_y, 0 );
-	else
-	x264_macroblock_cache_load_EL(h,mb_x,mb_y,0);
+	//else
+	//x264_macroblock_cache_load_EL(h,mb_x,mb_y,0);
 }
 
 void x264_macroblock_cache_load_interlaced( x264_t *h, int mb_x, int mb_y )
 {
     if(h->i_layer_id == 0)
     x264_macroblock_cache_load( h, mb_x, mb_y, 1 );
-	else
-	x264_macroblock_cache_load_EL( h, mb_x, mb_y, 1 );
+	//else
+	//x264_macroblock_cache_load_EL( h, mb_x, mb_y, 1 );
 }
 
 static void x264_macroblock_deblock_strength_mbaff( x264_t *h, uint8_t (*bs)[8][4] )

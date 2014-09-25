@@ -121,8 +121,9 @@ static void x264_cabac_cbp_luma( x264_t *h, x264_cabac_t *cb )
     int cbp_l = h->mb.cache.i_cbp_left;
     int cbp_t = h->mb.cache.i_cbp_top;
 	/*sky0924*/
-//	if(h->i_layer_id)
-	printf("cbp---------h->mb.i_cbp_luma: %dh->i_mb_xy:%d:\n",h->mb.i_cbp_luma,h->mb.i_mb_xy);
+	//if(h->i_layer_id)
+      //     cbp = 13;
+	printf("cbp %d---------h->mb.i_cbp_luma: %dh->i_mb_xy:%d:\n",cbp,h->mb.i_cbp_luma,h->mb.i_mb_xy);
     x264_cabac_encode_decision     ( cb, 76 - ((cbp_l >> 1) & 1) - ((cbp_t >> 1) & 2), (cbp >> 0) & 1 );
     x264_cabac_encode_decision     ( cb, 76 - ((cbp   >> 0) & 1) - ((cbp_t >> 2) & 2), (cbp >> 1) & 1 );
     x264_cabac_encode_decision     ( cb, 76 - ((cbp_l >> 3) & 1) - ((cbp   << 1) & 2), (cbp >> 2) & 1 );
@@ -137,8 +138,7 @@ static void x264_cabac_cbp_chroma( x264_t *h, x264_cabac_t *cb )
 
     if( cbp_a && h->mb.cache.i_cbp_left != -1 ) ctx++;
     if( cbp_b && h->mb.cache.i_cbp_top  != -1 ) ctx+=2;
-	/*sky0924*/
-	//if(h->i_layer_id)
+	
    	printf("cbp------------ h->mb.i_cbp_chroma:%d h->mb.i_mb_xy:%d\n", h->mb.i_cbp_chroma,h->mb.i_mb_xy);
     if( h->mb.i_cbp_chroma == 0 )
         x264_cabac_encode_decision_noup( cb, 77 + ctx, 0 );
@@ -1055,6 +1055,7 @@ NumMbPart( mb_type ) = = 4 )*/
 
     if( x264_mb_transform_8x8_allowed( h ) && h->mb.i_cbp_luma )
     {	
+	printf("call x264_cabac_transform_size( h, cb );\n");
 		x264_cabac_transform_size( h, cb ); // ÕâÔÚÍùÀï±ßÐ´transform size
     }
 	
@@ -1062,7 +1063,8 @@ NumMbPart( mb_type ) = = 4 )*/
 MbPartPredMode( mb_type, 0 ) = = Intra_16x16 ) */
     if( h->mb.i_cbp_luma || (chroma && h->mb.i_cbp_chroma) || i_mb_type == I_16x16 )
     {
-
+	
+		printf("call x264_cabac_qp_delta( h, cb ); and    /* write residual */;\n");
 		
 		const int b_intra = IS_INTRA( i_mb_type );
         x264_cabac_qp_delta( h, cb );
