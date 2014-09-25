@@ -872,5 +872,99 @@ static ALWAYS_INLINE int x264_mb_transform_8x8_allowed( x264_t *h )
     return M32( h->mb.i_sub_partition ) == D_L0_8x8*0x01010101;
 }
 
+
+
+
+
+/*copy mbBL or mbEL info to mb before the encoding process - BY MING*/
+ static int x264_copy_mb_info_before_encode(x264_t* h,int b_base_layer)
+ {
+
+  #define COPY_FOR_EACH_LAYER\
+	if(b_base_layer)\
+	 COPY_MB_INFO(mb,mbBL)\
+	else\
+	 COPY_MB_INFO(mb,mbEL1)
+
+ 
+   #define COPY_MB_INFO(des_mb,src_mb)\
+   {\
+   h->des_mb.i_mb_width = h->src_mb.i_mb_width;\
+   h->des_mb.i_mb_height = h->src_mb.i_mb_height;\
+   h->des_mb.i_mb_count = h->src_mb.i_mb_count;\
+   h->des_mb.chroma_h_shift = h->src_mb.chroma_h_shift;\
+   h->des_mb.chroma_v_shift = h->src_mb.chroma_v_shift;\
+   h->des_mb.i_mb_stride = h->src_mb.i_mb_stride;\
+   h->des_mb.i_b8_stride = h->src_mb.i_b8_stride;\
+   h->des_mb.i_b4_stride = h->src_mb.i_b4_stride;\
+   h->des_mb.left_b8[0] = h->src_mb.left_b8[0];\
+   h->des_mb.left_b8[1] = h->src_mb.left_b8[1];\
+   h->des_mb.left_b4[0] = h->src_mb.left_b4[0];\
+   h->des_mb.left_b4[1] = h->src_mb.left_b4[1];\
+   h->des_mb.mv_min[0] = h->src_mb.mv_min[0];\
+   h->des_mb.mv_min[1] = h->src_mb.mv_min[1];\
+   h->des_mb.mv_max[0] = h->src_mb.mv_max[0];\
+   h->des_mb.mv_max[1] = h->src_mb.mv_max[1];\
+   for(int i = 0;i < 3; i++)\
+   {\
+	 h->des_mb.mv_miny_row[i] = h->src_mb.mv_miny_row[i];\
+	 h->des_mb.mv_maxy_row[i] = h->src_mb.mv_maxy_row[i];\
+	 h->des_mb.mv_miny_spel_row[i] = h->src_mb.mv_miny_spel_row[i];\
+	 h->des_mb.mv_maxy_spel_row[i] = h->src_mb.mv_maxy_spel_row[i];\
+	 h->des_mb.mv_miny_fpel_row[i] = h->src_mb.mv_miny_fpel_row[i];\
+	 h->des_mb.mv_maxy_fpel_row[i] = h->src_mb.mv_maxy_fpel_row[i];\
+   }\
+   h->des_mb.base = h->src_mb.base;\
+   h->des_mb.type = h->src_mb.type;\
+   h->des_mb.partition = h->src_mb.partition;\
+   h->des_mb.sub_partition = h->src_mb.sub_partition;\
+   h->des_mb.qp = h->src_mb.qp;\
+   h->des_mb.cbp = h->src_mb.cbp;\
+   h->des_mb.intra4x4_pred_mode = h->src_mb.intra4x4_pred_mode;\
+   h->des_mb.non_zero_count = h->src_mb.non_zero_count;\
+   h->des_mb.chroma_pred_mode = h->src_mb.chroma_pred_mode;\
+   h->des_mb.mv[0] = h->src_mb.mv[0];\
+   h->des_mb.mv[1] = h->src_mb.mv[1];\
+   h->des_mb.mvd[0] = h->des_mb.mvd[0];\
+   h->des_mb.mvd[1] = h->src_mb.mvd[1];\
+   h->des_mb.ref[0] = h->src_mb.ref[0];\
+   h->des_mb.ref[1] = h->src_mb.ref[1];\
+   h->des_mb.skipbp = h->src_mb.skipbp;\
+   h->des_mb.mb_transform_size = h->src_mb.mb_transform_size;\
+   h->des_mb.slice_table = h->src_mb.slice_table;\
+   h->des_mb.field = h->src_mb.field;\
+   for(int k = 0;k < X264_REF_MAX;k++)\
+   	h->des_mb.p_weight_buf[k] = h->src_mb.p_weight_buf[k];\
+   h->des_mb.mb_mode = h->src_mb.mb_mode;\
+   h->des_mb.blk_mode = h->src_mb.blk_mode;\
+   for(int i = 0;i < 2;i++)\
+   {\
+	 if(h->sh.i_type == SLICE_TYPE_I)\
+	   return 0;\
+	 for(int j = 0;j < h->i_ref[i];j++)\
+	 {\
+		h->des_mb.mvr[i][j] = h->src_mb.mvr[i][j];\
+	 }\
+   }\ 
+   }
+
+
+ 
+  
+
+
+
+   COPY_FOR_EACH_LAYER
+
+   return 0;
+   
+ } 
+
+
+
+
+
+
+
 #endif
 

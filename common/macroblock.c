@@ -521,6 +521,10 @@ int x264_macroblock_cache_allocate( x264_t *h )
         }
     }
 
+
+
+   //x264_copy_mb_info_before_encode(h,1);
+   //printf("error when copy mb info \n");
     return 0;
 fail:
     return -1;
@@ -614,7 +618,7 @@ void x264_macroblock_slice_init( x264_t *h )
 	h->mb.sub_partition = h->fdec->sub_partition;
 	
     h->mb.field = h->fdec->field;
-    
+    printf("x64_macroblock_slice_init \n");
     /* Add by chenjie */
     h->mbBL.mv[0] = h->fdec->mv[0];
     h->mbBL.mv[1] = h->fdec->mv[1];
@@ -1104,6 +1108,9 @@ static void ALWAYS_INLINE x264_macroblock_load_pic_pointers( x264_t *h, int mb_x
         memcpy( h->mb.pic.p_fdec[2]-FDEC_STRIDE, intra_fdec+8, 8*sizeof(pixel) );
         h->mb.pic.p_fdec[1][-FDEC_STRIDE-1] = intra_fdec[-1-8];
         h->mb.pic.p_fdec[2][-FDEC_STRIDE-1] = intra_fdec[-1];
+/*BY MING*/
+		if(h->mb.i_type == I_BL)
+			h->mc.load_deinterleave_chroma_fenc( h->mb.pic.p_fdec[1], plane_fdec, i_stride2, height );
     }
     else
     {
@@ -1111,6 +1118,8 @@ static void ALWAYS_INLINE x264_macroblock_load_pic_pointers( x264_t *h, int mb_x
         memcpy( h->mb.pic.p_fdec[i]-FDEC_STRIDE, intra_fdec, 24*sizeof(pixel) );
         h->mb.pic.p_fdec[i][-FDEC_STRIDE-1] = intra_fdec[-1];
 
+	    if(h->mb.i_type == I_BL)
+			h->mc.copy[PIXEL_16x16]( h->mb.pic.p_fdec[i], FDEC_STRIDE, plane_fdec, i_stride2, 16 );
 
     }
 
@@ -1378,13 +1387,29 @@ static void ALWAYS_INLINE x264_macroblock_cache_load_neighbours( x264_t *h, int 
 /*cache load in enhance layer - BY MING*/
 static void ALWAYS_INLINE x264_macroblock_cache_load_EL(x264_t* h,int mb_x,int mb_y,int b_mbaff)
 {
+	x264_macroblock_cache_load_neighbours(h,mb_x,mb_y,b_mbaff);
 
-    h->mb.i_mb_x = mb_x;
-    h->mb.i_mb_y = mb_y;
-    h->mb.i_mb_xy = mb_y * h->mb.i_mb_stride + mb_x;
-    h->mb.i_b8_xy = 2*(mb_y * h->mb.i_b8_stride + mb_x);
-    h->mb.i_b4_xy = 4*(mb_y * h->mb.i_b4_stride + mb_x);
+    //h->mb.i_mb_x = mb_x;
+    //h->mb.i_mb_y = mb_y;
+    //h->mb.i_mb_xy = mb_y * h->mb.i_mb_stride + mb_x;
+    //h->mb.i_b8_xy = 2*(mb_y * h->mb.i_b8_stride + mb_x);
+    //h->mb.i_b4_xy = 4*(mb_y * h->mb.i_b4_stride + mb_x);
+
+	int *left = h->mb.i_mb_left_xy;
+    int top  = h->mb.i_mb_top_xy;
+    int top_y = h->mb.i_mb_top_y;
+    int s8x8 = h->mb.i_b8_stride;
+    int s4x4 = h->mb.i_b4_stride;
+    int top_8x8 = (2*top_y+1) * s8x8 + 2*mb_x;
+    int top_4x4 = (4*top_y+3) * s4x4 + 4*mb_x;
     int lists = (1 << h->sh.i_type) & 3;
+
+
+	int16_t *cbp = h->mb.cbp;
+	const x264_left_table_t *left_index_table = h->mb.left_index_table;
+
+
+
     if(b_mbaff)
     {
       h->mb.pic.i_fref[0] = h->i_ref[0] << MB_INTERLACED;
@@ -1392,7 +1417,56 @@ static void ALWAYS_INLINE x264_macroblock_cache_load_EL(x264_t* h,int mb_x,int m
     }
 
 
+
+	/* load TOP cbp */
+	   if( h->mb.i_neighbour & MB_TOP )
+	   {
+		  h->mb.cache.i_cbp_top = cbp[top];
+	   }
+
+	else
+	   {
+		   h->mb.cache.i_cbp_top = -1;
+
+		}
+
+
+
+	if( h->mb.i_neighbour & MB_LEFT )
+	   {
+		   int ltop = left[LTOP];
+		   int lbot = b_mbaff ? left[LBOT] : ltop;
+
+
+           if( b_mbaff )
+           {
+            const int16_t top_luma = (cbp[ltop] >> (left_index_table->mv[0]&(~1))) & 2;
+            const int16_t bot_luma = (cbp[lbot] >> (left_index_table->mv[2]&(~1))) & 2;
+            h->mb.cache.i_cbp_left = (cbp[ltop] & 0xfff0) | (bot_luma<<2) | top_luma;
+           }
+           else
+            h->mb.cache.i_cbp_left = cbp[ltop];
+
+
+
+		   
+		}
+
+	 else
+	   {
+		   h->mb.cache.i_cbp_left = -1;
+		}
+
+
+
+
+
+
+
+	
+
     /* let fdec->planeEL1 = fdec->planeUpsamplingEL1 according to the mb_type - BY MING*/
+   
 	int i_mb_type = h->mb.i_type;
    	if(i_mb_type == I_BL)
 	{
@@ -1460,9 +1534,9 @@ static void ALWAYS_INLINE x264_macroblock_cache_load_EL(x264_t* h,int mb_x,int m
     }
 
 	  x264_prefetch_fenc( h, h->fdec, h->mb.i_mb_x, h->mb.i_mb_y );
-	  
 	 
-	  /* load ref/mv/mvd */
+	 
+	  // load ref/mv/mvd */
 	  
 	  for(int l = 0; l < lists;l++)
 	  {
@@ -1491,7 +1565,7 @@ static void ALWAYS_INLINE x264_macroblock_cache_load_EL(x264_t* h,int mb_x,int m
 		 
 		}
 
-
+      
 		
 		/*non - bmaff - BY MING*/
 		else
@@ -1536,12 +1610,7 @@ static void ALWAYS_INLINE x264_macroblock_cache_load( x264_t *h, int mb_x, int m
     int lists = (1 << h->sh.i_type) & 3;
 
     /* let fdec->planeEL1 = fdec->planeUpsamplingEL1 according to the mb_type - BY MING*/
-	int i_mb_type = h->mb.i_type;
-   	if(i_mb_type == I_BL)
-	{
-	  for(int p = 0;p < 3;p++)
-	   h->fdec->planeEL1[p] = h->fdec->planeUpsampleEL1[p];
-	}
+	
 
     
     /* GCC pessimizes direct loads from heap-allocated arrays due to aliasing. */
