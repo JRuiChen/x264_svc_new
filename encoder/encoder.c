@@ -3987,10 +3987,11 @@ static void *x264_slices_write( x264_t *h )
 		x264_wait_up_sampling_finish(h->param.i_threads);
 	else
 	{
-		printf (" Call up-sampling function!!!!!!!!!!!!!!!!!!!!\n");
+		//printf (" Call up-sampling function!!!!!!!!!!!!!!!!!!!!\n");
 
 		x264_layer_upsample(h,h->fenc,0);
-		
+
+		//printf("h->sh.i_type:%d JJJJJJJJJJJJJJ \n",h->sh.i_type);
         xUpsampleMotion(h->mo_up,&h->cRP, h->cRP.m_bFieldPicFlag,0,MV_THRESHOLD,h);
 	}
 
