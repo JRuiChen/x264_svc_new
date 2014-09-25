@@ -612,7 +612,7 @@ if(1)
 		bs_write(s, 4, 15); // "SH: scan_idx_end"这个值没有搞懂，赋值太麻烦
 	}
   /*skytest0919 断开扩展层*/
-// bs_write(s,16,65535);
+ //bs_write(s,16,65535);
    }
 }
 
@@ -3321,10 +3321,10 @@ else
 		if(h->i_layer_id)
 		 {
 		   h->mb.i_type = h->mb.type[h->mb.i_mb_xy];
-		   printf("--------------------  h->mb.i_type :%d\n",  h->mb.i_type);
+		 
 
 		 }
-
+  printf("--------------------  h->mb.i_type :%d,h->i_mb_xy:%d\n",  h->mb.i_type,mb_xy);
         if( i_mb_x == 0 )
         {
             if( x264_bitstream_check_buffer( h ) )
@@ -3414,21 +3414,25 @@ reencode:
 			if(h->i_layer_id)
 				{
 				printf("call x264_cabac_encode_terminal mb_xy:%d mb_type:%d \n",mb_xy,h->mb.i_type);
-				//if(mb_xy == 1)
-				//break;
+				if(mb_xy == 1)
+				break;
 				}
 				x264_cabac_encode_terminal( &h->cabac );
 				
             	}
 			
             if( IS_SKIP( h->mb.i_type ) )
-                x264_cabac_mb_skip( h, 1 );
+            	{
+
+		printf("while 1 call x264_cabac_mb_skip( h, 1 );mb_xy:%d\n******",mb_xy);
+				x264_cabac_mb_skip( h, 1 );
+            	}
             else
             {
                 if( h->sh.i_type != SLICE_TYPE_I )
                     x264_cabac_mb_skip( h, 0 );
 				/*skt0924*/
-		//printf("while 1 call x264_macroblock_write_cabac( h, &h->cabac );mb_xy:%d\n******",mb_xy);
+		printf("while 1 call x264_cabac_mb_skip( h, 0 ); && x264_macroblock_write_cabac( h, &h->cabac );mb_xy:%d\n******",mb_xy);
                 x264_macroblock_write_cabac( h, &h->cabac );
             }
         }
@@ -3815,11 +3819,11 @@ static void x264_wait_up_sampling_finish(int i_encode_threads)
 {
 	x264_pthread_mutex_lock( &mutex_slice_encode_threads_finished );
 	++i_slice_encode_threads_finished;
-	printf("for threads ---->%d\n", i_slice_encode_threads_finished);
+	//printf("for threads ---->%d\n", i_slice_encode_threads_finished);
 	if ( i_slice_encode_threads_finished == i_encode_threads )
 	{
 		while ( i_slice_encode_sleeped_threads < (i_encode_threads - 1))
-			printf ("if ---------->i_slice_encode_sleeped_threads = %d\n", i_slice_encode_sleeped_threads);    // new add
+	//		printf ("if ---------->i_slice_encode_sleeped_threads = %d\n", i_slice_encode_sleeped_threads);    // new add
 
 		x264_pthread_mutex_lock( &mutex_slice_encode_sleeped_threads );
 		i_slice_encode_sleeped_threads = 0;   // new add
@@ -3829,12 +3833,12 @@ static void x264_wait_up_sampling_finish(int i_encode_threads)
 		x264_pthread_mutex_lock( &mutex_slice_encode_thread_wakeup );
 		x264_pthread_mutex_unlock( &mutex_slice_encode_threads_finished );
 		x264_pthread_cond_broadcast( &cv_start_up_sampling );
-		printf("for  x264_slices_write  if   broadcast up_sampling*********\n");
+//		printf("for  x264_slices_write  if   broadcast up_sampling*********\n");
 	}
 	else
 		x264_pthread_mutex_unlock( &mutex_slice_encode_threads_finished );
 		
-      printf ("for  A-->%d\n", i_slice_encode_threads_finished);
+     // printf ("for  A-->%d\n", i_slice_encode_threads_finished);
       if (i_slice_encode_threads_finished != 0)
       	{
 	  	x264_pthread_mutex_lock( &mutex_slice_encode_thread_wakeup );
@@ -3842,12 +3846,12 @@ static void x264_wait_up_sampling_finish(int i_encode_threads)
 		x264_pthread_mutex_lock( &mutex_slice_encode_sleeped_threads );
 		++i_slice_encode_sleeped_threads;   // new add
 		x264_pthread_mutex_unlock( &mutex_slice_encode_sleeped_threads );
-		printf ("i_slice_encode_sleeped_threads = %d\n", i_slice_encode_sleeped_threads);
+	//	printf ("i_slice_encode_sleeped_threads = %d\n", i_slice_encode_sleeped_threads);
       	}
-	printf ("for  B-->%d\n", i_slice_encode_threads_finished);
+	//printf ("for  B-->%d\n", i_slice_encode_threads_finished);
 	x264_pthread_cond_wait( &cv_slice_encode_thread_wakeup, &mutex_slice_encode_thread_wakeup );
 	x264_pthread_mutex_unlock( &mutex_slice_encode_thread_wakeup );
-	printf("for  slice write thread waken up>>>>>>>>>i_slice_encode_threads_finished = %d\n", i_slice_encode_threads_finished);
+//	printf("for  slice write thread waken up>>>>>>>>>i_slice_encode_threads_finished = %d\n", i_slice_encode_threads_finished);
 
 
 }
@@ -3990,7 +3994,7 @@ static void *x264_slices_write( x264_t *h )
 
 	
     WRITE_ALL_SLICES    
-		
+	
 	if( h->param.b_sliced_threads )
 		x264_wait_up_sampling_finish(h->param.i_threads);
 	else
@@ -4069,15 +4073,6 @@ static void *x264_slices_write( x264_t *h )
         h->fdec->i_delta_poc[0] = h->sh.i_delta_poc_bottom == -1;
         h->fdec->i_delta_poc[1] = h->sh.i_delta_poc_bottom ==  1;
     }
-		/*if()
- 		{
-			
-			x264_slice_header_init( h, &h->sh,& h->sps[h->i_layer_id],& h->pps[h->i_layer_id], h->i_idr_pic_id, h->i_frame_num - 1,x264_ratecontrol_qp( h ));
-		}
-	else
-		x264_slice_header_init( h, &h->sh,& h->sps[h->i_layer_id],& h->pps[h->i_layer_id], h->i_idr_pic_id, h->i_frame_num ,x264_ratecontrol_qp( h ));
-
-*/
 
 
 	last_thread_mb = h->sh.i_last_mb;
@@ -4105,10 +4100,10 @@ static int x264_threaded_slices_write( x264_t *h )
     /* Add by chenjie */
 	i_slice_encode_threads_finished = 0;
 	up_sampling_arg.pH = h;
-    printf ("in x264_threaded_slices_write ---->\n");
-    printf ("h->param.i_threads ---->%d\n", h->param.i_threads);
-    printf ("h->i_thread_frames------>%d\n", h->i_thread_frames);
-    printf ("h->param.b_sliced_threads------>%d\n", h->param.b_sliced_threads);
+  //  printf ("in x264_threaded_slices_write ---->\n");
+ //   printf ("h->param.i_threads ---->%d\n", h->param.i_threads);
+ //   printf ("h->i_thread_frames------>%d\n", h->i_thread_frames);
+ //   printf ("h->param.b_sliced_threads------>%d\n", h->param.b_sliced_threads);
     /* set first/last mb and sync contexts */
     for( int i = 0; i < h->param.i_threads; i++ )
     {
@@ -4257,7 +4252,7 @@ int     x264_encoder_encode( x264_t *h,
 
         if( x264_frame_copy_picture( h, fenc, pic_in ) < 0 )
             return -1;
-		printf("i_width-%d---%d-",h->param.i_width/4,16 * h->mb.i_mb_width/4);
+//		printf("i_width-%d---%d-",h->param.i_width/4,16 * h->mb.i_mb_width/4);
         if( h->param.i_width != 16 * h->mb.i_mb_width ||
             h->param.i_height != 16 * h->mb.i_mb_height )
             x264_frame_expand_border_mod16( h, fenc );

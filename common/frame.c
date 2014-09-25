@@ -814,7 +814,7 @@ static void ALWAYS_INLINE pixel_memset( pixel *dst, pixel *src, int len, int siz
 
 static void ALWAYS_INLINE plane_expand_border( pixel *pix, int i_stride, int i_width, int i_height, int i_padh, int i_padv, int b_pad_top, int b_pad_bottom, int b_chroma )
 {
-	printf("plane_expand_border\n");
+	
 #define PPIXEL(x, y) ( pix + (x) + (y)*i_stride )
     for( int y = 0; y < i_height; y++ )
     {
@@ -836,7 +836,8 @@ static void ALWAYS_INLINE plane_expand_border( pixel *pix, int i_stride, int i_w
 
 void x264_frame_expand_border( x264_t *h, x264_frame_t *frame, int mb_y )
 {
-	printf("x264_frame_expand_border\n");
+	
+	//printf("x264_frame_expand_border\n");
     int pad_top = mb_y == 0;
     int pad_bot = mb_y == h->mb.i_mb_height - (1 << SLICE_MBAFF);
     int b_start = mb_y == h->i_threadslice_start;
@@ -880,7 +881,7 @@ void x264_frame_expand_border( x264_t *h, x264_frame_t *frame, int mb_y )
 
 void x264_frame_expand_border_filtered( x264_t *h, x264_frame_t *frame, int mb_y, int b_end )
 {
-	printf("x264_frame_expand_border_filtered\n");
+	//printf("x264_frame_expand_border_filtered\n");
     /* during filtering, 8 extra pixels were filtered on each edge,
      * but up to 3 of the horizontal ones may be wrong.
        we want to expand border from the last filtered pixel */
@@ -909,21 +910,21 @@ void x264_frame_expand_border_filtered( x264_t *h, x264_frame_t *frame, int mb_y
 
 void x264_frame_expand_border_lowres( x264_frame_t *frame )
 {
-	printf("x264_frame_expand_border_lowres\n");
+	//printf("x264_frame_expand_border_lowres\n");
     for( int i = 0; i < 4; i++ )
         plane_expand_border( frame->lowres[i], frame->i_stride_lowres, frame->i_width_lowres, frame->i_lines_lowres, PADH, PADV, 1, 1, 0 );
 }
 
 void x264_frame_expand_border_chroma( x264_t *h, x264_frame_t *frame, int plane )
 {
-	printf("x264_frame_expand_border_chroma\n");
+	//printf("x264_frame_expand_border_chroma\n");
     int v_shift = CHROMA_V_SHIFT;
     plane_expand_border( frame->plane[plane], frame->i_stride[plane], 16*h->mb.i_mb_width, 16*h->mb.i_mb_height>>v_shift,
                          PADH, PADV>>v_shift, 1, 1, CHROMA_H_SHIFT );
 }
 
 void x264_frame_expand_border_mod16( x264_t *h, x264_frame_t *frame )
-{	printf("x264_frame_expand_border_mod16\n");
+{	//printf("x264_frame_expand_border_mod16\n");
 	//b_Enable_SVC = 0;
 	if(!b_Enable_SVC){
 		for( int i = 0; i < frame->i_plane; i++ )
@@ -1036,7 +1037,7 @@ void x264_frame_expand_border_mod16( x264_t *h, x264_frame_t *frame )
 
 void x264_expand_border_mbpair( x264_t *h, int mb_x, int mb_y )
 {
-	printf("x264_expand_border_mbpair\n");
+	//printf("x264_expand_border_mbpair\n");
     if(!b_Enable_SVC){
 		for( int i = 0; i < h->fenc->i_plane; i++ )
     	{
@@ -1121,7 +1122,7 @@ void x264_threadslice_cond_wait( x264_t *h, int pass )
 
 int x264_frame_new_slice( x264_t *h, x264_frame_t *frame )
 {
-printf("eeeeeeeeeeeeeeeeee h->param.i_slice_count_max : %d\n", h->param.i_slice_count_max );
+//printf("eeeeeeeeeeeeeeeeee h->param.i_slice_count_max : %d\n", h->param.i_slice_count_max );
     if( h->param.i_slice_count_max )
     {
     
@@ -1202,7 +1203,7 @@ x264_frame_t *x264_frame_pop_unused( x264_t *h, int b_fdec )
 
     memset( frame->weight, 0, sizeof(frame->weight) );
     memset( frame->f_weighted_cost_delta, 0, sizeof(frame->f_weighted_cost_delta) );
-	printf("x264_frame_pop_unused end \n");
+	//printf("x264_frame_pop_unused end \n");
     return frame;
 }
 
@@ -1376,7 +1377,7 @@ int readColorComponent1(pixel* p, FILE* file, int width, int height,int stride,i
     int            rsize  = (int)fread( buffer, sizeof(unsigned char), width, file );
     if( rsize != width )
     {
-      printf("---------return readColorComponent1---------\n");
+      //printf("---------return readColorComponent1---------\n");
       return 1;
     }
     int xp = width; 
@@ -2123,7 +2124,7 @@ void resampleFrame( pixel*         p,
 }
 
 void x264_frame_expand_layers(x264_t *h,pixel *dst,int dst_stride,pixel *src,int src_stride,int win,int hin,int wout,int hout){
-	printf(" in x264_frame_expand_layers  src_stride = %d,win = %d,wout = %d\n",src_stride,win,wout);
+	//printf(" in x264_frame_expand_layers  src_stride = %d,win = %d,wout = %d\n",src_stride,win,wout);
 
 
 
@@ -2287,7 +2288,7 @@ void x264_frame_expand_layers1(int win,int hin,int wout,int hout){
 }
 void writeCsp1(pixel* p, FILE* file, int width, int height,int stride)
 {
-  printf("in writeCsp1 --width = %d--height = %d----stride = %d---\n",width,height,stride);
+ // printf("in writeCsp1 --width = %d--height = %d----stride = %d---\n",width,height,stride);
   int i = 0; 
   for( ;i < height; i++ )
   {
@@ -3677,7 +3678,7 @@ for(int iMbX = 0;iMbX < iMbXMax;iMbX++)
 
 for(int i = 0;i < h->mbEL1.i_mb_count; i++)
 {
-   printf("mbtype for mbEL1  mb_type: %d\n",h->mbEL1.type[i]);
+   //printf("mbtype for mbEL1  mb_type: %d\n",h->mbEL1.type[i]);
 //  printf("mv for EL1  mv[0]:%d     mv[1]:%d \n",h->mbBL.mv[0][i][0],h->mbBL.mv[0][i][1]);;
 }
 
