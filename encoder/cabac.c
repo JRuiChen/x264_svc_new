@@ -120,14 +120,35 @@ static void x264_cabac_cbp_luma( x264_t *h, x264_cabac_t *cb )
     int cbp = h->mb.i_cbp_luma;
     int cbp_l = h->mb.cache.i_cbp_left;
     int cbp_t = h->mb.cache.i_cbp_top;
-	/*sky0924
-	if(h->i_layer_id && !h->mb.i_mb_xy)
+	/*sky0924*/
+	if(h->i_layer_id  )
         {
-        	
-		cbp_l = -1;
-		cbp_t =-1;
-		
-	}*/
+		  cbp =0;
+		  cbp_l = 0;
+		  cbp_t = 0;
+	   if(h->mb.i_mb_y == 0)
+		{
+		   
+		   cbp_t =-1;
+		   h->mb.cache.i_cbp_top =-1; 
+		}
+	   if(h->mb.i_mb_xy == 0)
+	   	{
+	   	cbp_l = -1;
+			h->mb.cache.i_cbp_left = -1 ;
+	   	}
+	   if(h->mb.i_mb_x ==0)
+	   	{
+	   		cbp_l = -1;
+			h->mb.cache.i_cbp_left = -1 ;
+	   	}
+	       h->mb.i_cbp_luma =0;
+	  	
+	
+	}
+	printf("cbp%d------------ h->mb.i_cbp_chroma:%d h->mb.i_mb_xy:%d\n", h->mb.i_cbp_luma,h->mb.i_cbp_chroma,h->mb.i_mb_xy);
+if(!h->i_layer_id)
+	printf("h->mb.cache.i_cbp_left %d ,h->mb.cache.i_cbp_top %d\n",h->mb.cache.i_cbp_left,h->mb.cache.i_cbp_top);
 	x264_cabac_encode_decision     ( cb, 76 - ((cbp_l >> 1) & 1) - ((cbp_t >> 1) & 2), (cbp >> 0) & 1 );
 	
     x264_cabac_encode_decision     ( cb, 76 - ((cbp   >> 0) & 1) - ((cbp_t >> 2) & 2), (cbp >> 1) & 1 );
@@ -140,21 +161,31 @@ static void x264_cabac_cbp_chroma( x264_t *h, x264_cabac_t *cb )
     int cbp_a = h->mb.cache.i_cbp_left & 0x30;
     int cbp_b = h->mb.cache.i_cbp_top  & 0x30;
     int ctx = 0;
-/*sky0925
+/*sky0925*/
 if(h->i_layer_id)
 {
-	cbp_a = -1& 0x30;
-	cbp_b = -1& 0x30;
+	cbp_a = 0 & 0x30;
+	cbp_b =0 & 0x30;
+	if(h->mb.i_mb_y == 0)
+		{
+		
+		
+		cbp_b = -1& 0x30;
+		}
+	if(h->mb.i_mb_x == 0)
+			cbp_a = -1& 0x30;
+	h->mb.i_cbp_chroma = 0;
+	
 }
 else
 	{
-*/
+
 	
     		if( cbp_a && h->mb.cache.i_cbp_left != -1 ) ctx++;
     		if( cbp_b && h->mb.cache.i_cbp_top  != -1 ) ctx+=2;
 
 			
-	//}// sky0925
+	}// sky0925
    	printf("cbp------------ h->mb.i_cbp_chroma:%d h->mb.i_mb_xy:%d\n", h->mb.i_cbp_chroma,h->mb.i_mb_xy);
     if( h->mb.i_cbp_chroma == 0 )
         x264_cabac_encode_decision_noup( cb, 77 + ctx, 0 );
@@ -210,7 +241,12 @@ static void x264_cabac_qp_delta( x264_t *h, x264_cabac_t *cb )
 #if !RDO_SKIP_BS
 void x264_cabac_mb_skip( x264_t *h, int b_skip )
 {
+ /*0926sky debug
+	if(h->i_layer_id && h->mb.i_mb_xy == 0)
+		h->mb.cache.i_neighbour_skip = 0;
+	*/
     int ctx = h->mb.cache.i_neighbour_skip + 11;
+	printf("   int ctx = h->mb.cache.i_neighbour_skip %d",   h->mb.cache.i_neighbour_skip  );
     if( h->sh.i_type != SLICE_TYPE_P )
        ctx += 13;
     x264_cabac_encode_decision( &h->cabac, ctx, b_skip );
@@ -1098,7 +1134,7 @@ NumMbPart( mb_type ) = = 4 )*/
     {
     		{
 				/*sky0924*/
-		//printf("  if( i_mb_type != I_16x16 ) call  x264_cabac_cbp_luma( h, cb );\n");
+		printf("  if( i_mb_type != I_16x16 ) call  x264_cabac_cbp_luma( h, cb );\n");
 			x264_cabac_cbp_luma( h, cb );  // 这个写入 他的后四位其实就写入了 coded_block_pattern余16的	情况
       			  if( chroma )
       			      x264_cabac_cbp_chroma( h, cb ); // 这个地方应该就是除16了 
