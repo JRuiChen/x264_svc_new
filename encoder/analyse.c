@@ -3453,6 +3453,8 @@ skip_analysis:
         else
             analysis.b_direct_available = x264_mb_predict_mv_direct16x16( h, NULL );
 
+
+  
         analysis.b_try_skip = 0;
         if( analysis.b_direct_available )
         {
@@ -3502,6 +3504,7 @@ skip_analysis:
                 x264_mb_analyse_inter_direct( h, &analysis );
 
             x264_mb_analyse_inter_b16x16( h, &analysis );
+			
 
             if( h->mb.i_type == B_SKIP )
             {
@@ -3703,6 +3706,8 @@ skip_analysis:
                 COPY3_IF_LT( i_cost, analysis.i_rd8x8bi, i_type, B_8x8, i_partition, D_8x8 );
 
                 h->mb.i_type = i_type;
+                printf("analysis.l0.i_rd16x16:%d\n",analysis.l0.i_rd16x16);    
+				printf("analyse h->mb.i_type:%d \n",h->mb.i_type);
                 h->mb.i_partition = i_partition;
             }
 

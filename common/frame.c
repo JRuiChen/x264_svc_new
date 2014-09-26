@@ -2345,10 +2345,10 @@ void x264_layer_upsample(x264_t *h,x264_frame_t *f,int level)
 		//fileUpEL1 = fopen("ttt_ori.yuv","ab+");
 		//writeCsp1(pixVUPsample,fileUpEL1,h->param.i_widthEL1/2,h->param.i_heightEL1/2,h->param.i_widthEL1/2);
         //fclose(fileUpEL1);
-		free(pixU);
-		free(pixV);
-		free(pixUUPsample);
-		free(pixVUPsample);
+		//free(pixU);
+		//free(pixV);
+		//free(pixUUPsample);
+		//free(pixVUPsample);
 				
 	}
 	/*当有三层数据时需要
@@ -3626,12 +3626,16 @@ int xSetPredMbData(MotionUpsampling *mo_up,x264_t * h)
 
    if(mo_up->b_tcoeff_pred)
    {
-    h->mbEL1.intra16x16_pred_mode[iMbIdx] = h->mbBL.intra16x16_pred_mode[iMbIdxBase];
+  
+    //h->mbEL1.intra16x16_pred_mode[iMbIdx] = h->mbBL.intra16x16_pred_mode[iMbIdxBase];
+    M64(h->mbEL1.intra4x4_pred_mode[iMbIdx]) = M64(h->mbBL.intra4x4_pred_mode[iMbIdxBase]);
 	h->mbEL1.chroma_pred_mode[iMbIdx] = h->mbBL.chroma_pred_mode[iMbIdxBase];
 		// COPY TRANSFORM SIZE
-	h->mbEL1.transform8x8_size[iMbIdx] = h->mbBL.transform8x8_size[iMbIdxBase];
+	//dh->mbEL1.transform8x8_size[iMbIdx] = h->mbBL.transform8x8_size[iMbIdxBase];
+	h->mbEL1.mb_transform_size[iMbIdx] = h->mbBL.mb_transform_size[iMbIdxBase];
 	h->mbEL1.cbp[iMbIdx] = h->mbBL.cbp[iMbIdxBase];
 	h->mbEL1.qp[iMbIdx] = h->mbBL.qp[iMbIdxBase];
+	 //printf("t_coeff_flag == 1 and init all params \n");
 	 //m_ucQp4LF = rcMbData.m_ucQp4LF;
    }
 
@@ -3679,12 +3683,11 @@ for(int iMbX = 0;iMbX < iMbXMax;iMbX++)
 
 
 
-
-//for(int i = 0;i < h->mbEL1.i_mb_count; i++)
-//{
-   //printf("mbtype for mbEL1  mb_type: %d\n",h->mbEL1.type[i]);
+for(int i = 0;i < h->mbBL.i_mb_count; i++)
+{
+   printf("mbtype for mbBL  mb_type: %d\n",h->mbBL.type[i]);
 //  printf("mv for EL1  mv[0]:%d     mv[1]:%d \n",h->mbBL.mv[0][i][0],h->mbBL.mv[0][i][1]);;
-//}
+}
 
 //printf("call function xUpsampleMotion \n");
 }

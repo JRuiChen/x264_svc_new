@@ -142,7 +142,7 @@ static void x264_frame_dump( x264_t *h )
 
 /*BY MING*/
     sh->b_scoeff_residual_pred_flag = 0;
-	sh->b_tcoeff_level_pred_flag = 0;
+	sh->b_tcoeff_level_pred_flag = 1;
 
 	
     h->mb.b_direct_auto_write = h->param.analyse.i_direct_mv_pred == X264_DIRECT_PRED_AUTO
@@ -226,7 +226,7 @@ static void x264_frame_dump( x264_t *h )
     sh->i_scan_start = 0;
     sh->i_scan_end = 15;
 
-    sh->b_tcoeff_level_pred_flag = 0;
+    sh->b_tcoeff_level_pred_flag = 1;
     sh->b_adaptive_base_mode_flag = 0;
     sh->b_default_base_mode_flag = 1;
 	/*sky 考虑到解码端 以下值设为0*/
@@ -3139,87 +3139,6 @@ static int x264_copy_mb_info_to_BL(x264_t* h)
 }
 
 
-/*copy mbBL or mbEL info to mb before the encoding process - BY MING*/
- static int x264_copy_mb_info_before_encode(x264_t* h,int b_base_layer)
- {
-
-  #define COPY_FOR_EACH_LAYER\
-	if(b_base_layer)\
-	 COPY_MB_INFO(mb,mbBL)\
-	else\
-	 COPY_MB_INFO(mb,mbEL1)
-
- 
-   #define COPY_MB_INFO(des_mb,src_mb)\
-   {\
-   h->des_mb.i_mb_width = h->src_mb.i_mb_width;\
-   h->des_mb.i_mb_height = h->src_mb.i_mb_height;\
-   h->des_mb.i_mb_count = h->src_mb.i_mb_count;\
-   h->des_mb.chroma_h_shift = h->src_mb.chroma_h_shift;\
-   h->des_mb.chroma_v_shift = h->src_mb.chroma_v_shift;\
-   h->des_mb.i_mb_stride = h->src_mb.i_mb_stride;\
-   h->des_mb.i_b8_stride = h->src_mb.i_b8_stride;\
-   h->des_mb.i_b4_stride = h->src_mb.i_b4_stride;\
-   h->des_mb.left_b8[0] = h->src_mb.left_b8[0];\
-   h->des_mb.left_b8[1] = h->src_mb.left_b8[1];\
-   h->des_mb.left_b4[0] = h->src_mb.left_b4[0];\
-   h->des_mb.left_b4[1] = h->src_mb.left_b4[1];\
-   h->des_mb.mv_min[0] = h->src_mb.mv_min[0];\
-   h->des_mb.mv_min[1] = h->src_mb.mv_min[1];\
-   h->des_mb.mv_max[0] = h->src_mb.mv_max[0];\
-   h->des_mb.mv_max[1] = h->src_mb.mv_max[1];\
-   for(int i = 0;i < 3; i++)\
-   {\
-	 h->des_mb.mv_miny_row[i] = h->src_mb.mv_miny_row[i];\
-	 h->des_mb.mv_maxy_row[i] = h->src_mb.mv_maxy_row[i];\
-	 h->des_mb.mv_miny_spel_row[i] = h->src_mb.mv_miny_spel_row[i];\
-	 h->des_mb.mv_maxy_spel_row[i] = h->src_mb.mv_maxy_spel_row[i];\
-	 h->des_mb.mv_miny_fpel_row[i] = h->src_mb.mv_miny_fpel_row[i];\
-	 h->des_mb.mv_maxy_fpel_row[i] = h->src_mb.mv_maxy_fpel_row[i];\
-   }\
-   h->des_mb.base = h->src_mb.base;\
-   h->des_mb.type = h->src_mb.type;\
-   h->des_mb.partition = h->src_mb.partition;\
-   h->des_mb.sub_partition = h->src_mb.sub_partition;\
-   h->des_mb.qp = h->src_mb.qp;\
-   h->des_mb.cbp = h->src_mb.cbp;\
-   h->des_mb.intra4x4_pred_mode = h->src_mb.intra4x4_pred_mode;\
-   h->des_mb.non_zero_count = h->src_mb.non_zero_count;\
-   h->des_mb.chroma_pred_mode = h->src_mb.chroma_pred_mode;\
-   h->des_mb.mv[0] = h->src_mb.mv[0];\
-   h->des_mb.mv[1] = h->src_mb.mv[1];\
-   h->des_mb.mvd[0] = h->des_mb.mvd[0];\
-   h->des_mb.mvd[1] = h->src_mb.mvd[1];\
-   h->des_mb.ref[0] = h->src_mb.ref[0];\
-   h->des_mb.ref[1] = h->src_mb.ref[1];\
-   for(int i = 0;i < 2;i++)\
-   {\
-	 if(h->sh.i_type == SLICE_TYPE_I)\
-	   return 0;\
-	 for(int j = 0;j < h->i_ref[i];j++)\
-	 {\
-		h->des_mb.mvr[i][j] = h->src_mb.mvr[i][j];\
-	 }\
-   }\ 
-   h->des_mb.skipbp = h->src_mb.skipbp;\
-   h->des_mb.mb_transform_size = h->src_mb.mb_transform_size;\
-   h->des_mb.slice_table = h->src_mb.slice_table;\
-   h->des_mb.field = h->src_mb.field;\
-   h->des_mb.mb_mode = h->src_mb.mb_mode;\
-   h->des_mb.blk_mode = h->src_mb.blk_mode;\
-   }
-
-
- 
-  
-
-
-
-   COPY_FOR_EACH_LAYER
-
-   return 0;
-   
- } 
 
 static int x264_slice_write( x264_t *h )
 {
@@ -3311,7 +3230,9 @@ else
     while( 1 )
     {
         mb_xy = i_mb_x + i_mb_y * h->mb.i_mb_width;
-		
+
+
+
         int mb_spos = bs_pos(&h->out.bs) + x264_cabac_pos(&h->cabac);
 		
      /* BY MING*/
@@ -3320,7 +3241,9 @@ else
 		 {
 		   h->mb.i_type = h->mb.type[h->mb.i_mb_xy];
 		 }
+
   printf("1--------------------  h->mb.i_type :%d,h->i_mb_xy:%d\n",  h->mb.i_type,mb_xy);
+
         if( i_mb_x == 0 )
         {
             if( x264_bitstream_check_buffer( h ) )
@@ -3361,6 +3284,7 @@ else
 
 
 
+
         /* load cache */
         if( SLICE_MBAFF )
             x264_macroblock_cache_load_interlaced( h, i_mb_x, i_mb_y );
@@ -3373,7 +3297,7 @@ else
 	#define DEBUG_TEST\
 			if(h->i_layer_id)\
 			{\
-				printf("print continue  frame_num:%d  i_mb_xy:%d    last_mb:%d\n",h->i_frame,mb_xy,h->sh.i_last_mb );\
+				  printf("print continue  frame_num:%d  i_mb_xy:%d    last_mb:%d\n",h->i_frame,mb_xy,h->sh.i_last_mb );\
 				  if( mb_xy == h->sh.i_last_mb )\
 					return 0;\
 				  if( SLICE_MBAFF )\
@@ -3396,11 +3320,18 @@ else
         if(h->i_layer_id == 0)
              x264_macroblock_analyse( h );
 
-        /* encode this macroblock -> be careful it can change the mb type to P_SKIP if needed */
+
+
+       /* encode this macroblock -> be careful it can change the mb type to P_SKIP if needed */
 reencode:
         x264_macroblock_encode( h );
 
     //    DEBUG_TEST
+
+
+/*..........................*/
+
+
 
         if( h->param.b_cabac )
         {
@@ -3434,6 +3365,7 @@ reencode:
 				printf("while 1 call x264_cabac_mb_skip( h, 0 ); && x264_macroblock_write_cabac( h, &h->cabac );mb_xy:%d******\n",mb_xy);
        		}
 		  x264_macroblock_write_cabac( h, &h->cabac );
+
             }
         }
         else
@@ -3460,6 +3392,10 @@ reencode:
                 }
             }
         }
+
+
+/*.............................*/
+
 
         int total_bits = bs_pos(&h->out.bs) + x264_cabac_pos(&h->cabac);
         int mb_size = total_bits - mb_spos;
@@ -3528,11 +3464,19 @@ cont:
         h->mb.b_reencode_mb = 0;
 
 
+/*.........................*/
+
+
         /* save cache */
-  if(h->i_layer_id == 0)
+  //if(h->i_layer_id == 0)
         x264_macroblock_cache_save( h );
 
-        if( x264_ratecontrol_mb( h, mb_size ) < 0 )
+/*++++++++++++++++++++++++*/
+
+
+    
+	
+       /* if( x264_ratecontrol_mb( h, mb_size ) < 0 )
         {
             x264_bitstream_restore( h, &bs_bak[BS_BAK_ROW_VBV], &i_skip, 1 );
             h->mb.b_reencode_mb = 1;
@@ -3541,8 +3485,13 @@ cont:
             h->mb.i_mb_prev_xy = i_mb_y * h->mb.i_mb_stride - 1;
             h->sh.i_last_mb = orig_last_mb;
             continue;
-        }
+        }*/
+  
+/*+++++++++++++++++++++++++++*/
+		//if(h->i_layer_id == 1)
+			// goto end;
 
+	
         /* accumulate mb stats */
         h->stat.frame.i_mb_count[h->mb.i_type]++;
 
@@ -3613,12 +3562,23 @@ cont:
             h->stat.frame.i_mb_field[b_intra?0:b_skip?2:1] += MB_INTERLACED;
         }
 
+
+
+
         /* calculate deblock strength values (actual deblocking is done per-row along with hpel) */
         if( b_deblock )
             x264_macroblock_deblock_strength( h );
 
+
+end:
+printf("at while(1) end \n ");
+
+
         if( mb_xy == h->sh.i_last_mb )
             break;
+
+
+
 
         if( SLICE_MBAFF )
         {
@@ -3632,7 +3592,10 @@ cont:
             i_mb_y++;
             i_mb_x = 0;
         }
-    
+
+
+
+
 }
 
 
@@ -3999,10 +3962,14 @@ static void *x264_slices_write( x264_t *h )
 	
        h->sh.b_base_layer_flag = BASE_LAYER;	
 	   
-
 	
     WRITE_ALL_SLICES    
+
 	
+	/*for(int i =0; i < h->mb.i_mb_count;i++)
+	{
+	  printf("mb_type:%d AAAAAAAAAAAAAAAAAAAAAAAAAA\n",h->mb.type[i]);
+	}*/
 	if( h->param.b_sliced_threads )
 		x264_wait_up_sampling_finish(h->param.i_threads);
 	else
@@ -4017,7 +3984,6 @@ static void *x264_slices_write( x264_t *h )
 
 	
 	 x264_copy_mb_info_before_encode(h,0);
-
 	h->i_layer_id = 1;
 	h->mb.b_reencode_mb = 0;
 
@@ -4085,8 +4051,11 @@ static void *x264_slices_write( x264_t *h )
 
 
 	last_thread_mb = h->sh.i_last_mb;
-	
-		
+
+
+
+
+
 	WRITE_ALL_SLICES
 
 	h->mb.i_mb_width = h->mbBL.i_mb_width ;

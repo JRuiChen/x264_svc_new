@@ -186,7 +186,7 @@ else
 
 			
 	}// sky0925
-   	printf("cbp------------ h->mb.i_cbp_chroma:%d h->mb.i_mb_xy:%d\n", h->mb.i_cbp_chroma,h->mb.i_mb_xy);
+   //	printf("cbp------------ h->mb.i_cbp_chroma:%d h->mb.i_mb_xy:%d\n", h->mb.i_cbp_chroma,h->mb.i_mb_xy);
     if( h->mb.i_cbp_chroma == 0 )
         x264_cabac_encode_decision_noup( cb, 77 + ctx, 0 );
     else

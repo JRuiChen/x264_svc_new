@@ -124,7 +124,7 @@ static ALWAYS_INLINE int array_non_zero( dctcoef *v, int i_count )
  * rather than memsetting the coefficients. */
 
 /*encode the I_BL macroblock -  BY MING*/
-static void x264_mb_encode_iBL(x264_t* h ,int p,int i_qp)
+static ALWAYS_INLINE void x264_mb_encode_iBL(x264_t* h ,int p,int i_qp)
 {
   for(int i = (p == 0 && h->mb.i_skip_intra)?15:0;i < 16;i++)
   {   int nz;
@@ -155,7 +155,21 @@ static void x264_mb_encode_iBL(x264_t* h ,int p,int i_qp)
 		h->quantf.dequant_4x4(dct4x4,h->dequant4_mf[p?CQM_4IC:CQM_4IY],i_qp);
 		h->dctf.add4x4_idct(p_dst,dct4x4);
 	  }
+
+
   }
+
+printf("show ELELELELELELE   dct.luma4x4    qp:%d\n",i_qp);
+for(int m = 0;m < 16;m++)
+  {
+  for(int n = 0;n < 16;n++)
+  {
+	printf("%d	 ",h->dct.luma4x4[p*16 + m][n]);
+  }
+
+  printf("\n");
+  }
+
 
 
   
@@ -834,7 +848,40 @@ static ALWAYS_INLINE void x264_macroblock_encode_internal( x264_t *h, int plane_
 
                 x264_mb_encode_i4x4( h, p, i, i_qp, i_mode, 1 );
             }
+
+        
+        if(h->i_layer_id == 0)
+		printf("show dct.luma4x4 BLBLBLBLBLBLBLBLBLBL i_qp:%d\n",i_qp);
+		else
+		printf("show dct.luma4x4 ELELELELELELELELELEL i_qp:%d\n",i_qp);
+
+        for(int x = 0; x < 4;x++)
+        {
+			for(int y = 0;y < 4;y++)
+		    {
+		       printf("%d   ",h->mb.cache.non_zero_count[x264_scan8[ y*8 + x]]);
+		    } 
+
+			printf("\n");
         }
+		
+		  for(int m = 0;m < 16;m++)
+			{
+			for(int n = 0;n < 16;n++)
+			{
+			  printf("%d   ",h->dct.luma4x4[p*16 + m][n]);
+			}
+		
+			printf("\n");
+			}
+
+
+
+			
+        }
+
+
+
     }
 
     else    /* Inter MB */
@@ -1056,7 +1103,8 @@ static ALWAYS_INLINE void x264_macroblock_encode_internal( x264_t *h, int plane_
 }
 
 void x264_macroblock_encode( x264_t *h )
-{
+{   
+
     if( CHROMA444 )
         x264_macroblock_encode_internal( h, 3, 0 );
     else
