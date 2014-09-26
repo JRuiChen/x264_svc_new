@@ -1576,11 +1576,132 @@ static void ALWAYS_INLINE x264_macroblock_cache_load_EL(x264_t* h,int mb_x,int m
 		/*we will only use the frame mode here to load the ref or the mv from mb to cache - BY MING */
 		
 	  }
+
+
+
+	  if( b_mbaff && mb_x == 0 && !(mb_y&1) && mb_y > 0 )
+			  h->mb.field_decoding_flag = h->mb.field[h->mb.i_mb_xy - h->mb.i_mb_stride];
+	  
+		  /* Check whether skip here would cause decoder to predict interlace mode incorrectly.
+		   * FIXME: It might be better to change the interlace type rather than forcing a skip to be non-skip. */
+		  h->mb.b_allow_skip = 1;
+		  if( b_mbaff )
+		  {
+			  if( MB_INTERLACED != h->mb.field_decoding_flag &&
+				  h->mb.i_mb_prev_xy >= 0 && IS_SKIP(h->mb.type[h->mb.i_mb_prev_xy]) )
+				  h->mb.b_allow_skip = 0;
+			  if( (mb_y&1) && IS_SKIP(h->mb.type[h->mb.i_mb_xy - h->mb.i_mb_stride]) )
+			  {
+				  if( h->mb.i_neighbour & MB_LEFT )
+				  {
+					  if( h->mb.field[h->mb.i_mb_xy - 1] != MB_INTERLACED )
+						  h->mb.b_allow_skip = 0;
+				  }
+				  else if( h->mb.i_neighbour & MB_TOP )
+				  {
+					  if( h->mb.field[h->mb.i_mb_top_xy] != MB_INTERLACED )
+						  h->mb.b_allow_skip = 0;
+				  }
+				  else // Frame mb pair is predicted
+				  {
+					  if( MB_INTERLACED )
+						  h->mb.b_allow_skip = 0;
+				  }
+			  }
+		  }
+	  
+		  if( h->param.b_cabac )
+		  {
+			  if( b_mbaff )
+			  {
+				  int left_xy, top_xy;
+				  /* Neighbours here are calculated based on field_decoding_flag */
+				  int mb_xy = mb_x + (mb_y&~1)*h->mb.i_mb_stride;
+				  left_xy = mb_xy - 1;
+				  if( (mb_y&1) && mb_x > 0 && h->mb.field_decoding_flag == h->mb.field[left_xy] )
+					  left_xy += h->mb.i_mb_stride;
+				  if( h->mb.field_decoding_flag )
+				  {
+					  top_xy = mb_xy - h->mb.i_mb_stride;
+					  if( !(mb_y&1) && top_xy >= 0 && h->mb.slice_table[top_xy] == h->sh.i_first_mb && h->mb.field[top_xy] )
+						  top_xy -= h->mb.i_mb_stride;
+				  }
+				  else
+					  top_xy = mb_x + (mb_y-1)*h->mb.i_mb_stride;
+	  
+				  h->mb.cache.i_neighbour_skip =   (mb_x >	0 && h->mb.slice_table[left_xy] == h->sh.i_first_mb && !IS_SKIP( h->mb.type[left_xy] ))
+											   + (top_xy >= 0 && h->mb.slice_table[top_xy]	== h->sh.i_first_mb && !IS_SKIP( h->mb.type[top_xy] ));
+			  }
+			  else
+			  {
+				  h->mb.cache.i_neighbour_skip = ((h->mb.i_neighbour & MB_LEFT) && !IS_SKIP( h->mb.i_mb_type_left[0] ))
+											   + ((h->mb.i_neighbour & MB_TOP)	&& !IS_SKIP( h->mb.i_mb_type_top ));
+			  }
+		  }
+	  
+		  /* load skip */
+		  if( h->sh.i_type == SLICE_TYPE_B )
+		  {
+			  h->mb.bipred_weight = h->mb.bipred_weight_buf[MB_INTERLACED][MB_INTERLACED&(mb_y&1)];
+			  h->mb.dist_scale_factor = h->mb.dist_scale_factor_buf[MB_INTERLACED][MB_INTERLACED&(mb_y&1)];
+			  if( h->param.b_cabac )
+			  {
+				  uint8_t skipbp;
+				  x264_macroblock_cache_skip( h, 0, 0, 4, 4, 0 );
+				  if( b_mbaff )
+				  {
+					  skipbp = (h->mb.i_neighbour & MB_LEFT) ? h->mb.skipbp[left[LTOP]] : 0;
+					  h->mb.cache.skip[x264_scan8[0] - 1] = (skipbp >> (1+(left_index_table->mv[0]&~1))) & 1;
+					  skipbp = (h->mb.i_neighbour & MB_LEFT) ? h->mb.skipbp[left[LBOT]] : 0;
+					  h->mb.cache.skip[x264_scan8[8] - 1] = (skipbp >> (1+(left_index_table->mv[2]&~1))) & 1;
+				  }
+				  else
+				  {
+					  skipbp = (h->mb.i_neighbour & MB_LEFT) ? h->mb.skipbp[left[0]] : 0;
+					  h->mb.cache.skip[x264_scan8[0] - 1] = skipbp & 0x2;
+					  h->mb.cache.skip[x264_scan8[8] - 1] = skipbp & 0x8;
+				  }
+				  skipbp = (h->mb.i_neighbour & MB_TOP) ? h->mb.skipbp[top] : 0;
+				  h->mb.cache.skip[x264_scan8[0] - 8] = skipbp & 0x4;
+				  h->mb.cache.skip[x264_scan8[4] - 8] = skipbp & 0x8;
+			  }
+		  }
+	  
+		  if( h->sh.i_type == SLICE_TYPE_P )
+			  x264_mb_predict_mv_pskip( h, h->mb.cache.pskip_mv );
+	  
+		  h->mb.i_neighbour4[0] =
+		  h->mb.i_neighbour8[0] = (h->mb.i_neighbour_intra & (MB_TOP|MB_LEFT|MB_TOPLEFT))
+								  | ((h->mb.i_neighbour_intra & MB_TOP) ? MB_TOPRIGHT : 0);
+		  h->mb.i_neighbour4[4] =
+		  h->mb.i_neighbour4[1] = MB_LEFT | ((h->mb.i_neighbour_intra & MB_TOP) ? (MB_TOP|MB_TOPLEFT|MB_TOPRIGHT) : 0);
+		  h->mb.i_neighbour4[2] =
+		  h->mb.i_neighbour4[8] =
+		  h->mb.i_neighbour4[10] =
+		  h->mb.i_neighbour8[2] = MB_TOP|MB_TOPRIGHT | ((h->mb.i_neighbour_intra & MB_LEFT) ? (MB_LEFT|MB_TOPLEFT) : 0);
+		  h->mb.i_neighbour4[5] =
+		  h->mb.i_neighbour8[1] = MB_LEFT | (h->mb.i_neighbour_intra & MB_TOPRIGHT)
+								  | ((h->mb.i_neighbour_intra & MB_TOP) ? MB_TOP|MB_TOPLEFT : 0);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	  
       int i_mb_xy = mb_y*h->mb.i_mb_width + mb_x; 
 	  int i_qp = h->mb.qp[i_mb_xy];
 	  h->mb.i_qp = i_qp;
 	  h->mb.i_chroma_qp = h->chroma_qp_table[i_qp];  
-	  printf("MMMMMMMMMMMMM h->mb.i_chroma_qp:%d\n",i_qp);
+	
 	  
 }
 
