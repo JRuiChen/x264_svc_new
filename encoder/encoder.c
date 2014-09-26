@@ -1379,8 +1379,26 @@ static int x264_validate_parameters( x264_t *h, int b_open )
             int maxrate_bak = h->param.rc.i_vbv_max_bitrate;
             if( h->param.rc.i_rc_method == X264_RC_ABR && h->param.rc.i_vbv_buffer_size <= 0 )
                 h->param.rc.i_vbv_max_bitrate = h->param.rc.i_bitrate * 2;
-	/*sky  2014.08.29 sps 这个值会走么，我要怎么设呢*/
-            x264_sps_init( h->sps, h->param.i_sps_id, &h->param );
+	/*sky  2014.08.29 sps 这个值会走么，我要怎么设呢
+	
+
+	  int i_sps_id =  h->param.i_sps_id;
+    	for(int i_layer_id = 0 ; i_layer_id < h ->param.i_layer_number ; i_layer_id ++ )
+  	 {  
+    	  	if(i_layer_id)
+		{	
+   			h ->sps[i_layer_id] .i_nal_type = NAL_UNIT_SUBSET_SPS;
+   			x264_sps_init(&h->sps[i_layer_id ], i_sps_id,&h->param );
+			i_sps_id++; 
+		}
+		else 
+		{
+			h->sps[i_layer_id].i_nal_type = NAL_SPS;
+			x264_sps_init(&h->sps[i_layer_id ], i_sps_id,&h->param );
+		}
+    	}*/
+           x264_sps_init( h->sps, h->param.i_sps_id, &h->param );
+	printf("validate call sps init\n");
             do h->param.i_level_idc = l->level_idc;
                 while( l[1].level_idc && x264_validate_levels( h, 0 ) && l++ );
             h->param.rc.i_vbv_max_bitrate = maxrate_bak;
@@ -1751,10 +1769,10 @@ x264_t *x264_encoder_open( x264_param_t *param )
      * vectors during prediction, resulting in hpel mvs.
      * The chosen solution is to make MBAFF non-adaptive in this case. */
     h->mb.b_adaptive_mbaff = PARAM_INTERLACED && h->param.analyse.i_subpel_refine;
-/*sky 2014.08.29 我觉得这个地方的初始化不合适，但是目前也不影响*/
+
     /* Add by chenjie */
-    h->mbBL.i_mb_width = h->sps->i_mb_width;
-    h->mbBL.i_mb_height = h->sps->i_mb_height;
+    h->mbBL.i_mb_width = h->sps[0].i_mb_width;
+    h->mbBL.i_mb_height = h->sps[0].i_mb_height;
     h->mbBL.i_mb_count = h->mbBL.i_mb_width * h->mbBL.i_mb_height;
 
     h->mbBL.chroma_h_shift = CHROMA_FORMAT == CHROMA_420 || CHROMA_FORMAT == CHROMA_422;
@@ -1766,8 +1784,8 @@ x264_t *x264_encoder_open( x264_param_t *param )
     h->mbBL.b_adaptive_mbaff = PARAM_INTERLACED && h->param.analyse.i_subpel_refine;
 
 
-    h->mbEL1.i_mb_width = h->sps->i_mb_width*2;
-    h->mbEL1.i_mb_height = h->sps->i_mb_height*2;
+    h->mbEL1.i_mb_width = h->sps[1].i_mb_width;
+    h->mbEL1.i_mb_height = h->sps[1].i_mb_height;
 
     h->mbEL1.i_mb_count = h->mbEL1.i_mb_width * h->mbEL1.i_mb_height;
 
@@ -1779,8 +1797,8 @@ x264_t *x264_encoder_open( x264_param_t *param )
      * The chosen solution is to make MBAFF non-adaptive in this case. */
     h->mbEL1.b_adaptive_mbaff = PARAM_INTERLACED && h->param.analyse.i_subpel_refine;
 
-    h->mbEL2.i_mb_width = h->sps->i_mb_width*2;
-    h->mbEL2.i_mb_height = h->sps->i_mb_height*2;
+    h->mbEL2.i_mb_width = h->sps[1].i_mb_width;
+    h->mbEL2.i_mb_height = h->sps[1].i_mb_height;
     h->mbEL2.i_mb_count = h->mbEL2.i_mb_width * h->mbEL2.i_mb_height;
 
     h->mbEL2.chroma_h_shift = CHROMA_FORMAT == CHROMA_420 || CHROMA_FORMAT == CHROMA_422;
@@ -2142,8 +2160,10 @@ int x264_encoder_reconfig_apply( x264_t *h, x264_param_t *param )
     mbcmp_init( h );
     if( !ret )
 		/*sky 2014.08.29 这个地方我注意到了，但是这应该是对基本层的reconfig，需要修改否?*/
-        x264_sps_init( h->sps, h->param.i_sps_id, &h->param );
-
+      { 
+      		x264_sps_init( h->sps, h->param.i_sps_id, &h->param );
+			printf("!ret call x264_sps_init ");
+    	}
     /* Supported reconfiguration options (1-pass only):
      * vbv-maxrate
      * vbv-bufsize

@@ -112,7 +112,7 @@ void x264_sps_init( x264_sps_t *sps, int i_id, x264_param_t *param )
 	else if(sps->i_nal_type == NAL_UNIT_SUBSET_SPS)
 		{
 			sps->i_mb_width = ( param->i_width  * 2 * (sps->i_id + 1) + 15 ) / 16;
-    		sps->i_mb_height= ( param->i_height * 2 * (sps->i_id + 1) + 15 ) / 16 ;
+    		       sps->i_mb_height= ( param->i_height * 2 * (sps->i_id + 1) + 15 ) / 16 ;
 		}
     sps->i_chroma_format_idc = csp >= X264_CSP_I444 ? CHROMA_444 :
                                csp >= X264_CSP_I422 ? CHROMA_422 : CHROMA_420;
@@ -216,10 +216,19 @@ void x264_sps_init( x264_sps_t *sps, int i_id, x264_param_t *param )
     sps->crop.i_left   = param->crop_rect.i_left;
     sps->crop.i_top    = param->crop_rect.i_top;
     sps->crop.i_right  = param->crop_rect.i_right + sps->i_mb_width*16 - param->i_width;
-    sps->crop.i_bottom = (param->crop_rect.i_bottom + sps->i_mb_height*16 - param->i_height) >> !sps->b_frame_mbs_only;
-    sps->b_crop = sps->crop.i_left  || sps->crop.i_top ||
+/*sky0926*/
+	//if(sps->i_nal_type == NAL_UNIT_SUBSET_SPS)
+	//	sps->crop.i_right *= 2;
+	printf("ssps--------------sps->crop.i_right:%d,param->crop_rect.i_right:%d,sps->i_mb_width:%d,param->i_width %d\n", sps->crop.i_right,param->crop_rect.i_right, sps->i_mb_width,param->i_width);
+	
+	sps->crop.i_bottom = (param->crop_rect.i_bottom + sps->i_mb_height*16 - param->i_height) >> !sps->b_frame_mbs_only;
+//if(sps->i_nal_type == NAL_UNIT_SUBSET_SPS)
+	//	sps->crop.i_bottom *= 2;
+  printf("l %d r %d t %d b %d\n",sps->crop.i_left,sps->crop.i_right,sps->crop.i_top,sps->crop.i_bottom);
+	sps->b_crop = sps->crop.i_left  || sps->crop.i_top ||
                   sps->crop.i_right || sps->crop.i_bottom;
-
+if(sps->i_nal_type == NAL_UNIT_SUBSET_SPS)  
+	sps->b_crop =0 ;
     sps->vui.b_aspect_ratio_info_present = 0;
     if( param->vui.i_sar_width > 0 && param->vui.i_sar_height > 0 )
     {
@@ -385,6 +394,10 @@ void x264_sps_write( bs_t *s, x264_sps_t *sps )
     bs_write_ue( s, sps->i_num_ref_frames );
     bs_write1( s, sps->b_gaps_in_frame_num_value_allowed );
     bs_write_ue( s, sps->i_mb_width - 1 );
+	if(sps ->i_nal_type == NAL_UNIT_SUBSET_SPS)
+		printf("call ssps  h->sps[i].i_mb_width:%d\n", sps->i_mb_width);
+	else
+		printf("call sps  h->sps[i].i_mb_width:%d\n", sps->i_mb_width);
     bs_write_ue( s, (sps->i_mb_height >> !sps->b_frame_mbs_only) - 1);
     bs_write1( s, sps->b_frame_mbs_only );
     if( !sps->b_frame_mbs_only )
@@ -397,8 +410,14 @@ void x264_sps_write( bs_t *s, x264_sps_t *sps )
         int h_shift = sps->i_chroma_format_idc == CHROMA_420 || sps->i_chroma_format_idc == CHROMA_422;
         int v_shift = sps->i_chroma_format_idc == CHROMA_420;
         bs_write_ue( s, sps->crop.i_left   >> h_shift );
+		if(sps ->i_nal_type == NAL_UNIT_SUBSET_SPS)
+			printf("ssps->crop.i_left   >> h_shift %d,%d\n",sps->crop.i_left   >> h_shift,h_shift);
         bs_write_ue( s, sps->crop.i_right  >> h_shift );
-        bs_write_ue( s, sps->crop.i_top    >> v_shift );
+		if(sps ->i_nal_type == NAL_UNIT_SUBSET_SPS)
+			printf("ssps->crop.i_right   >> h_shift %d,%d\n",sps->crop.i_right  >> h_shift,h_shift);
+		else
+			printf("sps->crop.i_right   >> h_shift %d,%d\n",sps->crop.i_right  >> h_shift,h_shift);
+		bs_write_ue( s, sps->crop.i_top    >> v_shift );
         bs_write_ue( s, sps->crop.i_bottom >> v_shift );
     }
 
@@ -765,6 +784,7 @@ int x264_sei_scalability_write(x264_t *h,bs_t *s)
 				{
 				   
 					bs_write_ue(&q, h->sps[i].i_mb_width - 1);
+					printf("call sei  h->sps[i].i_mb_width:%d,i:%d\n", h->sps[i].i_mb_width,i);
 					bs_write_ue(&q, h->sps[i].i_mb_height - 1);
 					
 				}
