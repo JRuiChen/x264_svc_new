@@ -1580,6 +1580,7 @@ static void ALWAYS_INLINE x264_macroblock_cache_load_EL(x264_t* h,int mb_x,int m
 	  int i_qp = h->mb.qp[i_mb_xy];
 	  h->mb.i_qp = i_qp;
 	  h->mb.i_chroma_qp = h->chroma_qp_table[i_qp];  
+	  printf("MMMMMMMMMMMMM h->mb.i_chroma_qp:%d\n",i_qp);
 	  
 }
 

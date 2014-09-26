@@ -3626,12 +3626,16 @@ int xSetPredMbData(MotionUpsampling *mo_up,x264_t * h)
 
    if(mo_up->b_tcoeff_pred)
    {
-    h->mbEL1.intra16x16_pred_mode[iMbIdx] = h->mbBL.intra16x16_pred_mode[iMbIdxBase];
+  
+    //h->mbEL1.intra16x16_pred_mode[iMbIdx] = h->mbBL.intra16x16_pred_mode[iMbIdxBase];
+    M64(h->mbEL1.intra4x4_pred_mode[iMbIdx]) = M64(h->mbBL.intra4x4_pred_mode[iMbIdxBase]);
 	h->mbEL1.chroma_pred_mode[iMbIdx] = h->mbBL.chroma_pred_mode[iMbIdxBase];
 		// COPY TRANSFORM SIZE
-	h->mbEL1.transform8x8_size[iMbIdx] = h->mbBL.transform8x8_size[iMbIdxBase];
+	//dh->mbEL1.transform8x8_size[iMbIdx] = h->mbBL.transform8x8_size[iMbIdxBase];
+	h->mbEL1.mb_transform_size[iMbIdx] = h->mbBL.mb_transform_size[iMbIdxBase];
 	h->mbEL1.cbp[iMbIdx] = h->mbBL.cbp[iMbIdxBase];
 	h->mbEL1.qp[iMbIdx] = h->mbBL.qp[iMbIdxBase];
+	 //printf("t_coeff_flag == 1 and init all params \n");
 	 //m_ucQp4LF = rcMbData.m_ucQp4LF;
    }
 

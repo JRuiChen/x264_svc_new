@@ -159,7 +159,7 @@ static ALWAYS_INLINE void x264_mb_encode_iBL(x264_t* h ,int p,int i_qp)
 
   }
 
-printf("show ELELELELELELE   dct.luma4x4\n");
+printf("show ELELELELELELE   dct.luma4x4    qp:%d\n",i_qp);
 for(int m = 0;m < 16;m++)
   {
   for(int n = 0;n < 16;n++)
@@ -849,9 +849,22 @@ static ALWAYS_INLINE void x264_macroblock_encode_internal( x264_t *h, int plane_
                 x264_mb_encode_i4x4( h, p, i, i_qp, i_mode, 1 );
             }
 
+        
+        if(h->i_layer_id == 0)
+		printf("show dct.luma4x4 BLBLBLBLBLBLBLBLBLBL i_qp:%d\n",i_qp);
+		else
+		printf("show dct.luma4x4 ELELELELELELELELELEL i_qp:%d\n",i_qp);
 
+        for(int x = 0; x < 4;x++)
+        {
+			for(int y = 0;y < 4;y++)
+		    {
+		       printf("%d   ",h->mb.cache.non_zero_count[x264_scan8[ y*8 + x]]);
+		    } 
 
-		printf("show dct.luma4x4\n");
+			printf("\n");
+        }
+		
 		  for(int m = 0;m < 16;m++)
 			{
 			for(int n = 0;n < 16;n++)

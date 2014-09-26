@@ -142,7 +142,7 @@ static void x264_frame_dump( x264_t *h )
 
 /*BY MING*/
     sh->b_scoeff_residual_pred_flag = 0;
-	sh->b_tcoeff_level_pred_flag = 0;
+	sh->b_tcoeff_level_pred_flag = 1;
 
 	
     h->mb.b_direct_auto_write = h->param.analyse.i_direct_mv_pred == X264_DIRECT_PRED_AUTO
@@ -226,7 +226,7 @@ static void x264_frame_dump( x264_t *h )
     sh->i_scan_start = 0;
     sh->i_scan_end = 15;
 
-    sh->b_tcoeff_level_pred_flag = 0;
+    sh->b_tcoeff_level_pred_flag = 1;
     sh->b_adaptive_base_mode_flag = 0;
     sh->b_default_base_mode_flag = 1;
 	/*sky 考虑到解码端 以下值设为0*/
@@ -3478,7 +3478,7 @@ cont:
 
     
 	
-        /*if( x264_ratecontrol_mb( h, mb_size ) < 0 )
+       /* if( x264_ratecontrol_mb( h, mb_size ) < 0 )
         {
             x264_bitstream_restore( h, &bs_bak[BS_BAK_ROW_VBV], &i_skip, 1 );
             h->mb.b_reencode_mb = 1;
@@ -3488,7 +3488,7 @@ cont:
             h->sh.i_last_mb = orig_last_mb;
             continue;
         }*/
-
+  
 /*+++++++++++++++++++++++++++*/
 		//if(h->i_layer_id == 1)
 			// goto end;
@@ -3961,10 +3961,10 @@ static void *x264_slices_write( x264_t *h )
     WRITE_ALL_SLICES    
 
 	
-	for(int i =0; i < h->mb.i_mb_count;i++)
+	/*for(int i =0; i < h->mb.i_mb_count;i++)
 	{
 	  printf("mb_type:%d AAAAAAAAAAAAAAAAAAAAAAAAAA\n",h->mb.type[i]);
-	}
+	}*/
 	if( h->param.b_sliced_threads )
 		x264_wait_up_sampling_finish(h->param.i_threads);
 	else
@@ -4050,11 +4050,7 @@ static void *x264_slices_write( x264_t *h )
 
 
 
-	for(int i =0; i < h->mb.i_mb_count;i++)
-	   {
-		 printf("mb_type:%d BBBBBBBBBBBBBBB\n",h->mb.type[i]);
-	   }
-	 	
+
 	WRITE_ALL_SLICES
 
 	h->mb.i_mb_width = h->mbBL.i_mb_width ;
