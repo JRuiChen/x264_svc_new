@@ -2238,6 +2238,7 @@ void x264_macroblock_cache_load_progressive( x264_t *h, int mb_x, int mb_y )
     if(h->i_layer_id == 0)
     x264_macroblock_cache_load( h, mb_x, mb_y, 0 );
 	else
+	
 	x264_macroblock_cache_load_EL(h,mb_x,mb_y,0);
 }
 
