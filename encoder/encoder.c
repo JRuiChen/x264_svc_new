@@ -3334,12 +3334,18 @@ reencode:
         x264_macroblock_encode( h );
 
     //    DEBUG_TEST
-
-
+        if(h->i_layer_id == 1)
+        {
+         h->mb.i_cbp_luma = 0;
+	     h->mb.i_cbp_chroma = 0;
+		 
+		 printf("PPPPPPPPPPPPPPPPPPP  i_cbp_top:%d \n",h->mb.cache.i_cbp_top);
+		 printf("QQQQQQQQQQQQQQQQQQQ  i_cbp_left:%d\n",h->mb.cache.i_cbp_left);
+        }
 /*..........................*/
 
 
-
+         
         if( h->param.b_cabac )
         {
         //mb_xy == 1Ö´ÐÐ end_of_slice_flag 
