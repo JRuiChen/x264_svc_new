@@ -2345,10 +2345,10 @@ void x264_layer_upsample(x264_t *h,x264_frame_t *f,int level)
 		//fileUpEL1 = fopen("ttt_ori.yuv","ab+");
 		//writeCsp1(pixVUPsample,fileUpEL1,h->param.i_widthEL1/2,h->param.i_heightEL1/2,h->param.i_widthEL1/2);
         //fclose(fileUpEL1);
-		//free(pixU);
-		//free(pixV);
-		//free(pixUUPsample);
-		//free(pixVUPsample);
+		free(pixU);
+		free(pixV);
+		free(pixUUPsample);
+		free(pixVUPsample);
 				
 	}
 	/*当有三层数据时需要
@@ -2915,7 +2915,7 @@ int xResampleMotion(MotionUpsampling *mo_up,int iMbXCurr,int iMbYCurr,x264_t *h)
     }
 	for(int iB8x8Idx = 0;iB8x8Idx < 4; iB8x8Idx++)
 	{
-	  RNOK(xDeriveBlockModeAndUpdateMv(mo_up,iB8x8Idx));
+	  RNOK(xDeriveBlockModeAndUpdateMv(mo_up,iB8x8Idx,h));
 	}
 
 
@@ -3213,7 +3213,7 @@ int x8x8BlocksHaveSameMotion(MotionUpsampling* mo_up,int eListIdx,int i8x8IdxA,i
   for(int i = 0;i < 3;i++)
   {
     if(mo_up->i_aaac_mv[eListIdx][ aaiComp[i8x8IdxA][i]%4 ][ aaiComp[i8x8IdxA][i] /4][0] != mo_up->i_aaac_mv[eListIdx][ aaiComp[i8x8IdxA][i+1] %4][aaiComp[i8x8IdxA][i+1] /4][0]
-	  &&mo_up->i_aaac_mv[eListIdx][ aaiComp[i8x8IdxA][i]%4 ][ aaiComp[i8x8IdxA][i] /4][1] != mo_up->i_aaac_mv[eListIdx][ aaiComp[i8x8IdxA][i+1] %4][aaiComp[i8x8IdxA][i+1] /4][1])
+	  || mo_up->i_aaac_mv[eListIdx][ aaiComp[i8x8IdxA][i]%4 ][ aaiComp[i8x8IdxA][i] /4][1] != mo_up->i_aaac_mv[eListIdx][ aaiComp[i8x8IdxA][i+1] %4][aaiComp[i8x8IdxA][i+1] /4][1])
     {
       bBlkASameMv = 0;
     }
@@ -3223,7 +3223,7 @@ int x8x8BlocksHaveSameMotion(MotionUpsampling* mo_up,int eListIdx,int i8x8IdxA,i
  for(int i = 0;i < 3;i++)
   {
     if(mo_up->i_aaac_mv[eListIdx][ aaiComp[i8x8IdxB][i]%4 ][ aaiComp[i8x8IdxB][i] /4][0] != mo_up->i_aaac_mv[eListIdx][ aaiComp[i8x8IdxB][i+1] %4][aaiComp[i8x8IdxB][i+1] /4][0]
-	   && mo_up->i_aaac_mv[eListIdx][ aaiComp[i8x8IdxB][i]%4 ][ aaiComp[i8x8IdxB][i] /4][1] != mo_up->i_aaac_mv[eListIdx][ aaiComp[i8x8IdxB][i+1] %4][aaiComp[i8x8IdxB][i+1] /4][1])
+	   || mo_up->i_aaac_mv[eListIdx][ aaiComp[i8x8IdxB][i]%4 ][ aaiComp[i8x8IdxB][i] /4][1] != mo_up->i_aaac_mv[eListIdx][ aaiComp[i8x8IdxB][i+1] %4][aaiComp[i8x8IdxB][i+1] /4][1])
     {
       bBlkBSameMv = 0;
     }
@@ -3271,6 +3271,7 @@ int xDeriveMbMode(MotionUpsampling * mo_up,x264_t * h)
 
   int i_mb_type = 3*(partPredModeA - 1) + (partPredModeB == 0?partPredModeB:partPredModeB - 1) + 8;
 
+   
   if(partPredModeA == 0&& partPredModeB == 0)
   	{
   	  if(i_partition == D_8x8 && h->sh.i_type == SLICE_TYPE_B)
@@ -3295,18 +3296,20 @@ int xDeriveMbMode(MotionUpsampling * mo_up,x264_t * h)
   return m_nOK;
 }
 
-int xDeriveBlockModeAndUpdateMv(MotionUpsampling *mo_up,int i8x8BlkIdx)
+int xDeriveBlockModeAndUpdateMv(MotionUpsampling *mo_up,int i8x8BlkIdx,x264_t* h)
 {
   //Int   iAbsMvDiffThreshold = ( m_cMvScale.m_bRSChangeFlag ? 0 : 1 );
-  int iAbsMvDiffThreshold = 1;
+
+  if(h->sh.i_type == SLICE_TYPE_I)
+  	return m_nOK;
+  int iAbsMvDiffThreshold = mo_up->m_cMvScale->m_bRSChangeFlag ?0:1;
   int iXO = (i8x8BlkIdx & 1) << 1;
   int iYO = (i8x8BlkIdx >> 1) << 1;
   int b_hor_match = 1;
   int b_ver_match = 1;
   int b_8x8_match = 1;
-
    //===== unify 8x8 blocks when direct_8x8_inference_flag is equal to 1 =====
-   if(mo_up->b_direct8x8_inference &&  /*!m_cMvScale.m_bRSChangeFlag*/ mo_up->e_slice_type == SLICE_TYPE_B)
+   if(mo_up->b_direct8x8_inference &&  !mo_up->m_cMvScale->m_bRSChangeFlag/*!m_cMvScale.m_bRSChangeFlag*/ &&mo_up->e_slice_type == SLICE_TYPE_B)
    {
    	  int iXC = (iXO >> 1) * 3;
 	  int iYC = (iYO >> 1) *3;
@@ -3359,7 +3362,7 @@ int xDeriveBlockModeAndUpdateMv(MotionUpsampling *mo_up,int i8x8BlkIdx)
 	  int b_L0 = L0_AVALIABLE && !L1_AVALIABLE;
 	  int b_L1 = !L0_AVALIABLE && L1_AVALIABLE;
 	  int b_Bi = L0_AVALIABLE && L1_AVALIABLE;
-	  int p = b_L0?0:b_L1?1:2;
+	  int p = b_L0?0:b_L1?1:b_Bi?2:-1;
 	  ROT(p < 0);
       int i_sub_partition = b_8x8_match?D_L0_8x8:b_hor_match?D_L0_8x4:b_ver_match?D_L0_4x8:D_L0_4x4;
 	  mo_up->i_sub_partition[i8x8BlkIdx] = i_sub_partition + 4*p;
@@ -3515,8 +3518,7 @@ int xSetPredMbData(MotionUpsampling *mo_up,x264_t * h)
 	  int b_L0 = L0_AVALIABLE && !L1_AVALIABLE;
 	  int b_L1 = !L0_AVALIABLE && L1_AVALIABLE;
 	  int b_Bi = L0_AVALIABLE && L1_AVALIABLE;
-	  int p = b_L0?0:b_L1?1:2;
-
+	  int p = b_L0?0:b_L1?1:b_Bi?2:-1;
 
 
   xMbdataClear(h,iMbIdx,iMb8x8Idx,iMb4x4Idx,s8x8,s4x4,p);
@@ -3586,6 +3588,15 @@ int xSetPredMbData(MotionUpsampling *mo_up,x264_t * h)
   {
     h->mbEL1.type[iMbIdx] = mo_up->i_mb_type;
 
+
+    int iMbXBase = mo_up->i_mbx_curr - (mo_up->m_rc_resize_params->m_iLeftFrmOffset >> 4);
+	int iMbYBase = mo_up->i_mby_curr - ((mo_up->m_rc_resize_params->m_iTopFrmOffset>> 4) >> iFieldPic);
+	int     iMbStrideBase = ( mo_up->m_rc_resize_params->m_iRefLayerFrmWidth >> 4 ) << iFieldPic;
+    int     iMbOffsetBase = ( mo_up->m_rc_resize_params->m_iRefLayerFrmWidth >> 4 )  * iBotField;
+    int     iMbIdxBase    = iMbOffsetBase + iMbYBase * iMbStrideBase + iMbXBase;
+	
+    h->mbEL1.type_base[iMbIdx] = h->mbBL.type[iMbIdxBase];
+	//h->mbEL1.mb_transform_size_base[iMbIdx] = h->mbBL.mb_transform_size[iMbIdxBase];
 	//printf("call function xSetPredMbData        mo_up->i_mb_type:%d        slice_type:%d\n",mo_up->i_mb_type,h->sh.i_type);
     //h->mbEL1.mb_mode[iMbIdx] = mo_up->mb_mode;
 	//rcMbData.setFwdBwd( (UShort)m_uiFwdBwd );
@@ -3681,15 +3692,6 @@ for(int iMbX = 0;iMbX < iMbXMax;iMbX++)
 }
 
 
-
-
-for(int i = 0;i < h->mbBL.i_mb_count; i++)
-{
-   printf("mbtype for mbBL  mb_type: %d\n",h->mbBL.type[i]);
-//  printf("mv for EL1  mv[0]:%d     mv[1]:%d \n",h->mbBL.mv[0][i][0],h->mbBL.mv[0][i][1]);;
-}
-
-//printf("call function xUpsampleMotion \n");
 }
 
 

@@ -3043,9 +3043,19 @@ void x264_macroblock_analyse( x264_t *h )
         h->mb.i_qp = abs(h->mb.i_qp - h->mb.i_last_qp) == 1 ? h->mb.i_last_qp : h->mb.i_qp;
 
     if( h->param.analyse.b_mb_info )
-        h->fdec->effective_qp[h->mb.i_mb_xy] = h->mb.i_qp; /* Store the real analysis QP. */
+    	{ 
+    	  if(h->i_layer_id == 0)
+          h->fdec->effective_qp[h->mb.i_mb_xy] = h->mb.i_qp; /* Store the real analysis QP. */
+		  else
+		  h->fdec->effective_qpEL1[h->mb.i_mb_xy] = h->mb.i_qp;
+    	}
+	if(h->i_layer_id)
+		return;
     x264_mb_analyse_init( h, &analysis, h->mb.i_qp );
 
+
+
+    
     /*--------------------------- Do the analysis ---------------------------*/
     if( h->sh.i_type == SLICE_TYPE_I )
     {
@@ -3294,6 +3304,7 @@ skip_analysis:
                 }
             }
 
+/*
             if( h->mb.b_chroma_me )
             {
                 if( CHROMA444 )
@@ -3313,6 +3324,7 @@ skip_analysis:
             else
                 x264_mb_analyse_intra( h, &analysis, i_cost );
 
+*/
             i_satd_inter = i_cost;
             i_satd_intra = X264_MIN3( analysis.i_satd_i16x16,
                                       analysis.i_satd_i8x8,
@@ -3334,12 +3346,13 @@ skip_analysis:
                 x264_intra_rd( h, &analysis, i_satd_inter * 5/4 + 1 );
             }
 
-            COPY2_IF_LT( i_cost, analysis.i_satd_i16x16, i_type, I_16x16 );
+            /*COPY2_IF_LT( i_cost, analysis.i_satd_i16x16, i_type, I_16x16 );
             COPY2_IF_LT( i_cost, analysis.i_satd_i8x8, i_type, I_8x8 );
             COPY2_IF_LT( i_cost, analysis.i_satd_i4x4, i_type, I_4x4 );
             COPY2_IF_LT( i_cost, analysis.i_satd_pcm, i_type, I_PCM );
 
             h->mb.i_type = i_type;
+	*/
 
             if( analysis.b_force_intra && !IS_INTRA(i_type) )
             {
@@ -3711,6 +3724,10 @@ skip_analysis:
                 h->mb.i_partition = i_partition;
             }
 
+
+
+/*
+
             if( h->mb.b_chroma_me )
             {
                 if( CHROMA444 )
@@ -3740,10 +3757,12 @@ skip_analysis:
             COPY2_IF_LT( i_cost, analysis.i_satd_i8x8, i_type, I_8x8 );
             COPY2_IF_LT( i_cost, analysis.i_satd_i4x4, i_type, I_4x4 );
             COPY2_IF_LT( i_cost, analysis.i_satd_pcm, i_type, I_PCM );
+		
 
             h->mb.i_type = i_type;
             h->mb.i_partition = i_partition;
-
+		
+*/
             if( analysis.i_mbrd >= 2 && IS_INTRA( i_type ) && i_type != I_PCM )
                 x264_intra_rd_refine( h, &analysis );
             if( h->mb.i_subpel_refine >= 5 )

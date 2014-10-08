@@ -1128,8 +1128,13 @@ parse_error:
             total_qp_aq += qp_aq;
             p = next;
         }
+		/*BY MING*/
         if( !h->param.b_stitchable )
-            h->pps->i_pic_init_qp = SPEC_QP( (int)(total_qp_aq / rc->num_entries + 0.5) );
+        	{ 
+        	   
+              h->pps->i_pic_init_qp = SPEC_QP( (int)(total_qp_aq / rc->num_entries + 0.5) );
+			 // h->pps[1].i_pic_init_qp = SPEC_QP( (int)(total_qp_aq / rc->num_entries + 0.5) );
+        	}
 
         x264_free( stats_buf );
 

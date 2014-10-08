@@ -165,7 +165,9 @@ void x264_param_default( x264_param_t *param )
     param->analyse.b_weighted_bipred = 1;
     param->analyse.i_weighted_pred = X264_WEIGHTP_SMART;
     param->analyse.b_dct_decimate = 1;
-    param->analyse.b_transform_8x8 = 1;
+    //param->analyse.b_transform_8x8 = 1;
+   /*BY MING*/
+    param->analyse.b_transform_8x8 = 0;
     param->analyse.i_trellis = 1;
     param->analyse.i_luma_deadzone[0] = 21;
     param->analyse.i_luma_deadzone[1] = 11;

@@ -128,6 +128,7 @@ static ALWAYS_INLINE void x264_mb_encode_i4x4( x264_t *h, int p, int idx, int i_
         nz = h->zigzagf.sub_4x4( h->dct.luma4x4[p*16+idx], p_src, p_dst );
         h->mb.cache.non_zero_count[x264_scan8[p*16+idx]] = nz;
         h->mb.i_cbp_luma |= nz<<(idx>>2);
+		if(h->i_layer_id == 1)
         return;
     }
 
@@ -142,6 +143,8 @@ static ALWAYS_INLINE void x264_mb_encode_i4x4( x264_t *h, int p, int idx, int i_
         h->quantf.dequant_4x4( dct4x4, h->dequant4_mf[p?CQM_4IC:CQM_4IY], i_qp );
         h->dctf.add4x4_idct( p_dst, dct4x4 );
     }
+
+
 }
 
 static ALWAYS_INLINE void x264_mb_encode_i8x8( x264_t *h, int p, int idx, int i_qp, int i_mode, pixel *edge, int b_predict )

@@ -142,7 +142,7 @@ static void x264_frame_dump( x264_t *h )
 
 /*BY MING*/
     sh->b_scoeff_residual_pred_flag = 0;
-	sh->b_tcoeff_level_pred_flag = 1;
+	sh->b_tcoeff_level_pred_flag = 0;
 
 	
     h->mb.b_direct_auto_write = h->param.analyse.i_direct_mv_pred == X264_DIRECT_PRED_AUTO
@@ -226,7 +226,7 @@ static void x264_frame_dump( x264_t *h )
     sh->i_scan_start = 0;
     sh->i_scan_end = 15;
 
-    sh->b_tcoeff_level_pred_flag = 1;
+    sh->b_tcoeff_level_pred_flag = 0;
     sh->b_adaptive_base_mode_flag = 0;
     sh->b_default_base_mode_flag = 1;
 	/*sky 考虑到解码端 以下值设为0*/
@@ -1724,6 +1724,8 @@ x264_t *x264_encoder_open( x264_param_t *param )
 		}
 	
    	x264_pps_init(& h->pps[i_layer_id], i_sps_id, &h->param, &h->sps [i_layer_id]);
+		if(h->i_layer_id)
+		(&h->pps[i_layer_id])->b_transform_8x8_mode = 0;
    	}	
 		/*原句    x264_sps_init( h->sps, h->param.i_sps_id, &h->param );
     原句x264_pps_init( h->pps, h->param.i_sps_id, &h->param, h->sps );
@@ -3213,12 +3215,9 @@ else
    /*sky 2014.08.28 &h->out.nal[h->out.i_nal]*/
 
 
-
-
+  
     x264_slice_header_write( &h->out.bs, &h->sh, h->i_nal_ref_idc,&h->out.nal[h->out.i_nal] );
-//sky0925 debug
-//if(h->i_layer_id == 0)
-//{
+
 
 
 
@@ -3259,12 +3258,11 @@ else
 	 
 		if(h->i_layer_id)
 		 {
-		   h->mb.i_type = h->mb.type[h->mb.i_mb_xy];
+		   h->mb.i_type = h->mb.type[mb_xy];
+		   //printf("when i_layer_id == 1,then show the mb_type:%d \n",h->mb.i_type);
 		 }
 
-  printf("1--------------------  h->mb.i_type :%d,h->i_mb_xy:%d\n",  h->mb.i_type,mb_xy);
-
-        if( i_mb_x == 0 )
+        if( i_mb_x == 0)
         {
             if( x264_bitstream_check_buffer( h ) )
                 return -1;
@@ -3322,7 +3320,7 @@ else
 					return 0;\
 				  if( SLICE_MBAFF )\
 				  {\
-					i_mb_x += i_mb_y & 1;\
+					  += i_mb_y & 1;\
 					i_mb_y ^= i_mb_x < h->mb.i_mb_width;\
 				  }\
 				  else\
@@ -3340,21 +3338,13 @@ else
         if(h->i_layer_id == 0)
              x264_macroblock_analyse( h );
 
-
+        //printf("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n");
 
        /* encode this macroblock -> be careful it can change the mb type to P_SKIP if needed */
 reencode:
         x264_macroblock_encode( h );
 
     //    DEBUG_TEST
-        if(h->i_layer_id == 1)
-        {
-         h->mb.i_cbp_luma = 0;
-	     h->mb.i_cbp_chroma = 0;
-		 
-		 printf("PPPPPPPPPPPPPPPPPPP  i_cbp_top:%d \n",h->mb.cache.i_cbp_top);
-		 printf("QQQQQQQQQQQQQQQQQQQ  i_cbp_left:%d\n",h->mb.cache.i_cbp_left);
-        }
 /*..........................*/
 
 
@@ -3364,22 +3354,15 @@ reencode:
         //mb_xy == 1执行 end_of_slice_flag 
             if( mb_xy > h->sh.i_first_mb && !(SLICE_MBAFF && (i_mb_y&1)) )
             	{
-			if(h->i_layer_id)
-				{
+			      //if(h->i_layer_id == 0)
+				  //{
+				   x264_cabac_encode_terminal( &h->cabac );
+				 // }
 				
-				
-				//if( mb_xy == 1)
-				//	break;
-				}
-				printf("call x264_cabac_encode_terminal mb_xy:%d mb_type:%d \n",mb_xy,h->mb.i_type);
-				x264_cabac_encode_terminal( &h->cabac );
 				
             	}
-			printf("2--------------------  h->mb.i_type :%d,h->i_mb_xy:%d\n",  h->mb.i_type,mb_xy);
             if( IS_SKIP( h->mb.i_type ) )
             	{
-
-		printf("while 1 call x264_cabac_mb_skip( h, 1 );mb_xy:%d******\n",mb_xy);
 				x264_cabac_mb_skip( h, 1 );
             	}
             else
@@ -3387,10 +3370,8 @@ reencode:
                 if( h->sh.i_type != SLICE_TYPE_I )
                  {
                   	x264_cabac_mb_skip( h, 0 );
-				/*skt0924*/
-				printf("while 1 call x264_cabac_mb_skip( h, 0 ); && x264_macroblock_write_cabac( h, &h->cabac );mb_xy:%d******\n",mb_xy);
-       		}
-		  x264_macroblock_write_cabac( h, &h->cabac );
+       		     }
+		      x264_macroblock_write_cabac( h, &h->cabac );
 
             }
         }
@@ -3425,7 +3406,7 @@ reencode:
 
         int total_bits = bs_pos(&h->out.bs) + x264_cabac_pos(&h->cabac);
         int mb_size = total_bits - mb_spos;
-		printf("total_bits :%d,mb_size :%d\n",total_bits,mb_size);
+		//printf("total_bits :%d,mb_size   :%d    slice_max_size:%d  \n",total_bits,mb_size,slice_max_size);
 
         if( slice_max_size && (!SLICE_MBAFF || (i_mb_y&1)) )
         {
@@ -3502,7 +3483,7 @@ cont:
 
     
 	
-       /* if( x264_ratecontrol_mb( h, mb_size ) < 0 )
+       if( x264_ratecontrol_mb( h, mb_size ) < 0 )
         {
             x264_bitstream_restore( h, &bs_bak[BS_BAK_ROW_VBV], &i_skip, 1 );
             h->mb.b_reencode_mb = 1;
@@ -3511,7 +3492,7 @@ cont:
             h->mb.i_mb_prev_xy = i_mb_y * h->mb.i_mb_stride - 1;
             h->sh.i_last_mb = orig_last_mb;
             continue;
-        }*/
+        }
   
 /*+++++++++++++++++++++++++++*/
 		//if(h->i_layer_id == 1)
@@ -3596,8 +3577,8 @@ cont:
             x264_macroblock_deblock_strength( h );
 
 
-end:
-printf("at while(1) end \n ");
+//end:
+//printf("at while(1) end \n ");
 
 
         if( mb_xy == h->sh.i_last_mb )
@@ -3988,27 +3969,43 @@ static void *x264_slices_write( x264_t *h )
 	
        h->sh.b_base_layer_flag = BASE_LAYER;	
 	   
+
+
+
+
+
 	
     WRITE_ALL_SLICES    
 
+
+
+
 	
-	/*for(int i =0; i < h->mb.i_mb_count;i++)
-	{
-	  printf("mb_type:%d AAAAAAAAAAAAAAAAAAAAAAAAAA\n",h->mb.type[i]);
-	}*/
+
 	if( h->param.b_sliced_threads )
 		x264_wait_up_sampling_finish(h->param.i_threads);
 	else
 	{
 		//printf (" Call up-sampling function!!!!!!!!!!!!!!!!!!!!\n");
 
-		x264_layer_upsample(h,h->fenc,0);
+		x264_layer_upsample(h,h->fdec,0);
 
 		//printf("h->sh.i_type:%d JJJJJJJJJJJJJJ \n",h->sh.i_type);
         xUpsampleMotion(h->mo_up,&h->cRP, h->cRP.m_bFieldPicFlag,0,MV_THRESHOLD,h);
 	}
 
-	
+
+
+
+/*
+   printf("条带类型:%d		帧数:%d \n",h->sh.i_type,h->i_frame);
+   for(int b = 0;b < h->mbEL1.i_mb_count;b++)
+   	{
+   	   
+   	   printf("bbbbbbbbbbbbbb mb_type:%d   mb_transform_size:%d    qp:%d\n",h->mbEL1.type[b], h->mbEL1.mb_transform_size[b],h->mbEL1.qp[b]);
+   	}
+*/
+	  
 	 x264_copy_mb_info_before_encode(h,0);
 	h->i_layer_id = 1;
 	h->mb.b_reencode_mb = 0;
@@ -4078,7 +4075,10 @@ static void *x264_slices_write( x264_t *h )
 
 	last_thread_mb = h->sh.i_last_mb;
 
-
+	/*for(int i =0 ;i < h->mb.i_mb_count;i++)
+	{
+	  printf("OOOOOOOOOOOOOOOO:%d\n",h->mb.cbp[i]);
+	}*/
 
 
 

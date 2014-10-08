@@ -249,7 +249,7 @@ int xDeriveMbMode(MotionUpsampling*,x264_t*);
 
 int xGetRefIdxAndInitialMvPred(MotionUpsampling*,int,x264_t* );
 int xGetInitialBaseRefIdxAndMv(MotionUpsampling*,int,int,int,int,int*,int*,x264_t*);
-int xDeriveBlockModeAndUpdateMv(MotionUpsampling*,int);
+int xDeriveBlockModeAndUpdateMv(MotionUpsampling*,int,x264_t*);
 
 int xGetMinRefIdx(int,int);
 

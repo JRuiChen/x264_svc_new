@@ -174,7 +174,6 @@ static int x264_rd_cost_mb( x264_t *h, int i_lambda2 )
     {
         x264_cabac_t cabac_tmp;
         COPY_CABAC;
-		//printf("2222222222222\n");
         x264_macroblock_size_cabac( h, &cabac_tmp );
         i_bits = ( (uint64_t)cabac_tmp.f8_bits_encoded * i_lambda2 + 32768 ) >> 16;
     }

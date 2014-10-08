@@ -123,57 +123,7 @@ static ALWAYS_INLINE int array_non_zero( dctcoef *v, int i_count )
 /* This means that decimation can be done merely by adjusting the CBP and NNZ
  * rather than memsetting the coefficients. */
 
-/*encode the I_BL macroblock -  BY MING*/
-static ALWAYS_INLINE void x264_mb_encode_iBL(x264_t* h ,int p,int i_qp)
-{
-  for(int i = (p == 0 && h->mb.i_skip_intra)?15:0;i < 16;i++)
-  {   int nz;
-      pixel *p_src = &h->mb.pic.p_fenc[p][block_idx_xy_fenc[i]];
 
-	  /*the value of p_fdec has been the upsampling value from base layer at the function
-	      x264_load_pic_pointers() - BY MING*/
-      pixel *p_dst = &h->mb.pic.p_fdec[p][block_idx_xy_fdec[i]];
-      ALIGNED_ARRAY_N( dctcoef, dct4x4,[16] );
- 
-
-	  if(h->mb.b_lossless)
-	  {
-	    nz = h->zigzagf.sub_4x4(h->dct.luma4x4[p*16 + i],p_src,p_dst);
-		h->mb.cache.non_zero_count[x264_scan8[p*16 + i]] = nz;
-		h->mb.i_cbp_luma |= nz << (i >> 2);
-		return ;
-	  }
-
-	  h->dctf.sub4x4_dct(dct4x4,p_src,p_dst);
-	  nz = x264_quant_4x4(h,dct4x4,i_qp,ctx_cat_plane[DCT_LUMA_4x4][p],1,p,i);
-	  h->mb.cache.non_zero_count[x264_scan8[p*16 + i]] = nz;
-
-	  if(nz)
-	  {
-	    h->mb.i_cbp_luma |= 1 << (i >> 2);
-		h->zigzagf.scan_4x4(h->dct.luma4x4[p*16 + i],dct4x4);
-		h->quantf.dequant_4x4(dct4x4,h->dequant4_mf[p?CQM_4IC:CQM_4IY],i_qp);
-		h->dctf.add4x4_idct(p_dst,dct4x4);
-	  }
-
-
-  }
-
-printf("show ELELELELELELE   dct.luma4x4    qp:%d\n",i_qp);
-for(int m = 0;m < 16;m++)
-  {
-  for(int n = 0;n < 16;n++)
-  {
-	printf("%d	 ",h->dct.luma4x4[p*16 + m][n]);
-  }
-
-  printf("\n");
-  }
-
-
-
-  
-}
 
 
 static void x264_mb_encode_i16x16( x264_t *h, int p, int i_qp )
@@ -293,6 +243,117 @@ static void x264_mb_encode_i16x16( x264_t *h, int p, int i_qp )
     else if( nz )
         h->dctf.add16x16_idct_dc( p_dst, dct_dc4x4 );
 }
+
+
+
+
+
+
+/*encode the I_BL macroblock -  BY MING*/
+static  void x264_mb_encode_iBL(x264_t* h ,int plane_count,int chroma)
+{
+
+/*#define X264_ENCODE_PCM\
+for( int p = 0; p < plane_count; p++)\
+	h->mc.copy[PIXEL_16x16]( h->mb.pic.p_fdec[p], FDEC_STRIDE, h->mb.pic.p_fenc[p], FENC_STRIDE, 16 );\
+if( chroma )\
+{\
+	int height = 16 >> CHROMA_V_SHIFT;\
+	h->mc.copy[PIXEL_8x8]  ( h->mb.pic.p_fdec[1], FDEC_STRIDE, h->mb.pic.p_fenc[1], FENC_STRIDE, height );\
+	h->mc.copy[PIXEL_8x8]  ( h->mb.pic.p_fdec[2], FDEC_STRIDE, h->mb.pic.p_fenc[2], FENC_STRIDE, height );\
+}\
+return;
+
+*/
+
+
+int i_qp = h->mb.i_qp;
+
+#define X264_ENCODE_I4X4\
+   h->mb.b_transform_8x8 = 0;\
+   if( h->mb.i_skip_intra )\
+   {\
+	   h->mc.copy[PIXEL_16x16]( h->mb.pic.p_fdec[0], FDEC_STRIDE, h->mb.pic.i4x4_fdec_buf, 16, 16 );\
+	   M32( &h->mb.cache.non_zero_count[x264_scan8[ 0]] ) = h->mb.pic.i4x4_nnz_buf[0];\
+	   M32( &h->mb.cache.non_zero_count[x264_scan8[ 2]] ) = h->mb.pic.i4x4_nnz_buf[1];\
+	   M32( &h->mb.cache.non_zero_count[x264_scan8[ 8]] ) = h->mb.pic.i4x4_nnz_buf[2];\
+	   M32( &h->mb.cache.non_zero_count[x264_scan8[10]] ) = h->mb.pic.i4x4_nnz_buf[3];\
+	   h->mb.i_cbp_luma = h->mb.pic.i4x4_cbp;\
+	   if( h->mb.i_skip_intra == 2 )\
+		   h->mc.memcpy_aligned( h->dct.luma4x4, h->mb.pic.i4x4_dct_buf, sizeof(h->mb.pic.i4x4_dct_buf) );\
+   }\
+   for( int p = 0; p < plane_count; p++, i_qp = h->mb.i_chroma_qp )\
+   {\
+	   for( int i = (p == 0 && h->mb.i_skip_intra) ? 15 : 0 ; i < 16; i++ )\
+	   {\
+		   pixel *p_dst = &h->mb.pic.p_fdec[p][block_idx_xy_fdec[i]];\
+		   int i_mode = h->mb.cache.intra4x4_pred_mode[x264_scan8[i]];\
+		   x264_mb_encode_i4x4( h, p, i, i_qp, i_mode, 1 );\
+	   }\   
+   }
+
+
+
+#define X264_ENCODE_I8X8\
+   h->mb.b_transform_8x8 = 1;\
+   if( h->mb.i_skip_intra )\
+   {\
+	   h->mc.copy[PIXEL_16x16]( h->mb.pic.p_fdec[0], FDEC_STRIDE, h->mb.pic.i8x8_fdec_buf, 16, 16 );\
+	   M32( &h->mb.cache.non_zero_count[x264_scan8[ 0]] ) = h->mb.pic.i8x8_nnz_buf[0];\
+	   M32( &h->mb.cache.non_zero_count[x264_scan8[ 2]] ) = h->mb.pic.i8x8_nnz_buf[1];\
+	   M32( &h->mb.cache.non_zero_count[x264_scan8[ 8]] ) = h->mb.pic.i8x8_nnz_buf[2];\
+	   M32( &h->mb.cache.non_zero_count[x264_scan8[10]] ) = h->mb.pic.i8x8_nnz_buf[3];\
+	   h->mb.i_cbp_luma = h->mb.pic.i8x8_cbp;\
+	   if( h->mb.i_skip_intra == 2 )\
+		   h->mc.memcpy_aligned( h->dct.luma8x8, h->mb.pic.i8x8_dct_buf, sizeof(h->mb.pic.i8x8_dct_buf) );\
+   }\
+   for( int p = 0; p < plane_count; p++, i_qp = h->mb.i_chroma_qp )\
+   {\
+	   for( int i = (p == 0 && h->mb.i_skip_intra) ? 3 : 0 ; i < 4; i++ )\
+	   {\
+		   int i_mode = h->mb.cache.intra4x4_pred_mode[x264_scan8[4*i]];\
+		   x264_mb_encode_i8x8( h, p, i, i_qp, i_mode, NULL, 1 );\
+	   }\
+   }
+
+
+
+
+
+
+#define X264_ENCODE_I16X16\
+   h->mb.b_transform_8x8 = 0;\
+   for( int p = 0; p < plane_count; p++, i_qp = h->mb.i_chroma_qp )\
+	   x264_mb_encode_i16x16( h, p, i_qp );
+
+
+
+
+   
+
+   X264_ENCODE_I4X4 
+   
+
+
+
+  
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* Round down coefficients losslessly in DC-only chroma blocks.
  * Unlike luma blocks, this can't be done with a lookup table or
@@ -686,6 +747,9 @@ static ALWAYS_INLINE void x264_macroblock_encode_internal_EL(x264_t* h, int plan
 /*****************************************************************************
  * x264_macroblock_encode:
  *****************************************************************************/
+
+
+
 static ALWAYS_INLINE void x264_macroblock_encode_internal( x264_t *h, int plane_count, int chroma )
 {
     int i_qp = h->mb.i_qp;
@@ -695,7 +759,7 @@ static ALWAYS_INLINE void x264_macroblock_encode_internal( x264_t *h, int plane_
     h->mb.i_cbp_luma = 0;
     for( int p = 0; p < plane_count; p++ )
         h->mb.cache.non_zero_count[x264_scan8[LUMA_DC+p]] = 0;
-
+	
     if( h->mb.i_type == I_PCM )
     {
         /* if PCM is chosen, we need to store reconstructed frame data */
@@ -711,14 +775,6 @@ static ALWAYS_INLINE void x264_macroblock_encode_internal( x264_t *h, int plane_
     }
 
 
-   if(h->mb.i_type == I_BL)
-   {
-     /*if I_BL is chosen, we will get the pixels from the base layer and get the residual - BY MING*/
-     for(int p = 0; p < plane_count; p++, i_qp = h->mb.i_chroma_qp)
-     	{
-	     x264_mb_encode_iBL(h,p,i_qp);
-     	}
-   }
 
 
 	
@@ -781,21 +837,35 @@ static ALWAYS_INLINE void x264_macroblock_encode_internal( x264_t *h, int plane_
     if( h->mb.i_type == B_SKIP )
     {
         /* don't do bskip motion compensation if it was already done in macroblock_analyse */
-        if( !h->mb.b_skip_mc && h->i_layer_id == 0)
+        if( !h->mb.b_skip_mc)
             x264_mb_mc( h );
         x264_macroblock_encode_skip( h );
         return;
     }
 
-    if( h->mb.i_type == I_16x16 )
-    {
+
+
+	if(h->mb.i_type == I_BL)
+	{
+	  /*if I_BL is chosen, we will get the pixels from the base layer and get the residual - BY MING*/
+	  //for(int p = 0; p < plane_count; p++, i_qp = h->mb.i_chroma_qp)
+		 //{
+		 // x264_mb_encode_iBL(h,p,i_qp);
+		 //}
+		 x264_mb_encode_iBL(h,plane_count,chroma);
+	}
+
+
+
+    else if( h->mb.i_type == I_16x16 )
+    { 
         h->mb.b_transform_8x8 = 0;
 
         for( int p = 0; p < plane_count; p++, i_qp = h->mb.i_chroma_qp )
             x264_mb_encode_i16x16( h, p, i_qp );
     }
     else if( h->mb.i_type == I_8x8 )
-    {
+    {   
         h->mb.b_transform_8x8 = 1;
         /* If we already encoded 3 of the 4 i8x8 blocks, we don't have to do them again. */
         if( h->mb.i_skip_intra )
@@ -848,35 +918,6 @@ static ALWAYS_INLINE void x264_macroblock_encode_internal( x264_t *h, int plane_
 
                 x264_mb_encode_i4x4( h, p, i, i_qp, i_mode, 1 );
             }
-
-        
-        if(h->i_layer_id == 0)
-		printf("show dct.luma4x4 BLBLBLBLBLBLBLBLBLBL i_qp:%d\n",i_qp);
-		else
-		printf("show dct.luma4x4 ELELELELELELELELELEL i_qp:%d\n",i_qp);
-
-        for(int x = 0; x < 4;x++)
-        {
-			for(int y = 0;y < 4;y++)
-		    {
-		       printf("%d   ",h->mb.cache.non_zero_count[x264_scan8[ y*8 + x]]);
-		    } 
-
-			printf("\n");
-        }
-		
-		  for(int m = 0;m < 16;m++)
-			{
-			for(int n = 0;n < 16;n++)
-			{
-			  printf("%d   ",h->dct.luma4x4[p*16 + m][n]);
-			}
-		
-			printf("\n");
-			}
-
-
-
 			
         }
 
@@ -884,14 +925,13 @@ static ALWAYS_INLINE void x264_macroblock_encode_internal( x264_t *h, int plane_
 
     }
 
-    else    /* Inter MB */
+    else /* Inter MB */
     {
         int i_decimate_mb = 0;
 
         /* Don't repeat motion compensation if it was already done in non-RD transform analysis */
-        if( !h->mb.b_skip_mc && h->i_layer_id == 0)
+        if( !h->mb.b_skip_mc /*&& h->i_layer_id == 0*/)
             x264_mb_mc( h );
-		//printf("11111111111111111111111111111111111  i_frame:%d    h->mb.i_mb_xy:%d \n",h->i_frame,h->mb.i_mb_xy);
 
         if( h->mb.b_lossless )
         {
@@ -918,7 +958,7 @@ static ALWAYS_INLINE void x264_macroblock_encode_internal( x264_t *h, int plane_
                     }
 
 					
-		//printf("444444444444444444444444444444444444444444444  i_frame:%d    h->mb.i_mb_xy:%d \n",h->i_frame,h->mb.i_mb_xy);	
+		
         }
         else if( h->mb.b_transform_8x8 )
         {
@@ -962,13 +1002,13 @@ static ALWAYS_INLINE void x264_macroblock_encode_internal( x264_t *h, int plane_
                     }
                 }
             }
-			//printf("2222222222222222222222222222222222222 i_frame:%d	i_mb_xy:%d \n",h->i_frame,h->mb.i_mb_xy);
+
 
 			
         }
         else
         {
-			//printf("3333333333333333333333333333333333333333 i_mb_xy:%d \n",h->mb.i_mb_xy);
+			
 
 
 		
@@ -1050,7 +1090,7 @@ static ALWAYS_INLINE void x264_macroblock_encode_internal( x264_t *h, int plane_
 
     
     /* encode chroma */
-    if( chroma )
+    if( chroma  )
     {
          /*if mb_type is I_BL,then we don't need to predict - BY MING*/
         if( IS_INTRA( h->mb.i_type ) && h->mb.i_type != I_BL )
@@ -1074,11 +1114,13 @@ static ALWAYS_INLINE void x264_macroblock_encode_internal( x264_t *h, int plane_
 
     /* store cbp */
     int cbp = h->mb.i_cbp_chroma << 4 | h->mb.i_cbp_luma;
+
     if( h->param.b_cabac )
         cbp |= h->mb.cache.non_zero_count[x264_scan8[LUMA_DC    ]] << 8
             |  h->mb.cache.non_zero_count[x264_scan8[CHROMA_DC+0]] << 9
             |  h->mb.cache.non_zero_count[x264_scan8[CHROMA_DC+1]] << 10;
     h->mb.cbp[h->mb.i_mb_xy] = cbp;
+
 
     /* Check for P_SKIP
      * XXX: in the me perhaps we should take x264_mb_predict_mv_pskip into account

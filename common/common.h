@@ -817,7 +817,7 @@ typedef struct
         /* mb table */
         uint8_t *base;                      /* base pointer for all malloced data in this mb */
         int8_t  *type;                      /* mb type */
-		
+		int8_t  *type_base;               /*mb type in BL*/
         uint8_t *partition;                 /* mb partition */
         int8_t  *qp;                        /* mb qp */
         int16_t *cbp;                       /* mb cbp: 0x0?: luma, 0x?0: chroma, 0x100: luma dc, 0x0200 and 0x0400: chroma dc  (all set for PCM)*/
@@ -831,7 +831,9 @@ typedef struct
         int16_t (*mvr[2][X264_REF_MAX*2])[2];/* 16x16 mv for each possible ref */
         int8_t  *skipbp;                    /* block pattern for SKIP or DIRECT (sub)mbs. B-frames + cabac only */
         int8_t  *mb_transform_size;         /* transform_size_8x8_flag of each mb */
-        uint16_t *slice_table;              /* sh->first_mb of the slice that the indexed mb is part of
+		int8_t  *mb_transform_size_base;    
+
+		uint16_t *slice_table;              /* sh->first_mb of the slice that the indexed mb is part of
                                            * NOTE: this will fail on resolutions above 2^16 MBs... */
         uint8_t *field;
 

@@ -58,7 +58,7 @@ static const uint8_t x264_pred_i4x4_neighbors[12] =
 
 
 /* XXX mb_type isn't the one written in the bitstream -> only internal usage */
-#define IS_INTRA(type) ( (type) == I_4x4 || (type) == I_8x8 || (type) == I_16x16 || (type) == I_PCM || (type) == I_BL )
+#define IS_INTRA(type) ( (type) == I_4x4 || (type) == I_8x8 || (type) == I_16x16 || (type) == I_PCM || (type) == I_BL)
 #define IS_SKIP(type)  ( (type) == P_SKIP || (type) == B_SKIP )
 #define IS_DIRECT(type)  ( (type) == B_DIRECT )
 
@@ -187,12 +187,22 @@ enum mb_class_e
 
     X264_MBTYPE_MAX = 19
 };
-static const uint8_t x264_mb_type_fix[X264_MBTYPE_MAX] =
+
+
+static const char* mb_class_name[20] = 
+{
+ "I_4x4","I_8x8","I_16x16","I_PCM",
+ "P_L0","P_8x8","P_SKIP","B_DIRECT",
+ "B_L0_L0","B_L0_L1","B_L0_BI","B_L1_L0",
+ "B_L1_L1","B_L1_BI","B_BI_L0","B_BI_L1",
+ "B_BI_BI","B_8x8","B_SKIP","I_BL"
+};
+static const uint8_t x264_mb_type_fix[X264_MBTYPE_MAX + 2] =
 {
     I_4x4, I_4x4, I_16x16, I_PCM,
     P_L0, P_8x8, P_SKIP,
     B_DIRECT, B_L0_L0, B_L0_L1, B_L0_BI, B_L1_L0, B_L1_L1,
-    B_L1_BI, B_BI_L0, B_BI_L1, B_BI_BI, B_8x8, B_SKIP,I_BL
+    B_L1_BI, B_BI_L0, B_BI_L1, B_BI_BI, B_8x8, B_SKIP,I_BL,I_BL
 };
 static const uint8_t x264_mb_type_list_table[X264_MBTYPE_MAX][2][2] =
 {
@@ -247,6 +257,18 @@ enum mb_partition_e
     D_8x16            = 15,
     D_16x16           = 16,
     X264_PARTTYPE_MAX = 17,
+};
+
+
+
+
+static const char* mb_partition_name[17] =
+{
+  "D_L0_4x4","D_L0_8x4","D_L0_4x8","D_L0_8x8",
+  "D_L1_4x4","D_L1_8x4","D_L1_4x8","D_L1_8x8",
+  "D_BI_4x4","D_BI_8x4","D_BI_4x8","D_BI_4x4",
+  "D_DIRECT_8x8","D_8x8","D_16x8","D_8x16","D_16x16"
+
 };
 
 static const uint8_t x264_mb_partition_listX_table[2][17] =
@@ -915,6 +937,7 @@ static ALWAYS_INLINE int x264_mb_transform_8x8_allowed( x264_t *h )
 	 h->des_mb.mv_maxy_fpel_row[i] = h->src_mb.mv_maxy_fpel_row[i];\
    }\
    h->des_mb.base = h->src_mb.base;\
+   h->des_mb.type_base = h->src_mb.type_base;\
    h->des_mb.type = h->src_mb.type;\
    h->des_mb.partition = h->src_mb.partition;\
    h->des_mb.sub_partition = h->src_mb.sub_partition;\
@@ -931,6 +954,7 @@ static ALWAYS_INLINE int x264_mb_transform_8x8_allowed( x264_t *h )
    h->des_mb.ref[1] = h->src_mb.ref[1];\
    h->des_mb.skipbp = h->src_mb.skipbp;\
    h->des_mb.mb_transform_size = h->src_mb.mb_transform_size;\
+   h->des_mb.mb_transform_size_base = h->src_mb.mb_transform_size_base;\
    h->des_mb.slice_table = h->src_mb.slice_table;\
    h->des_mb.field = h->src_mb.field;\
    for(int k = 0;k < X264_REF_MAX;k++)\

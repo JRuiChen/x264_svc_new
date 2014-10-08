@@ -593,6 +593,7 @@ void x264_pps_init( x264_pps_t *pps, int i_id, x264_param_t *param, x264_sps_t *
 
     pps->b_transform_8x8_mode = param->analyse.b_transform_8x8 ? 1 : 0;
 
+    //printf("HHHHHHHHHHHHHH  b_transform_8x8_mode:%d   \n",pps->b_transform_8x8_mode);
     pps->i_cqm_preset = param->i_cqm_preset;
 
     switch( pps->i_cqm_preset )

@@ -191,45 +191,94 @@ void x264_mb_mc_8x8( x264_t *h, int i8 )
         switch( h->mb.i_sub_partition[i8] )
         {
             case D_L0_8x8:
+				//if(h->i_layer_id)
+				//printf("AAAAAAAAAAAAAAAAAAAAAAAAAAA  start\n");
                 x264_mb_mc_0xywh( h, x, y, 2, 2 );
+				//if(h->i_layer_id)
+				//printf("AAAAAAAAAAAAAAAAAAAAAAAAAAA  end\n");
                 break;
             case D_L0_8x4:
+			   // if(h->i_layer_id)
+				//printf("BBBBBBBBBBBBBBBBBBBBBBBB  start\n");
                 x264_mb_mc_0xywh( h, x, y+0, 2, 1 );
+			   // if(h->i_layer_id)
+				//printf("BBBBBBBBBBBBBBBBBBBBBBBB  middle\n");
                 x264_mb_mc_0xywh( h, x, y+1, 2, 1 );
+			   // if(h->i_layer_id)
+				//printf("BBBBBBBBBBBBBBBBBBBBBBBB  end\n");
                 break;
             case D_L0_4x8:
+			   // if(h->i_layer_id)
+				//printf("CCCCCCCCCCCCCCCCCCCCCCC  start\n");				
                 x264_mb_mc_0xywh( h, x+0, y, 1, 2 );
+			   // if(h->i_layer_id)
+				//printf("CCCCCCCCCCCCCCCCCCCCCCCC  middle\n");
                 x264_mb_mc_0xywh( h, x+1, y, 1, 2 );
+			   // if(h->i_layer_id)
+				//printf("CCCCCCCCCCCCCCCCCCCCCCCC  end\n");				
                 break;
             case D_L0_4x4:
+			    //if(h->i_layer_id)
+				//printf("DDDDDDDDDDDDDDDDDDDDDDDDDDDDD  start\n");					
                 x264_mb_mc_0xywh( h, x+0, y+0, 1, 1 );
+			   // if(h->i_layer_id)
+				//printf("DDDDDDDDDDDDDDDDDDDDDDDDDDDDD  second\n");
                 x264_mb_mc_0xywh( h, x+1, y+0, 1, 1 );
+			    //if(h->i_layer_id)
+				//printf("DDDDDDDDDDDDDDDDDDDDDDDDDDDDD  third\n");
                 x264_mb_mc_0xywh( h, x+0, y+1, 1, 1 );
+			   // if(h->i_layer_id)
+				//printf("DDDDDDDDDDDDDDDDDDDDDDDDDDDDD  forth\n");				
                 x264_mb_mc_0xywh( h, x+1, y+1, 1, 1 );
+			   // if(h->i_layer_id)
+				//printf("DDDDDDDDDDDDDDDDDDDDDDDDDDDDD  end\n");	
+
                 break;
         }
     }
     else
     {
         int scan8 = x264_scan8[0] + x + 8*y;
-
+            
         if( h->mb.cache.ref[0][scan8] >= 0 )
             if( h->mb.cache.ref[1][scan8] >= 0 )
+            	{
+            	//if(h->i_layer_id)
+				//	printf("EEEEEEEEEEEEEEEEEE start\n");
                 x264_mb_mc_01xywh( h, x, y, 2, 2 );
+				//if(h->i_layer_id)
+				//	printf("EEEEEEEEEEEEEEEEEE end\n");
+            	}
             else
-                x264_mb_mc_0xywh( h, x, y, 2, 2 );
+            	{
+            	  //if(h->i_layer_id)
+					//printf("FFFFFFFFFFFFFFFFFFFFFFFFFFF start\n");
+                  x264_mb_mc_0xywh( h, x, y, 2, 2 );
+				  //if(h->i_layer_id)
+					//printf("FFFFFFFFFFFFFFFFFFFFFFFFF end\n");
+            	}
         else
+        	{
+            //if(h->i_layer_id)
+				//	printf("GGGGGGGGGGGGGGGGGGGGGGG start\n");        	
             x264_mb_mc_1xywh( h, x, y, 2, 2 );
+			//if(h->i_layer_id)
+				//	printf("GGGGGGGGGGGGGGGGGGGGGGG start\n");
+        	}
     }
 }
 
 void x264_mb_mc( x264_t *h )
 {
-
-    //printf("AAAAAAAAAAAAAAAAAAAAAAAAAA  h->i_frame:%d\n",h->i_frame);
+    //if(h->i_layer_id)
+    //printf("AAAAAAAAAAAAAAAAAAAAAAAAAA   partition:%s   sub_partition:%s   %s    %s   %s       h->i_frame:%d\n",
+		//mb_partition_name[h->mb.i_partition],
+		//mb_partition_name[h->mb.i_sub_partition[0]],mb_partition_name[h->mb.i_sub_partition[1]],
+		//mb_partition_name[h->mb.i_sub_partition[2]],mb_partition_name[h->mb.i_sub_partition[3]],
+		//h->i_frame);
     if( h->mb.i_partition == D_8x8 )
     {
-       
+        //printf("HHHHHHHHHHHHHHH  we come to the D_8x8 \n");
         for( int i = 0; i < 4; i++ )
             x264_mb_mc_8x8( h, i );
     }
@@ -280,6 +329,8 @@ void x264_mb_mc( x264_t *h )
 
 		
     }
+	//if(h->i_layer_id)
+	 //printf("AAAAAAAAAAAAAAAAAAAAAAAAAA END\n");
 }
 
 int x264_macroblock_cache_allocate( x264_t *h )
@@ -326,11 +377,12 @@ int x264_macroblock_cache_allocate( x264_t *h )
 
     PREALLOC_INIT
 
+
     PREALLOC( h->mb.qp, i_mb_count * sizeof(int8_t) );
     PREALLOC( h->mb.cbp, i_mb_count * sizeof(int16_t) );
     PREALLOC( h->mb.mb_transform_size, i_mb_count * sizeof(int8_t) );
     PREALLOC( h->mb.slice_table, i_mb_count * sizeof(uint16_t) );
-
+   
     /* 0 -> 3 top(4), 4 -> 6 : left(3) */
     PREALLOC( h->mb.intra4x4_pred_mode, i_mb_count * 8 * sizeof(int8_t) );
 
@@ -348,10 +400,14 @@ int x264_macroblock_cache_allocate( x264_t *h )
     PREALLOC_BL( h->mbBL.non_zero_count, i_mbBL_count * 48 * sizeof(uint8_t) );
 
 
+    /*BY MING*/
+	PREALLOC_EL1(h->mbEL1.type_base,i_mbEL1_count*sizeof(int8_t));
 
     PREALLOC_EL1( h->mbEL1.qp, i_mbEL1_count * sizeof(int8_t) );
     PREALLOC_EL1( h->mbEL1.cbp, i_mbEL1_count * sizeof(int16_t) );
     PREALLOC_EL1( h->mbEL1.mb_transform_size, i_mbEL1_count * sizeof(int8_t) );
+	/*BY MING*/
+	PREALLOC_EL1( h->mbEL1.mb_transform_size_base, i_mbEL1_count * sizeof(int8_t) );
     PREALLOC_EL1( h->mbEL1.slice_table, i_mbEL1_count * sizeof(uint16_t) );
 
     /* 0 -> 3 top(4), 4 -> 6 : left(3) */
@@ -1404,6 +1460,10 @@ static void ALWAYS_INLINE x264_macroblock_cache_load_EL(x264_t* h,int mb_x,int m
     int top_4x4 = (4*top_y+3) * s4x4 + 4*mb_x;
     int lists = (1 << h->sh.i_type) & 3;
 
+    /* GCC pessimizes direct loads from heap-allocated arrays due to aliasing. */
+    /* By only dereferencing them once, we avoid this issue. */
+    //int8_t (*i4x4)[8] = h->mb.intra4x4_pred_mode;
+    uint8_t (*nnz)[48] = h->mb.non_zero_count;
 
 	int16_t *cbp = h->mb.cbp;
 	const x264_left_table_t *left_index_table = h->mb.left_index_table;
@@ -1422,11 +1482,25 @@ static void ALWAYS_INLINE x264_macroblock_cache_load_EL(x264_t* h,int mb_x,int m
 	   if( h->mb.i_neighbour & MB_TOP )
 	   {
 		  h->mb.cache.i_cbp_top = cbp[top];
+		         /* load intra4x4 */
+        //CP32( &h->mb.cache.intra4x4_pred_mode[x264_scan8[0] - 8], &i4x4[top][0] );
+
+        /* load non_zero_count */
+        CP32( &h->mb.cache.non_zero_count[x264_scan8[ 0] - 8], &nnz[top][12] );
+        CP32( &h->mb.cache.non_zero_count[x264_scan8[16] - 8], &nnz[top][16-4 + (16>>CHROMA_V_SHIFT)] );
+        CP32( &h->mb.cache.non_zero_count[x264_scan8[32] - 8], &nnz[top][32-4 + (16>>CHROMA_V_SHIFT)] );
 	   }
 
 	else
 	   {
 		   h->mb.cache.i_cbp_top = -1;
+		   /* load intra4x4 */
+		   //M32( &h->mb.cache.intra4x4_pred_mode[x264_scan8[0] - 8] ) = 0xFFFFFFFFU;
+		  // 
+		   /* load non_zero_count */
+		   M32( &h->mb.cache.non_zero_count[x264_scan8[ 0] - 8] ) = 0x80808080U;
+		   M32( &h->mb.cache.non_zero_count[x264_scan8[16] - 8] ) = 0x80808080U;
+		   M32( &h->mb.cache.non_zero_count[x264_scan8[32] - 8] ) = 0x80808080U;
 
 		}
 
@@ -1448,13 +1522,65 @@ static void ALWAYS_INLINE x264_macroblock_cache_load_EL(x264_t* h,int mb_x,int m
             h->mb.cache.i_cbp_left = cbp[ltop];
 
 
+		           /* load intra4x4 */
+        //h->mb.cache.intra4x4_pred_mode[x264_scan8[ 0] - 1] = i4x4[ltop][left_index_table->intra[0]];
+       // h->mb.cache.intra4x4_pred_mode[x264_scan8[ 2] - 1] = i4x4[ltop][left_index_table->intra[1]];
+        //h->mb.cache.intra4x4_pred_mode[x264_scan8[ 8] - 1] = i4x4[lbot][left_index_table->intra[2]];
+        //h->mb.cache.intra4x4_pred_mode[x264_scan8[10] - 1] = i4x4[lbot][left_index_table->intra[3]];
 
-		   
-		}
+        /* load non_zero_count */
+        h->mb.cache.non_zero_count[x264_scan8[ 0] - 1] = nnz[ltop][left_index_table->nnz[0]];
+        h->mb.cache.non_zero_count[x264_scan8[ 2] - 1] = nnz[ltop][left_index_table->nnz[1]];
+        h->mb.cache.non_zero_count[x264_scan8[ 8] - 1] = nnz[lbot][left_index_table->nnz[2]];
+        h->mb.cache.non_zero_count[x264_scan8[10] - 1] = nnz[lbot][left_index_table->nnz[3]];
+
+		if( CHROMA_FORMAT >= CHROMA_422 )
+        {
+            int offset = (4>>CHROMA_H_SHIFT) - 4;
+            h->mb.cache.non_zero_count[x264_scan8[16+ 0] - 1] = nnz[ltop][left_index_table->nnz[0]+16+offset];
+            h->mb.cache.non_zero_count[x264_scan8[16+ 2] - 1] = nnz[ltop][left_index_table->nnz[1]+16+offset];
+            h->mb.cache.non_zero_count[x264_scan8[16+ 8] - 1] = nnz[lbot][left_index_table->nnz[2]+16+offset];
+            h->mb.cache.non_zero_count[x264_scan8[16+10] - 1] = nnz[lbot][left_index_table->nnz[3]+16+offset];
+            h->mb.cache.non_zero_count[x264_scan8[32+ 0] - 1] = nnz[ltop][left_index_table->nnz[0]+32+offset];
+            h->mb.cache.non_zero_count[x264_scan8[32+ 2] - 1] = nnz[ltop][left_index_table->nnz[1]+32+offset];
+            h->mb.cache.non_zero_count[x264_scan8[32+ 8] - 1] = nnz[lbot][left_index_table->nnz[2]+32+offset];
+            h->mb.cache.non_zero_count[x264_scan8[32+10] - 1] = nnz[lbot][left_index_table->nnz[3]+32+offset];
+        }
+        else
+        {
+            h->mb.cache.non_zero_count[x264_scan8[16+ 0] - 1] = nnz[ltop][left_index_table->nnz_chroma[0]];
+            h->mb.cache.non_zero_count[x264_scan8[16+ 2] - 1] = nnz[lbot][left_index_table->nnz_chroma[1]];
+            h->mb.cache.non_zero_count[x264_scan8[32+ 0] - 1] = nnz[ltop][left_index_table->nnz_chroma[2]];
+            h->mb.cache.non_zero_count[x264_scan8[32+ 2] - 1] = nnz[lbot][left_index_table->nnz_chroma[3]];
+        }
+	 }
 
 	 else
 	   {
 		   h->mb.cache.i_cbp_left = -1;
+		   //h->mb.cache.intra4x4_pred_mode[x264_scan8[ 0] - 1] =
+		   //h->mb.cache.intra4x4_pred_mode[x264_scan8[ 2] - 1] =
+		   //h->mb.cache.intra4x4_pred_mode[x264_scan8[ 8] - 1] =
+		   //h->mb.cache.intra4x4_pred_mode[x264_scan8[10] - 1] = -1;
+		   
+		   /* load non_zero_count */
+		   h->mb.cache.non_zero_count[x264_scan8[ 0] - 1] =
+		   h->mb.cache.non_zero_count[x264_scan8[ 2] - 1] =
+		   h->mb.cache.non_zero_count[x264_scan8[ 8] - 1] =
+		   h->mb.cache.non_zero_count[x264_scan8[10] - 1] =
+		   h->mb.cache.non_zero_count[x264_scan8[16+ 0] - 1] =
+		   h->mb.cache.non_zero_count[x264_scan8[16+ 2] - 1] =
+		   h->mb.cache.non_zero_count[x264_scan8[32+ 0] - 1] =
+		   h->mb.cache.non_zero_count[x264_scan8[32+ 2] - 1] = 0x80;
+		   if( CHROMA_FORMAT >= CHROMA_422 )
+		   {
+			   h->mb.cache.non_zero_count[x264_scan8[16+ 8] - 1] =
+			   h->mb.cache.non_zero_count[x264_scan8[16+10] - 1] =
+			   h->mb.cache.non_zero_count[x264_scan8[32+ 8] - 1] =
+			   h->mb.cache.non_zero_count[x264_scan8[32+10] - 1] = 0x80;
+		   }
+
+		   
 		}
 
 
@@ -1462,17 +1588,29 @@ static void ALWAYS_INLINE x264_macroblock_cache_load_EL(x264_t* h,int mb_x,int m
 
 
 
+ 
+	
+    if( h->pps->b_transform_8x8_mode )
+    {
+        h->mb.cache.i_neighbour_transform_size =
+            ( (h->mb.i_neighbour & MB_LEFT) && h->mb.mb_transform_size[left[0]] )
+          + ( (h->mb.i_neighbour & MB_TOP) && h->mb.mb_transform_size[top]  );
+    }
 
 	
+	//printf("h->pps[1].b_transform_8x8_mode:%d     h->mb.cache.i_neighbour_transform_size:%d  \n",h->pps[1].b_transform_8x8_mode,h->mb.cache.i_neighbour_transform_size);
 
     /* let fdec->planeEL1 = fdec->planeUpsamplingEL1 according to the mb_type - BY MING*/
-   
-	int i_mb_type = h->mb.i_type;
-   	if(i_mb_type == I_BL)
-	{
-	  for(int p = 0;p < 3;p++)
+
+    for(int p = 0;p < 3;p++)
 	   h->fdec->planeEL1[p] = h->fdec->planeUpsampleEL1[p];
-	}
+	int i_mb_type = h->mb.i_type;
+   	//if(i_mb_type == I_BL)
+	//{ 
+	 // printf("call h->fdec->planeEL1[p] = h->fdec->planeUpsampleEL1[p]\n");
+	  //for(int p = 0;p < 3;p++)
+	   //h->fdec->planeEL1[p] = h->fdec->planeUpsampleEL1[p];
+	//}
 
 	
     if(!b_mbaff)
@@ -1533,7 +1671,7 @@ static void ALWAYS_INLINE x264_macroblock_cache_load_EL(x264_t* h,int mb_x,int m
                 h->mb.pic.p_integral[list][i] = &h->fref[list][i]->integral[offset];
     }
 
-	  x264_prefetch_fenc( h, h->fdec, h->mb.i_mb_x, h->mb.i_mb_y );
+	  x264_prefetch_fenc( h, h->fenc, h->mb.i_mb_x, h->mb.i_mb_y );
 	 
 	 
 	  // load ref/mv/mvd */
@@ -1698,11 +1836,18 @@ static void ALWAYS_INLINE x264_macroblock_cache_load_EL(x264_t* h,int mb_x,int m
 
 	  
       int i_mb_xy = mb_y*h->mb.i_mb_width + mb_x; 
-	  int i_qp = h->mb.qp[i_mb_xy];
-	  h->mb.i_qp = i_qp;
-	  h->mb.i_chroma_qp = h->chroma_qp_table[i_qp];  
-	
+      h->mb.i_partition = h->mb.partition[i_mb_xy];
+      for(int k = 0;k < 4;k++)
+	     h->mb.i_sub_partition[k] = h->mb.sub_partition[i_mb_xy][k];
 	  
+	  int i_qp = h->mb.qp[i_mb_xy];
+	  if(h->i_layer_id == 1 )
+	  	i_qp = h->mb.i_last_qp;
+	  h->mb.i_qp = i_qp;
+	  h->mb.i_chroma_qp = i_qp;
+	  //h->mb.i_chroma_qp = h->chroma_qp_table[i_qp];  
+	
+	  h->mb.b_transform_8x8 = h->mb.mb_transform_size[i_mb_xy];
 }
 
 
@@ -1776,6 +1921,7 @@ static void ALWAYS_INLINE x264_macroblock_cache_load( x264_t *h, int mb_x, int m
         M32( &h->mb.cache.intra4x4_pred_mode[x264_scan8[0] - 8] ) = 0xFFFFFFFFU;
 
         /* load non_zero_count */
+
         M32( &h->mb.cache.non_zero_count[x264_scan8[ 0] - 8] ) = 0x80808080U;
         M32( &h->mb.cache.non_zero_count[x264_scan8[16] - 8] ) = 0x80808080U;
         M32( &h->mb.cache.non_zero_count[x264_scan8[32] - 8] ) = 0x80808080U;
@@ -1836,6 +1982,7 @@ static void ALWAYS_INLINE x264_macroblock_cache_load( x264_t *h, int mb_x, int m
         h->mb.cache.intra4x4_pred_mode[x264_scan8[10] - 1] = -1;
 
         /* load non_zero_count */
+	   	
         h->mb.cache.non_zero_count[x264_scan8[ 0] - 1] =
         h->mb.cache.non_zero_count[x264_scan8[ 2] - 1] =
         h->mb.cache.non_zero_count[x264_scan8[ 8] - 1] =
@@ -1844,6 +1991,7 @@ static void ALWAYS_INLINE x264_macroblock_cache_load( x264_t *h, int mb_x, int m
         h->mb.cache.non_zero_count[x264_scan8[16+ 2] - 1] =
         h->mb.cache.non_zero_count[x264_scan8[32+ 0] - 1] =
         h->mb.cache.non_zero_count[x264_scan8[32+ 2] - 1] = 0x80;
+	   
         if( CHROMA_FORMAT >= CHROMA_422 )
         {
             h->mb.cache.non_zero_count[x264_scan8[16+ 8] - 1] =
@@ -2231,6 +2379,27 @@ static void ALWAYS_INLINE x264_macroblock_cache_load( x264_t *h, int mb_x, int m
     h->mb.i_neighbour4[5] =
     h->mb.i_neighbour8[1] = MB_LEFT | (h->mb.i_neighbour_intra & MB_TOPRIGHT)
                             | ((h->mb.i_neighbour_intra & MB_TOP) ? MB_TOP|MB_TOPLEFT : 0);
+
+
+
+
+ if(h->i_layer_id)
+ {
+      int i_mb_xy = mb_y*h->mb.i_mb_width + mb_x; 
+      h->mb.i_partition = h->mb.partition[i_mb_xy];
+      for(int k = 0;k < 4;k++)
+	     h->mb.i_sub_partition[k] = h->mb.sub_partition[i_mb_xy][k];
+	  
+	  int i_qp = h->mb.qp[i_mb_xy];
+	  if(h->i_layer_id == 1 )
+	  	i_qp = h->mb.i_last_qp;
+	  h->mb.i_qp = i_qp;
+	 // h->mb.i_chroma_qp = i_qp;
+	  h->mb.i_chroma_qp = h->chroma_qp_table[i_qp];  
+	
+	  h->mb.b_transform_8x8 = h->mb.mb_transform_size[i_mb_xy];
+ }
+	
 }
 
 void x264_macroblock_cache_load_progressive( x264_t *h, int mb_x, int mb_y )
@@ -2238,7 +2407,6 @@ void x264_macroblock_cache_load_progressive( x264_t *h, int mb_x, int mb_y )
     if(h->i_layer_id == 0)
     x264_macroblock_cache_load( h, mb_x, mb_y, 0 );
 	else
-	
 	x264_macroblock_cache_load_EL(h,mb_x,mb_y,0);
 }
 

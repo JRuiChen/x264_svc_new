@@ -120,14 +120,42 @@ static void x264_cabac_cbp_luma( x264_t *h, x264_cabac_t *cb )
     int cbp = h->mb.i_cbp_luma;
     int cbp_l = h->mb.cache.i_cbp_left;
     int cbp_t = h->mb.cache.i_cbp_top;
- /*   if(h->i_layer_id)
-		printf("AAAAAAAAAAAAAA  cbp_luma in base layer %d   cache.i_cbp_left:%d   cache.i_cbp_top:%d   mb_x:%d   mb_y:%d\n",cbp,
-		  cbp_l, cbp_t, h->mb.i_mb_xy%h->mb.i_mb_width,h->mb.i_mb_xy/h->mb.i_mb_width);
+    if(h->i_layer_id)
+		printf("AAAAAAAAAAAAAA  cbp_luma in enhance layer %d      mb_x:%d   mb_y:%d\n",cbp,h->mb.i_mb_xy%h->mb.i_mb_width,h->mb.i_mb_xy/h->mb.i_mb_width);
 	else
-	    printf("00000000000000  cbp_luma in enhance layer %d	cache.i_cbp_left:%d   cache.i_cbp_top:%d 	mb_x:%d   mb_y:%d\n",cbp,
-	      cbp_l,cbp_t,h->mb.i_mb_xy%h->mb.i_mb_width,h->mb.i_mb_xy/h->mb.i_mb_width);
-*/
+	    printf("00000000000000  cbp_luma in enhance layer %d		mb_x:%d   mb_y:%d\n",cbp,h->mb.i_mb_xy%h->mb.i_mb_width,h->mb.i_mb_xy/h->mb.i_mb_width);
 
+	/*sky0924*/
+	/*if(h->i_layer_id  )
+        {
+		  cbp =0;
+		  cbp_l = 0;
+		  cbp_t = 0;
+	   if(h->mb.i_mb_y == 0)
+		{
+		   
+		   cbp_t =-1;
+		   h->mb.cache.i_cbp_top =-1; 
+		}
+	   if(h->mb.i_mb_xy == 0)
+	   	{
+	   	cbp_l = -1;
+			h->mb.cache.i_cbp_left = -1 ;
+	   	}
+	   if(h->mb.i_mb_x ==0)
+	   	{
+	   		cbp_l = -1;
+			h->mb.cache.i_cbp_left = -1 ;
+	   	}
+	       h->mb.i_cbp_luma =0;
+	  	
+	
+	 }*/
+
+	
+	//printf("cbp%d------------ h->mb.i_cbp_chroma:%d h->mb.i_mb_xy:%d\n", h->mb.i_cbp_luma,h->mb.i_cbp_chroma,h->mb.i_mb_xy);
+//if(!h->i_layer_id)
+	//printf("h->mb.cache.i_cbp_left %d ,h->mb.cache.i_cbp_top %d\n",h->mb.cache.i_cbp_left,h->mb.cache.i_cbp_top);
 	x264_cabac_encode_decision     ( cb, 76 - ((cbp_l >> 1) & 1) - ((cbp_t >> 1) & 2), (cbp >> 0) & 1 );
 	
     x264_cabac_encode_decision     ( cb, 76 - ((cbp   >> 0) & 1) - ((cbp_t >> 2) & 2), (cbp >> 1) & 1 );
@@ -137,26 +165,45 @@ static void x264_cabac_cbp_luma( x264_t *h, x264_cabac_t *cb )
 
 static void x264_cabac_cbp_chroma( x264_t *h, x264_cabac_t *cb )
 {
-    int cbp_a = h->mb.cache.i_cbp_left& 0x30;
-    int cbp_b = h->mb.cache.i_cbp_top & 0x30;
+    int cbp_a = h->mb.cache.i_cbp_left & 0x30;
+    int cbp_b = h->mb.cache.i_cbp_top  & 0x30;
     int ctx = 0;
 
 
+/*sky0925*/
+/*if(h->i_layer_id)
+{
+	cbp_a = 0 & 0x30;
+	cbp_b =0 & 0x30;
+	if(h->mb.i_mb_y == 0)
+		{
+		
+		
+		cbp_b = -1& 0x30;
+		}
+	if(h->mb.i_mb_x == 0)
+			cbp_a = -1& 0x30;
+	h->mb.i_cbp_chroma = 0;
+	
+}
+else
+	{*/
 
 	
-    if( cbp_a && h->mb.cache.i_cbp_left != -1 ) ctx++;
-    if( cbp_b && h->mb.cache.i_cbp_top  != -1 ) ctx+=2;
+    		if( cbp_a && h->mb.cache.i_cbp_left != -1 ) ctx++;
+    		if( cbp_b && h->mb.cache.i_cbp_top  != -1 ) ctx+=2;
 
-
-	/*if(h->i_layer_id)
-    printf("BBBBBBBBBBBBBBBB  cbp_chroma in enhance layer %d    h->mb.cache.i_cbp_left:%d    h->mb.cache.i_cbp_top:%d     mb_x:%d   mb_y:%d\n",
-    h->mb.i_cbp_chroma,h->mb.cache.i_cbp_left,h->mb.cache.i_cbp_top,h->mb.i_mb_xy%h->mb.i_mb_width,h->mb.i_mb_xy/h->mb.i_mb_width);
+			
+//	}// sky0925
+	if(h->i_layer_id)
+    printf("BBBBBBBBBBBBBBBB  cbp_chroma in enhance layer %d      mb_x:%d   mb_y:%d\n",h->mb.i_cbp_chroma,h->mb.i_mb_xy%h->mb.i_mb_width,h->mb.i_mb_xy/h->mb.i_mb_width);
 
     else
 	
 	printf("2222222222222222  cbp_chroma in enhance layer %d	  mb_x:%d	mb_y:%d\n",h->mb.i_cbp_chroma,h->mb.i_mb_xy%h->mb.i_mb_width,h->mb.i_mb_xy/h->mb.i_mb_width);
-*/
 
+
+   //	printf("cbp------------ h->mb.i_cbp_chroma:%d h->mb.i_mb_xy:%d\n", h->mb.i_cbp_chroma,h->mb.i_mb_xy);
     if( h->mb.i_cbp_chroma == 0 )
         x264_cabac_encode_decision_noup( cb, 77 + ctx, 0 );
     else
@@ -173,14 +220,10 @@ static void x264_cabac_cbp_chroma( x264_t *h, x264_cabac_t *cb )
 static void x264_cabac_qp_delta( x264_t *h, x264_cabac_t *cb )
 {
     int i_dqp = h->mb.i_qp - h->mb.i_last_qp;
-	/*if(h->i_layer_id == 0)
-	{   printf("x264_cabac_qp for BL:%d  \n",h->mb.i_qp);
+	if(h->i_layer_id == 0)
 		printf("x264_cabac_qp_delta for BL:%d   \n",i_dqp);
-	}
 	else
-	{   printf("x264_cabac_qp for EL:%d  \n",h->mb.i_qp);
 		printf("x264_cabac_qp_delta for EL:%d   \n",i_dqp);
-	}*/
     int ctx;
 
     /* Avoid writing a delta quant if we have an empty i16x16 block, e.g. in a completely
@@ -219,7 +262,10 @@ static void x264_cabac_qp_delta( x264_t *h, x264_cabac_t *cb )
 #if !RDO_SKIP_BS
 void x264_cabac_mb_skip( x264_t *h, int b_skip )
 {
-
+ /*0926sky debug
+	if(h->i_layer_id && h->mb.i_mb_xy == 0)
+		h->mb.cache.i_neighbour_skip = 0;
+	*/
     int ctx = h->mb.cache.i_neighbour_skip + 11;
 	//printf("   int ctx = h->mb.cache.i_neighbour_skip %d",   h->mb.cache.i_neighbour_skip  );
     if( h->sh.i_type != SLICE_TYPE_P )
@@ -453,6 +499,8 @@ static ALWAYS_INLINE void x264_cabac_mb_header_i( x264_t *h, x264_cabac_t *cb, i
 	    
         if( h->pps[h->i_layer_id].b_transform_8x8_mode)
         {
+        if(h->i_layer_id)
+            printf("have cabac written b_transform_8x8_mode\n");
             x264_cabac_transform_size( h, cb ); // ransform_size_8x8_flag
         }
         int di = h->mb.b_transform_8x8 ? 4 : 1;
@@ -653,28 +701,52 @@ static int ALWAYS_INLINE x264_cabac_cbf_ctxidxinc( x264_t *h, int i_cat, int i_i
 
     if( b_dc )
     {
-    	int i_nza;
+    		int i_nza;
 		int i_nzb;
         i_idx -= LUMA_DC;
         if( i_cat == DCT_CHROMA_DC )
-        {		
-              i_nza = h->mb.cache.i_cbp_left != -1 ? (h->mb.cache.i_cbp_left >> (8 + i_idx)) & 1 : b_intra;
+        {
+
+		
+		/*sky0925
+    	    if(h->i_layer_id && h->mb.i_mb_xy==0)
+        	{
+        		i_nza = b_intra ;
+			 i_nzb = b_intra ;
+        	}
+		else{
+*/
+
+			
+                i_nza = h->mb.cache.i_cbp_left != -1 ? (h->mb.cache.i_cbp_left >> (8 + i_idx)) & 1 : b_intra;
            	  i_nzb = h->mb.cache.i_cbp_top  != -1 ? (h->mb.cache.i_cbp_top  >> (8 + i_idx)) & 1 : b_intra;
 
 
-            if(h->i_layer_id)
-            {
-               i_nza = h->mb.cache.i_cbp_left == -1?0:i_nza;
-			   i_nzb = h->mb.cache.i_cbp_top == -1?0:i_nzb;
-            }
+
+
+		  //   } //sky else
+	//printf("  2  i_nza = (h->mb.cache.i_cbp_left >> (8 + i_idx)) & 1;%d,%d\n",h->mb.cache.i_cbp_left,h->mb.cache.i_cbp_top);
 			return base_ctx[i_cat] + 2*i_nzb + i_nza;
-        }
+        	}
         else
         {
-            i_nza = (h->mb.cache.i_cbp_left >> (8 + i_idx)) & 1;
-            i_nzb = (h->mb.cache.i_cbp_top  >> (8 + i_idx)) & 1;
 
+
+			/*sky0925
+        if(h->i_layer_id && h->mb.i_mb_xy==0)
+        	{
+        		    i_nza = (-1 >> (8 + i_idx)) & 1;
+            			 i_nzb = (-1  >> (8 + i_idx)) & 1;
+        	}
+		else{
+*/
+
+		//	printf("  1  i_nza = (h->mb.cache.i_cbp_left >> (8 + i_idx)) & 1;%d,%d\n",h->mb.cache.i_cbp_left,h->mb.cache.i_cbp_top);
 			
+            i_nza = (h->mb.cache.i_cbp_left >> (8 + i_idx)) & 1;
+             i_nzb = (h->mb.cache.i_cbp_top  >> (8 + i_idx)) & 1;
+
+			//   } //sky else
             return base_ctx[i_cat] + 2*i_nzb + i_nza;
         }
     }
@@ -683,11 +755,7 @@ static int ALWAYS_INLINE x264_cabac_cbf_ctxidxinc( x264_t *h, int i_cat, int i_i
         int i_nza = h->mb.cache.non_zero_count[x264_scan8[i_idx] - 1];
         int i_nzb = h->mb.cache.non_zero_count[x264_scan8[i_idx] - 8];
 
-        if(h->i_layer_id)
-		{
-		  i_nza = i_nza == 0x80?0:i_nza;
-		  i_nzb = i_nzb == 0x80?0:i_nzb;
-		}
+
         if( x264_constant_p(b_intra) && !b_intra )
             return base_ctx[i_cat] + ((2*i_nzb + i_nza)&0x7f);
         else
@@ -773,19 +841,6 @@ static ALWAYS_INLINE void x264_cabac_block_residual_internal( x264_t *h, x264_ca
     int last = h->quantf.coeff_last[ctx_block_cat]( l );
     const uint8_t *levelgt1_ctx = chroma422dc ? coeff_abs_levelgt1_ctx_chroma_dc : coeff_abs_levelgt1_ctx;
     dctcoef coeffs[64];
-
-
-	
-	/*printf("\n**************+++++ %d ++++++ %d *****************\n",ctx_block_cat,chroma422dc);
-
-	for(int tempi =0 ;tempi <=last; tempi ++)
-		{
-			if(tempi%4 ==0 )
-				printf("\n");
-			printf("  %d   ",l[tempi]);
-			
-		}
-	printf("\n");*/
 
 #define WRITE_SIGMAP( sig_off, last_off )\
 {\
@@ -1032,7 +1087,7 @@ do\
 static ALWAYS_INLINE void x264_macroblock_write_cabac_internal( x264_t *h, x264_cabac_t *cb, int plane_count, int chroma )
 {
     const int i_mb_type = h->mb.i_type;
-    //printf("\n x264_macroblock_write_cabac_internal begin begin %d \n",i_mb_type);
+
 	 
 #if !RDO_SKIP_BS
     const int i_mb_pos_start = x264_cabac_pos( cb );
@@ -1051,7 +1106,6 @@ if(h->i_layer_id)
 	//EL
 	//basemodeflag not present
 	// basemodeflag == 1
-
 }
 else
 {
@@ -1069,9 +1123,17 @@ NumMbPart( mb_type ) = = 4 )*/
 #if !RDO_SKIP_BS
     i_mb_pos_tex = x264_cabac_pos( cb );
     h->stat.frame.i_mv_bits += i_mb_pos_tex - i_mb_pos_start;
-  
+
+   
+
+
     if( i_mb_type == I_PCM )
     {
+        /*skytest0920*/
+		//if(h->i_layer_id)
+		//	{
+			//	printf(" i_mb_type == I_PCM called\n");
+			//}
 		
 		
         bs_t s;
@@ -1110,7 +1172,7 @@ NumMbPart( mb_type ) = = 4 )*/
 
     if( x264_mb_transform_8x8_allowed( h ) && h->mb.i_cbp_luma )
     {	
-	    // printf("8888888888888888888888888 call x264_cabac_transform_size( h, cb );\n");
+	     printf("8888888888888888888888888 call x264_cabac_transform_size( h, cb );\n");
 		 if(h->i_layer_id == 0)
 		x264_cabac_transform_size( h, cb ); // 这在往里边写transform size
     }
@@ -1120,11 +1182,10 @@ MbPartPredMode( mb_type, 0 ) = = Intra_16x16 ) */
     if( h->mb.i_cbp_luma || (chroma && h->mb.i_cbp_chroma) || i_mb_type == I_16x16 )
     {
 	
-		//printf("call x264_cabac_qp_delta( h, cb ); and    /* write residual */; test by wzl \n");
+		//printf("call x264_cabac_qp_delta( h, cb ); and    /* write residual */;\n");
 		
-		const int b_intra = IS_INTRA( i_mb_type );
+		 int b_intra = IS_INTRA( i_mb_type );
         x264_cabac_qp_delta( h, cb );
-
 
 		
 
@@ -1137,7 +1198,6 @@ MbPartPredMode( mb_type, 0 ) = = Intra_16x16 ) */
             /* DC Luma */
             for( int p = 0; p < plane_count; p++ )
             {
-           // printf("x264_cabac_block_residual_dc_cbf  DC Luma DC Luma \n");
             
 			x264_cabac_block_residual_dc_cbf( h, cb, ctx_cat_plane[DCT_LUMA_DC][p], LUMA_DC+p, h->dct.luma16x16_dc[p], 1 );
                 /* AC Luma */
@@ -1149,7 +1209,8 @@ MbPartPredMode( mb_type, 0 ) = = Intra_16x16 ) */
         }
         else if( h->mb.b_transform_8x8 ) // i_mb_type  != i_16X16 这条线else if( CodedBlockPatternLuma & ( 1 << i8x8 ) )
         {
-
+        if(h->i_layer_id)
+		printf(" else if( h->mb.b_transform_8x8 ) \n");
 			if( plane_count == 3 )
             {
                 ALIGNED_4( uint8_t nnzbak[3][8] );
@@ -1193,38 +1254,59 @@ if( (h->mb.i_neighbour & MB_TOP) && !h->mb.mb_transform_size[h->mb.i_mb_top_xy] 
        //residual_block( level8x8[ i8x8 ], 4 * startIdx, 4 * endIdx + 3, 64 )
                 for( int p = 0; p < 3; p++ )
                     FOREACH_BIT( i, 0, h->mb.i_cbp_luma )
-                	{
-						printf("x264_cabac_block_residual_8x8_cbf\n");
-						x264_cabac_block_residual_8x8_cbf( h, cb, ctx_cat_plane[DCT_LUMA_8x8][p], i*4+p*16, h->dct.luma8x8[i+p*4], b_intra );
-                	}
+            
+                        x264_cabac_block_residual_8x8_cbf( h, cb, ctx_cat_plane[DCT_LUMA_8x8][p], i*4+p*16, h->dct.luma8x8[i+p*4], b_intra );
+
                 MUNGE_8x8_NNZ( RESTORE )
             }
             else
             {
                 FOREACH_BIT( i, 0, h->mb.i_cbp_luma )
                 	{
-						printf("x264_cabac_block_residual_8x8\n");
-						x264_cabac_block_residual_8x8( h, cb, DCT_LUMA_8x8, h->dct.luma8x8[i] );
+			         printf("WWWWWWWWWWWWWWWWWWWWWWWWWWw   8x8 residual_8x8\n");
+                    x264_cabac_block_residual_8x8( h, cb, DCT_LUMA_8x8, h->dct.luma8x8[i] );
                 	}
             }
         }
         else // h->mb.b_transform_8X8 == 0    != intra16*16
         {
-           // if(h->i_layer_id)
-		   // printf("  else // h->mb.b_transform_8X8 == 0    != intra16*16    mb_x:%d   mb_y:%d\n",h->mb.i_mb_xy%h->mb.i_mb_width,h->mb.i_mb_xy/h->mb.i_mb_width);
+           if(h->i_layer_id)
+		printf("  else // h->mb.b_transform_8X8 == 0    != intra16*16    mb_x:%d   mb_y:%d\n",h->mb.i_mb_xy%h->mb.i_mb_width,h->mb.i_mb_xy/h->mb.i_mb_width);
             for( int p = 0; p < plane_count; p++ )
                 FOREACH_BIT( i8x8, 0, h->mb.i_cbp_luma )
                     for( int i = 0; i < 4; i++ )	
-                    	{ //  if(i % 4 == 0)
-							//printf("\nx264_cabac_block_residual_cbf ********* %d \n ",h->mb.i_cbp_luma);
+                    	{   
 
-                    	    
-                         x264_cabac_block_residual_cbf( h, cb, ctx_cat_plane[DCT_LUMA_4x4][p], i+i8x8*4+p*16, h->dct.luma4x4[i+i8x8*4+p*16], b_intra );
+						    if( i == 0)
+						 	printf("\n \n \n");
+							printf("sub_block_id:%d \n",i+i8x8*4);
+							for(int j = 0;j < 16;j++)
+							{
+
+                    	    printf("%d   ", h->dct.luma4x4[i+i8x8*4+p*16][j]);
+					        if((j+1) % 4 == 0)
+								printf("\n");
+							}
+							printf("----------------------\n");
+                         x264_cabac_block_residual_cbf( h, cb, ctx_cat_plane[DCT_LUMA_4x4][p], i+i8x8*4+p*16, h->dct.luma4x4[i+i8x8*4+p*16], 0/*b_intra*/ );
 
 						 	
 					    }
         }
 
+/*
+		if(i_mb_type == I_BL)
+		{
+		         for( int p = 0; p < plane_count; p++ )
+                FOREACH_BIT( i8x8, 0, h->mb.i_cbp_luma )
+                    for( int i = 0; i < 4; i++ )	
+                    	{
+                           x264_cabac_block_residual_cbf( h, cb, ctx_cat_plane[DCT_LUMA_4x4][p], i+i8x8*4+p*16, h->dct.luma4x4[i+i8x8*4+p*16], b_intra );
+
+					    }
+
+		}*/
+     
         if( chroma && h->mb.i_cbp_chroma ) /* Chroma DC residual present */
         {
             if( CHROMA_FORMAT == CHROMA_422 )
@@ -1238,25 +1320,19 @@ if( (h->mb.i_neighbour & MB_TOP) && !h->mb.mb_transform_size[h->mb.i_mb_top_xy] 
 			//第一帧增强层其实走的是这条
             else
             {
+          //    if(h->i_layer_id)
+			//printf("  CHROMA_FORMAT == CHROMA_422 else\n");
                 x264_cabac_block_residual_dc_cbf( h, cb, DCT_CHROMA_DC, CHROMA_DC+0, h->dct.chroma_dc[0], b_intra );
-                
-				
-
-				x264_cabac_block_residual_dc_cbf( h, cb, DCT_CHROMA_DC, CHROMA_DC+1, h->dct.chroma_dc[1], b_intra );
-
-			
-
-			}
+                x264_cabac_block_residual_dc_cbf( h, cb, DCT_CHROMA_DC, CHROMA_DC+1, h->dct.chroma_dc[1], b_intra );
+            }
 
             if( h->mb.i_cbp_chroma == 2 ) /* Chroma AC residual present */
             {
+           // printf(" h->mb.i_cbp_chroma == 2 \n");
                 int step = 8 << CHROMA_V_SHIFT;
                 for( int i = 16; i < 3*16; i += step )
                     for( int j = i; j < i+4; j++ )
-                    	{
-						  x264_cabac_block_residual_cbf( h, cb, DCT_CHROMA_AC, j, h->dct.luma4x4[j]+1, b_intra );
-
-                    	}
+                        x264_cabac_block_residual_cbf( h, cb, DCT_CHROMA_AC, j, h->dct.luma4x4[j]+1, b_intra );
 		            
             }
         }
@@ -1272,11 +1348,11 @@ void x264_macroblock_write_cabac( x264_t *h, x264_cabac_t *cb )
     if( CHROMA444 )
     	{
         x264_macroblock_write_cabac_internal( h, cb, 3, 0 );
-		//printf("wwwwwwwCHROMA444  call x264_macroblock_write_cabac_internal( h, cb, 3, 0 );i_mb_xy:%d\n",h->mb.i_mb_xy);
+//	printf("CHROMA444  call x264_macroblock_write_cabac_internal( h, cb, 3, 0 );i_mb_xy:%d\n",h->mb.i_mb_xy);
 	}
     else
     	{
-    	//printf("\n111111111111111111111else  call x264_macroblock_write_cabac_internal( h, cb, 1, 0 );i_mb_xy:%d\n",h->mb.i_mb_xy);
+    	//printf("111111111111111111111else  call x264_macroblock_write_cabac_internal( h, cb, 1, 0 );i_mb_xy:%d\n",h->mb.i_mb_xy);
         x264_macroblock_write_cabac_internal( h, cb, 1, 1 );
 //	printf("else  call x264_macroblock_write_cabac_internal( h, cb, 1, 0 );i_mb_xy:%d\n",h->mb.i_mb_xy);
 		}
@@ -1377,7 +1453,7 @@ static void x264_partition_i8x8_size_cabac( x264_t *h, x264_cabac_t *cb, int i8,
     i_mode = x264_mb_pred_mode4x4_fix( i_mode );
     x264_cabac_intra4x4_pred_mode( cb, i_pred, i_mode );
 	/*sky0924*/
-	printf("x264_partition_i8x8_size_cabac call  x264_cabac_cbp_luma( h, cb );\n");
+	//printf("x264_partition_i8x8_size_cabac call  x264_cabac_cbp_luma( h, cb );\n");
     x264_cabac_cbp_luma( h, cb );
     if( h->mb.i_cbp_luma & (1 << i8) )
     {
@@ -1403,8 +1479,7 @@ static void x264_chroma_size_cabac( x264_t *h, x264_cabac_t *cb )
 {
     x264_cabac_intra_chroma_pred_mode( h, cb );
     x264_cabac_cbp_chroma( h, cb );
-	printf("x264_chroma_size_cabac add by wzl /n");
-	if( h->mb.i_cbp_chroma )
+    if( h->mb.i_cbp_chroma )
     {
         if( CHROMA_FORMAT == CHROMA_422 )
         {
