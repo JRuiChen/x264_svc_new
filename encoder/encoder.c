@@ -3259,7 +3259,8 @@ else
 		if(h->i_layer_id)
 		 {
 		   h->mb.i_type = h->mb.type[mb_xy];
-		   //printf("when i_layer_id == 1,then show the mb_type:%d \n",h->mb.i_type);
+		  
+		  
 		 }
 
         if( i_mb_x == 0)
@@ -3343,7 +3344,12 @@ else
        /* encode this macroblock -> be careful it can change the mb type to P_SKIP if needed */
 reencode:
         x264_macroblock_encode( h );
+		
+		printf("when i_layer_id == 1,then show the mb_type:%s	  i_mb_x:%d 	i_mb_y%d   i_frame:%d	 i_ref:%d   %d    %d     %d   i_partition:%s\n",mb_class_name[h->mb.i_type],i_mb_x,i_mb_y,h->i_frame,
+			h->mb.cache.ref[1][x264_scan8[0]],h->mb.cache.ref[1][x264_scan8[4]],h->mb.cache.ref[1][x264_scan8[8]],h->mb.cache.ref[1][x264_scan8[12]],h->mb.i_partition >=0&&h->mb.i_partition<17?mb_partition_name[h->mb.i_partition]:"NULL");
 
+
+        
     //    DEBUG_TEST
 /*..........................*/
 
@@ -3478,11 +3484,12 @@ cont:
   //if(h->i_layer_id == 0)
         x264_macroblock_cache_save( h );
 
+
 /*++++++++++++++++++++++++*/
 
 
-    
-	
+/*
+	if(h->i_layer_id == 0)
        if( x264_ratecontrol_mb( h, mb_size ) < 0 )
         {
             x264_bitstream_restore( h, &bs_bak[BS_BAK_ROW_VBV], &i_skip, 1 );
@@ -3493,7 +3500,7 @@ cont:
             h->sh.i_last_mb = orig_last_mb;
             continue;
         }
-  
+    */
 /*+++++++++++++++++++++++++++*/
 		//if(h->i_layer_id == 1)
 			// goto end;
