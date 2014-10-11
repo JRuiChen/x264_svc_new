@@ -1146,7 +1146,12 @@ static void ALWAYS_INLINE x264_macroblock_load_pic_pointers( x264_t *h, int mb_x
     int i_pix_offset = mb_interlaced
                      ? 16 * mb_x + height * (mb_y&~1) * i_stride + (mb_y&1) * i_stride
                      : 16 * mb_x + height * mb_y * i_stride;
+
     pixel *plane_fdec = h->i_layer_id == 0?(&h->fdec->plane[i][i_pix_offset]):(&h->fdec->planeEL1[i][i_pix_offset]);
+
+
+
+
     int fdec_idx = b_mbaff ? (mb_interlaced ? (3 + (mb_y&1)) : (mb_y&1) ? 2 : 4) : !(mb_y&1);
     pixel *intra_fdec = &h->intra_border_backup[fdec_idx][i][mb_x*16];
     int ref_pix_offset[2] = { i_pix_offset, i_pix_offset };
@@ -1155,6 +1160,27 @@ static void ALWAYS_INLINE x264_macroblock_load_pic_pointers( x264_t *h, int mb_x
         ref_pix_offset[1] += (1-2*(mb_y&1)) * i_stride;
     h->mb.pic.i_stride[i] = i_stride2;
     h->mb.pic.p_fenc_plane[i] = h->i_layer_id == 0?(&h->fenc->plane[i][i_pix_offset]):(&h->fenc->planeEL1[i][i_pix_offset]);
+
+
+	if(h->i_layer_id)
+	{
+	  if(IS_INTRA(h->mb.i_type))
+	  {
+	    plane_fdec = &h->fdec->planeUpsampleEL1[i][i_pix_offset];
+         
+		//intra_fdec = &h->fdec->planeUpsampleEL1[i][i_pix_offset];
+		if(b_chroma)
+		{
+		/*  h->mc.load_deinterleave_chroma_fdec(h->h->mb.pic.p_denc[1],plane_fdec,i_stride2,height);
+		  int backup_dst = !b_mbaff ? (mb_y & 1):(mb_y&1)?1: MB_INTERLACED?0:2;
+		  //memcpy(&h->intra_border_backup[backup_dst][1][mb_x*16  ],h->mb.pic.fdec[1] + backup_dst
+		  h->mc.plane_copy_interleave(intra_fdec,h->fdec->i_strideEL[1],plane_fdec,
+		  	                                 h->param.i_width,plane_fdec,h->param.i_height,*/
+		}
+	  }
+	  	
+	}
+
 
 		
 	if( b_chroma )
@@ -1558,10 +1584,7 @@ static void ALWAYS_INLINE x264_macroblock_cache_load_EL(x264_t* h,int mb_x,int m
 	 else
 	   {
 		   h->mb.cache.i_cbp_left = -1;
-		   //h->mb.cache.intra4x4_pred_mode[x264_scan8[ 0] - 1] =
-		   //h->mb.cache.intra4x4_pred_mode[x264_scan8[ 2] - 1] =
-		   //h->mb.cache.intra4x4_pred_mode[x264_scan8[ 8] - 1] =
-		   //h->mb.cache.intra4x4_pred_mode[x264_scan8[10] - 1] = -1;
+
 		   
 		   /* load non_zero_count */
 		   h->mb.cache.non_zero_count[x264_scan8[ 0] - 1] =
@@ -1602,15 +1625,15 @@ static void ALWAYS_INLINE x264_macroblock_cache_load_EL(x264_t* h,int mb_x,int m
 
     /* let fdec->planeEL1 = fdec->planeUpsamplingEL1 according to the mb_type - BY MING*/
 
-    for(int p = 0;p < 3;p++)
-	   h->fdec->planeEL1[p] = h->fdec->planeUpsampleEL1[p];
+    //for(int p = 0;p < 3;p++)
+	 //  h->fdec->planeEL1[p] = h->fdec->planeUpsampleEL1[p];
 	int i_mb_type = h->mb.i_type;
-   	//if(i_mb_type == I_BL)
-	//{ 
+   	/*if(i_mb_type == I_BL)
+	{ 
 	 // printf("call h->fdec->planeEL1[p] = h->fdec->planeUpsampleEL1[p]\n");
-	  //for(int p = 0;p < 3;p++)
-	   //h->fdec->planeEL1[p] = h->fdec->planeUpsampleEL1[p];
-	//}
+	  for(int p = 0;p < 3;p++)
+	   h->fdec->planeEL1[p] = h->fdec->planeUpsampleEL1[p];
+	}*/
 
 	
     if(!b_mbaff)

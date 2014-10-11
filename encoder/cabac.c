@@ -776,7 +776,7 @@ static ALWAYS_INLINE void x264_cabac_block_residual_internal( x264_t *h, x264_ca
 
 
 	
-	/*printf("\n**************+++++ %d ++++++ %d *****************\n",ctx_block_cat,chroma422dc);
+	printf("\n**************+++++ %d ++++++ %d *****************\n",ctx_block_cat,chroma422dc);
 
 	for(int tempi =0 ;tempi <=last; tempi ++)
 		{
@@ -785,7 +785,7 @@ static ALWAYS_INLINE void x264_cabac_block_residual_internal( x264_t *h, x264_ca
 			printf("  %d   ",l[tempi]);
 			
 		}
-	printf("\n");*/
+	printf("\n");
 
 #define WRITE_SIGMAP( sig_off, last_off )\
 {\
@@ -1216,7 +1216,7 @@ if( (h->mb.i_neighbour & MB_TOP) && !h->mb.mb_transform_size[h->mb.i_mb_top_xy] 
                 FOREACH_BIT( i8x8, 0, h->mb.i_cbp_luma )
                     for( int i = 0; i < 4; i++ )	
                     	{ //  if(i % 4 == 0)
-							//printf("\nx264_cabac_block_residual_cbf ********* %d \n ",h->mb.i_cbp_luma);
+							printf("\nx264_cabac_block_residual_cbf ********* %d \n ",h->mb.i_cbp_luma);
 
                     	    
                          x264_cabac_block_residual_cbf( h, cb, ctx_cat_plane[DCT_LUMA_4x4][p], i+i8x8*4+p*16, h->dct.luma4x4[i+i8x8*4+p*16], b_intra );
@@ -1238,9 +1238,11 @@ if( (h->mb.i_neighbour & MB_TOP) && !h->mb.mb_transform_size[h->mb.i_mb_top_xy] 
 			//第一帧增强层其实走的是这条
             else
             {
+                printf("\nx264_cabac_block_residual_cbf &&&&&&&&&&&&&&&  h->i_layer_id:%d   mb_x:%d  mb_y:%d    CHROMA_DC  \n ",h->i_layer_id,h->mb.i_mb_xy%h->mb.i_mb_count,h->mb.i_mb_xy/h->mb.i_mb_count);
                 x264_cabac_block_residual_dc_cbf( h, cb, DCT_CHROMA_DC, CHROMA_DC+0, h->dct.chroma_dc[0], b_intra );
                 
 				
+				printf("\nx264_cabac_block_residual_cbf &&&&&&&&&&&&&&&  h->i_layer_id:%d   mb_x:%d  mb_y:%d    CHROMA_DC+1 \n ",h->i_layer_id,h->mb.i_mb_xy%h->mb.i_mb_count,h->mb.i_mb_xy/h->mb.i_mb_count);
 
 				x264_cabac_block_residual_dc_cbf( h, cb, DCT_CHROMA_DC, CHROMA_DC+1, h->dct.chroma_dc[1], b_intra );
 
@@ -1254,6 +1256,7 @@ if( (h->mb.i_neighbour & MB_TOP) && !h->mb.mb_transform_size[h->mb.i_mb_top_xy] 
                 for( int i = 16; i < 3*16; i += step )
                     for( int j = i; j < i+4; j++ )
                     	{
+                    	 printf("\nx264_cabac_block_residual_cbf &&&&&&&&&&&&&&&  h->i_layer_id:%d   mb_x:%d  mb_y:%d    CHROMA_DC \n ",h->i_layer_id,h->mb.i_mb_xy%h->mb.i_mb_count,h->mb.i_mb_xy/h->mb.i_mb_count);
 						  x264_cabac_block_residual_cbf( h, cb, DCT_CHROMA_AC, j, h->dct.luma4x4[j]+1, b_intra );
 
                     	}

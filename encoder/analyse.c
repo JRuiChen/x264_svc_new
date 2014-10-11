@@ -3304,7 +3304,7 @@ skip_analysis:
                 }
             }
 
-/*
+
             if( h->mb.b_chroma_me )
             {
                 if( CHROMA444 )
@@ -3324,7 +3324,7 @@ skip_analysis:
             else
                 x264_mb_analyse_intra( h, &analysis, i_cost );
 
-*/
+
             i_satd_inter = i_cost;
             i_satd_intra = X264_MIN3( analysis.i_satd_i16x16,
                                       analysis.i_satd_i8x8,
@@ -3346,13 +3346,13 @@ skip_analysis:
                 x264_intra_rd( h, &analysis, i_satd_inter * 5/4 + 1 );
             }
 
-            /*COPY2_IF_LT( i_cost, analysis.i_satd_i16x16, i_type, I_16x16 );
+            COPY2_IF_LT( i_cost, analysis.i_satd_i16x16, i_type, I_16x16 );
             COPY2_IF_LT( i_cost, analysis.i_satd_i8x8, i_type, I_8x8 );
             COPY2_IF_LT( i_cost, analysis.i_satd_i4x4, i_type, I_4x4 );
             COPY2_IF_LT( i_cost, analysis.i_satd_pcm, i_type, I_PCM );
 
             h->mb.i_type = i_type;
-	*/
+	
 
             if( analysis.b_force_intra && !IS_INTRA(i_type) )
             {
@@ -3719,14 +3719,14 @@ skip_analysis:
                 COPY3_IF_LT( i_cost, analysis.i_rd8x8bi, i_type, B_8x8, i_partition, D_8x8 );
 
                 h->mb.i_type = i_type;
-                printf("analysis.l0.i_rd16x16:%d\n",analysis.l0.i_rd16x16);    
-				printf("analyse h->mb.i_type:%d \n",h->mb.i_type);
+                //printf("analysis.l0.i_rd16x16:%d\n",analysis.l0.i_rd16x16);    
+				//printf("analyse h->mb.i_type:%d \n",h->mb.i_type);
                 h->mb.i_partition = i_partition;
             }
 
 
 
-/*
+
 
             if( h->mb.b_chroma_me )
             {
@@ -3762,7 +3762,7 @@ skip_analysis:
             h->mb.i_type = i_type;
             h->mb.i_partition = i_partition;
 		
-*/
+
             if( analysis.i_mbrd >= 2 && IS_INTRA( i_type ) && i_type != I_PCM )
                 x264_intra_rd_refine( h, &analysis );
             if( h->mb.i_subpel_refine >= 5 )

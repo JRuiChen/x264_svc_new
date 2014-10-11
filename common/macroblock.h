@@ -189,13 +189,13 @@ enum mb_class_e
 };
 
 
-static const char* mb_class_name[20] = 
+static const char* mb_class_name[21] = 
 {
  "I_4x4","I_8x8","I_16x16","I_PCM",
  "P_L0","P_8x8","P_SKIP","B_DIRECT",
  "B_L0_L0","B_L0_L1","B_L0_BI","B_L1_L0",
  "B_L1_L1","B_L1_BI","B_BI_L0","B_BI_L1",
- "B_BI_BI","B_8x8","B_SKIP","I_BL"
+ "B_BI_BI","B_8x8","B_SKIP","I_BL","I_BL"
 };
 static const uint8_t x264_mb_type_fix[X264_MBTYPE_MAX + 2] =
 {
