@@ -141,7 +141,7 @@ static void x264_frame_dump( x264_t *h )
     sh->i_redundant_pic_cnt = 0;
 
 /*BY MING*/
-    sh->b_scoeff_residual_pred_flag = 0;
+       sh->b_scoeff_residual_pred_flag = 0;
 	sh->b_tcoeff_level_pred_flag = 0;
 
 	
