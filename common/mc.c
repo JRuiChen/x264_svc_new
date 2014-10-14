@@ -366,7 +366,7 @@ static void load_deinterleave_chroma_fdec( pixel *dst, pixel *src, intptr_t i_sr
 
 static void load_deinterleave_chroma_fdec_uv( pixel *dstu, pixel *dstv,pixel *src, intptr_t i_src, int height)
 {
-  x264_plane_copy_deinterleave_c(dstu,FDEC_STRIDE,dstv,FDEC_STRIDE,src,i_src,8,height);
+  x264_plane_copy_deinterleave_c(dstu,FDEC_STRIDE/2,dstv,FDEC_STRIDE/2,src,i_src,8,height);
 }
 
 

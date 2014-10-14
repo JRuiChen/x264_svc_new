@@ -2319,11 +2319,11 @@ void x264_layer_upsample(x264_t *h,x264_frame_t *f,int level)
 		int width = h->param.i_width/2;
 		int stride = f->i_stride[1];
 		pixel *p = f->plane[1];
-		for(int y=0;y<height;y++,p+=stride)
+		for(int y=0;y<height;y++,p+=stride )
 			for(int x=0;x<width;x++)
 			{
-				pixU[x] = p[2*x];
-				pixV[x] = p[2*x+1];
+				pixU[y*width + x] = p[2*x];
+				pixV[y*width + x] = p[2*x+1];
 			}
 		x264_frame_expand_layers(h,pixUUPsample,h->param.i_width,
 				pixU,h->param.i_width/2,h->param.i_width/2,
@@ -2338,17 +2338,22 @@ void x264_layer_upsample(x264_t *h,x264_frame_t *f,int level)
                                          (pixel*)pixVUPsample, h->param.i_width,
                                          h->param.i_width, h->param.i_height);
 
-       // FILE *fileUpEL1 = fopen("ttt2_ori.yuv","ab+");
-		//writeCsp1(f->plane[0],fileUpEL1,h->param.i_width,h->param.i_height,f->i_stride[0]/sizeof(pixel));
-       // fileUpEL1 = fopen("ttt_ori.yuv","ab+");
-		//writeCsp1(pixUUPsample,fileUpEL1,h->param.i_widthEL1/2,h->param.i_heightEL1/2,h->param.i_widthEL1/2);
-		//fileUpEL1 = fopen("ttt_ori.yuv","ab+");
-		//writeCsp1(pixVUPsample,fileUpEL1,h->param.i_widthEL1/2,h->param.i_heightEL1/2,h->param.i_widthEL1/2);
-       // fclose(fileUpEL1);
-		free(pixU);
-		free(pixV);
-		free(pixUUPsample);
-		free(pixVUPsample);
+        /*
+		if(h->i_layer_id == 0)
+		{
+
+        FILE *fileUpEL1 = fopen("ttt_ori.yuv","ab+");
+		writeCsp1(f->planeUpsampleEL1[0],fileUpEL1,h->param.i_widthEL1,h->param.i_heightEL1,f->i_strideEL1[0]/sizeof(pixel));
+        fileUpEL1 = fopen("ttt_ori.yuv","ab+");
+		writeCsp1(pixUUPsample,fileUpEL1,h->param.i_widthEL1/2,h->param.i_heightEL1/2,h->param.i_widthEL1/2);
+		fileUpEL1 = fopen("ttt_ori.yuv","ab+");
+		writeCsp1(pixVUPsample,fileUpEL1,h->param.i_widthEL1/2,h->param.i_heightEL1/2,h->param.i_widthEL1/2);
+		}*/
+        //fclose(fileUpEL1);
+		//free(pixU);
+		//free(pixV);
+		//free(pixUUPsample);
+		//free(pixVUPsample);
 				
 	}
 	/*当有三层数据时需要
