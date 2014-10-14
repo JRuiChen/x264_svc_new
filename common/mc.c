@@ -362,6 +362,16 @@ static void load_deinterleave_chroma_fdec( pixel *dst, pixel *src, intptr_t i_sr
     x264_plane_copy_deinterleave_c( dst, FDEC_STRIDE, dst+FDEC_STRIDE/2, FDEC_STRIDE, src, i_src, 8, height );
 }
 
+
+
+static void load_deinterleave_chroma_fdec_uv( pixel *dstu, pixel *dstv,pixel *src, intptr_t i_src, int height)
+{
+  x264_plane_copy_deinterleave_c(dstu,FDEC_STRIDE,dstv,FDEC_STRIDE,src,i_src,8,height);
+}
+
+
+
+
 static void prefetch_fenc_null( pixel *pix_y,  intptr_t stride_y,
                                 pixel *pix_uv, intptr_t stride_uv, int mb_x )
 {}
@@ -507,6 +517,10 @@ void x264_mc_init( int cpu, x264_mc_functions_t *pf, int cpu_independent )
 
     pf->store_interleave_chroma       = store_interleave_chroma;
     pf->load_deinterleave_chroma_fenc = load_deinterleave_chroma_fenc;
+   /*BY MING*/
+    pf->load_deinterleave_chroma_fdec_uv = load_deinterleave_chroma_fdec_uv;
+
+   
     pf->load_deinterleave_chroma_fdec = load_deinterleave_chroma_fdec;
 
     pf->plane_copy = x264_plane_copy_c;

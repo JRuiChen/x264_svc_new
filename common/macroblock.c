@@ -1167,10 +1167,13 @@ static void ALWAYS_INLINE x264_macroblock_load_pic_pointers( x264_t *h, int mb_x
 	  if(IS_INTRA(h->mb.i_type))
 	  {
 	    plane_fdec = &h->fdec->planeUpsampleEL1[i][i_pix_offset];
-         
+        
 		//intra_fdec = &h->fdec->planeUpsampleEL1[i][i_pix_offset];
 		if(b_chroma)
 		{
+			//intra_fdec = &h->fdec->planeUpsampleEL1[i][i_pix_offset];
+
+		    
 		/*  h->mc.load_deinterleave_chroma_fdec(h->h->mb.pic.p_denc[1],plane_fdec,i_stride2,height);
 		  int backup_dst = !b_mbaff ? (mb_y & 1):(mb_y&1)?1: MB_INTERLACED?0:2;
 		  //memcpy(&h->intra_border_backup[backup_dst][1][mb_x*16  ],h->mb.pic.fdec[1] + backup_dst
@@ -1186,10 +1189,18 @@ static void ALWAYS_INLINE x264_macroblock_load_pic_pointers( x264_t *h, int mb_x
 	if( b_chroma )
     {
         h->mc.load_deinterleave_chroma_fenc( h->mb.pic.p_fenc[1], h->mb.pic.p_fenc_plane[1], i_stride2, height );
-        memcpy( h->mb.pic.p_fdec[1]-FDEC_STRIDE, intra_fdec, 8*sizeof(pixel) );
+		memcpy( h->mb.pic.p_fdec[1]-FDEC_STRIDE, intra_fdec, 8*sizeof(pixel) );
         memcpy( h->mb.pic.p_fdec[2]-FDEC_STRIDE, intra_fdec+8, 8*sizeof(pixel) );
         h->mb.pic.p_fdec[1][-FDEC_STRIDE-1] = intra_fdec[-1-8];
         h->mb.pic.p_fdec[2][-FDEC_STRIDE-1] = intra_fdec[-1];
+
+		if(h->mb.i_type == I_BL)
+	    {
+			//h->mc.load_deinterleave_chroma_fdec( h->mb.pic.p_fdec[1], plane_fdec, i_stride2, height);
+			//h->mc.load_deinterleave_chroma_fdec_uv(h->mb.pic.p_fdec[1],h->mb.pic.p_fdec[2],plane_fdec,i_stride2,height);
+			//x264_plane_copy_deinterleave_c(h->mb.pic.p_fdec[1],FDEC_STRIDE,h->mb.pic.p_fdec[2],FDEC_STRIDE,plane_fdec,i_stride2,8,height);
+		
+	    }
 /*BY MING*/
 		//if(h->mb.i_type == I_BL)
 			//h->mc.load_deinterleave_chroma_fenc( h->mb.pic.p_fdec[1], plane_fdec, i_stride2, height );
@@ -1200,12 +1211,28 @@ static void ALWAYS_INLINE x264_macroblock_load_pic_pointers( x264_t *h, int mb_x
         memcpy( h->mb.pic.p_fdec[i]-FDEC_STRIDE, intra_fdec, 24*sizeof(pixel) );
         h->mb.pic.p_fdec[i][-FDEC_STRIDE-1] = intra_fdec[-1];
 
-	   // if(h->mb.i_type == I_BL)
-			//h->mc.copy[PIXEL_16x16]( h->mb.pic.p_fdec[i], FDEC_STRIDE, plane_fdec, i_stride2, 16 );
+	    if(h->mb.i_type == I_BL)
+	    {
+			h->mc.copy[PIXEL_16x16]( h->mb.pic.p_fdec[i], FDEC_STRIDE, plane_fdec, i_stride2, 16 );
+		
+	    }
 
     }
 
-	
+
+    
+   /* if(h->i_layer_id && h->mb.i_mb_xy == 52)
+    {
+    printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n");
+	for(int k = 0;k < 16;k++)
+    {
+        printf("\n");
+		for(int l = 0;l < 16;l++)
+	    {
+	       printf("%d   ",h->mb.pic.p_fdec[i][k*16 + l]);
+	    }
+	}
+    }*/
     if( b_mbaff || h->mb.b_reencode_mb )
     {
         for( int j = 0; j < height; j++ )

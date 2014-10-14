@@ -85,6 +85,9 @@ typedef struct
     void (*load_deinterleave_chroma_fenc)( pixel *dst, pixel *src, intptr_t i_src, int height );
     void (*load_deinterleave_chroma_fdec)( pixel *dst, pixel *src, intptr_t i_src, int height );
 
+	/*BY MING*/
+	void (*load_deinterleave_chroma_fdec_uv)(pixel* dstu,pixel* dstv,pixel* src,intptr_t i_src,int height);
+    
     void (*plane_copy)( pixel *dst, intptr_t i_dst, pixel *src, intptr_t i_src, int w, int h );
     void (*plane_copy_interleave)( pixel *dst,  intptr_t i_dst, pixel *srcu, intptr_t i_srcu,
                                    pixel *srcv, intptr_t i_srcv, int w, int h );

@@ -787,6 +787,7 @@ int x264_sei_scalability_write(x264_t *h,bs_t *s)
 					bs_write_ue(&q, h->sps[i].i_mb_width - 1);
 					printf("call sei  h->sps[i].i_mb_width:%d,i:%d\n", h->sps[i].i_mb_width,i);
 					bs_write_ue(&q, h->sps[i].i_mb_height - 1);
+					printf("call sei  h->sps[i].i_mb_height:%d,i:%d\n", h->sps[i].i_mb_height,i);
 					
 				}
 			if(b_layer_dependency_info_present_flag)

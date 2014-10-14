@@ -272,7 +272,8 @@ int i_qp = h->mb.i_qp;
 #define X264_ENCODE_I4X4\
    h->mb.b_transform_8x8 = 0;\
    if( h->mb.i_skip_intra )\
-   {\
+   {\  	 
+       h->mc.copy[PIXEL_16x16]( h->mb.pic.i4x4_fdec_buf, 16, h->mb.pic.p_fdec[0], FDEC_STRIDE, 16 );\
 	   h->mc.copy[PIXEL_16x16]( h->mb.pic.p_fdec[0], FDEC_STRIDE, h->mb.pic.i4x4_fdec_buf, 16, 16 );\
 	   M32( &h->mb.cache.non_zero_count[x264_scan8[ 0]] ) = h->mb.pic.i4x4_nnz_buf[0];\
 	   M32( &h->mb.cache.non_zero_count[x264_scan8[ 2]] ) = h->mb.pic.i4x4_nnz_buf[1];\
@@ -288,7 +289,7 @@ int i_qp = h->mb.i_qp;
 	   {\
 		   pixel *p_dst = &h->mb.pic.p_fdec[p][block_idx_xy_fdec[i]];\
 		   int i_mode = h->mb.cache.intra4x4_pred_mode[x264_scan8[i]];\
-		   x264_mb_encode_i4x4( h, p, i, i_qp, i_mode, 1 );\
+		   x264_mb_encode_i4x4( h, p, i, i_qp, i_mode, 0 );\
 	   }\   
    }
 
