@@ -914,6 +914,8 @@ static ALWAYS_INLINE int x264_mb_transform_8x8_allowed( x264_t *h )
    h->des_mb.i_mb_width = h->src_mb.i_mb_width;\
    h->des_mb.i_mb_height = h->src_mb.i_mb_height;\
    h->des_mb.i_mb_count = h->src_mb.i_mb_count;\
+   h->des_mb.i_mb_x = -1;\
+    h->des_mb.i_mb_y = -1;\
    h->des_mb.chroma_h_shift = h->src_mb.chroma_h_shift;\
    h->des_mb.chroma_v_shift = h->src_mb.chroma_v_shift;\
    h->des_mb.i_mb_stride = h->src_mb.i_mb_stride;\

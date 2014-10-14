@@ -615,8 +615,16 @@ int x264_macroblock_thread_allocate( x264_t *h, int b_lookahead )
                     h->deblock_strength[i] = h->thread[0]->deblock_strength[0];
             }
             else
-                CHECKED_MALLOC( h->deblock_strength[i], sizeof(**h->deblock_strength) * h->mb.i_mb_width );
-            h->deblock_strength[1] = h->deblock_strength[i];
+                {
+                //sky20141014 add mbEL1
+                	CHECKED_MALLOC( h->deblock_strength[i], sizeof(**h->deblock_strength) *h->mbEL1.i_mb_width  );
+			/*sky20141013 add el1*/
+			//printf("!!!!!!!!!!!!!!h->mb.i_mb_width is %d \n",h->mb.i_mb_width);
+			CHECKED_MALLOC( h->deblock_strengthEL1[i], sizeof(**h->deblock_strengthEL1) * h->mbEL1.i_mb_width );
+		   }
+			h->deblock_strength[1] = h->deblock_strength[i];
+			/*sky20141013 add el1*/
+			h->deblock_strengthEL1[1] = h->deblock_strengthEL1[i];
         }
     }
 
@@ -652,7 +660,11 @@ void x264_macroblock_thread_free( x264_t *h, int b_lookahead )
     {
         for( int i = 0; i <= PARAM_INTERLACED; i++ )
             if( !h->param.b_sliced_threads || (h == h->thread[0] && !i) )
-                x264_free( h->deblock_strength[i] );
+                {
+                	x264_free( h->deblock_strength[i] );
+		/*sky 1013 add free el1*/
+			x264_free( h->deblock_strengthEL1[i] );
+			}
         for( int i = 0; i < (PARAM_INTERLACED ? 5 : 2); i++ )
             for( int j = 0; j < (CHROMA444 ? 3 : 2); j++ )
                 x264_free( h->intra_border_backup[i][j] - 16 );
@@ -674,7 +686,7 @@ void x264_macroblock_slice_init( x264_t *h )
 	h->mb.sub_partition = h->fdec->sub_partition;
 	
     h->mb.field = h->fdec->field;
-    printf("x64_macroblock_slice_init \n");
+   // printf("x64_macroblock_slice_init \n");
     /* Add by chenjie */
     h->mbBL.mv[0] = h->fdec->mv[0];
     h->mbBL.mv[1] = h->fdec->mv[1];
@@ -1910,8 +1922,13 @@ static void ALWAYS_INLINE x264_macroblock_cache_load( x264_t *h, int mb_x, int m
     int16_t *cbp = h->mb.cbp;
 
     const x264_left_table_t *left_index_table = h->mb.left_index_table;
-
+/*sky1014 add el1 if else
+	if(h->i_layer_id )
+    h->mb.cache.deblock_strength = h->deblock_strengthEL1[mb_y&1][h->param.b_sliced_threads?h->mb.i_mb_xy:mb_x];
+		else*/
     h->mb.cache.deblock_strength = h->deblock_strength[mb_y&1][h->param.b_sliced_threads?h->mb.i_mb_xy:mb_x];
+
+
 
     /* load cache */
     if( h->mb.i_neighbour & MB_TOP )
@@ -2517,7 +2534,16 @@ static void x264_macroblock_deblock_strength_mbaff( x264_t *h, uint8_t (*bs)[8][
 
 void x264_macroblock_deblock_strength( x264_t *h )
 {
+	printf("x264_macroblock_deblock_strength is called h->i_layer_id Is %d \n",h->i_layer_id );
     uint8_t (*bs)[8][4] = h->mb.cache.deblock_strength;
+	if(h->i_layer_id)
+		{
+			int i,j;
+			for(i = 0 ; i < 8 ; i++ )
+				for(j = 0 ; j < 4; j++  )
+					printf("(*bs[%d][%d]) is %d \n ", i ,j ,(*bs)[i][j]);
+		}
+
     if( IS_INTRA( h->mb.i_type ) )
     {
         memset( bs[0][1], 3, 3*4*sizeof(uint8_t) );
@@ -2692,9 +2718,16 @@ void x264_macroblock_deblock_strength( x264_t *h )
 
     h->loopf.deblock_strength( h->mb.cache.non_zero_count, h->mb.cache.ref, h->mb.cache.mv,
                                bs, 4 >> MB_INTERLACED, h->sh.i_type == SLICE_TYPE_B );
-
+    printf("h->loopf.deblock_strength,h->i_layer_id is %d \n",h->i_layer_id);
     if( SLICE_MBAFF )
         x264_macroblock_deblock_strength_mbaff( h, bs );
+		if(h->i_layer_id)
+		{
+			int i,j;
+			for(i = 0 ; i < 8 ; i++ )
+				for(j = 0 ; j < 4; j++  )
+					printf("(*bs[%d][%d]) is %d \n ", i ,j ,(*bs)[i][j]);
+		}
 }
 
 static void ALWAYS_INLINE x264_macroblock_store_pic( x264_t *h, int mb_x, int mb_y, int i, int b_chroma, int b_mbaff )

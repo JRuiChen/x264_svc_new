@@ -165,6 +165,7 @@ static void mc_copy( pixel *src, intptr_t i_src_stride, pixel *dst, intptr_t i_d
 static void hpel_filter( pixel *dsth, pixel *dstv, pixel *dstc, pixel *src,
                          intptr_t stride, int width, int height, int16_t *buf )
 {
+printf("hpel_filter is called ");
     const int pad = (BIT_DEPTH > 9) ? (-10 * PIXEL_MAX) : 0;
     for( int y = 0; y < height; y++ )
     {
@@ -547,28 +548,47 @@ void x264_mc_init( int cpu, x264_mc_functions_t *pf, int cpu_independent )
 
 void x264_frame_filter( x264_t *h, x264_frame_t *frame, int mb_y, int b_end )
 {
+	printf("x264_frame_filter is called\n ");
     const int b_interlaced = PARAM_INTERLACED;
     int start = mb_y*16 - 8; // buffer = 4 for deblock + 3 for 6tap, rounded to 8
-    int height = (b_end ? frame->i_lines[0] + 16*PARAM_INTERLACED : (mb_y+b_interlaced)*16) + 8;
-
+	int height ;
+	if(h->i_layer_id )
+		{
+		height = (b_end ? frame->i_linesEL1[0] + 16*PARAM_INTERLACED : (mb_y+b_interlaced)*16) + 8;
+		}
+	else
+		 height = (b_end ? frame->i_lines[0] + 16*PARAM_INTERLACED : (mb_y+b_interlaced)*16) + 8;
+ 	//aprintf("skytest height is what b_end=  %d , frame->i_lines[0]= %d ",b_end,frame->i_lines[0]);
     if( mb_y & b_interlaced )
         return;
 
     for( int p = 0; p < (CHROMA444 ? 3 : 1); p++ )
     {
+   
+    
         int stride = frame->i_stride[p];
         const int width = frame->i_width[p];
         int offs = start*stride - 8; // buffer = 3 for 6tap, aligned to 8 for simd
 
         if( !b_interlaced || h->mb.b_adaptive_mbaff )
-            h->mc.hpel_filter(
+           	{
+    
+		printf("skytest frame->filtered[p][1] + offs%d\n",frame->filtered[p][1] + offs);
+		printf("skytest frame->filtered[p][2] + offs%d\n",frame->filtered[p][2] + offs);
+		printf("skytest frame->filtered[p][3] + offs%d\n",frame->filtered[p][3] + offs);
+		printf("skytest frame->plane[p] + offs%d\n",frame->plane[p] + offs);
+		printf("skytest stride%d\n",stride);
+		printf("skytest height %d\n ",height );
+		printf("skytest start %d \n",start);
+		  h->mc.hpel_filter(
                 frame->filtered[p][1] + offs,
                 frame->filtered[p][2] + offs,
                 frame->filtered[p][3] + offs,
                 frame->plane[p] + offs,
                 stride, width + 16, height - start,
                 h->scratch_buffer );
-
+		
+}
         if( b_interlaced )
         {
             /* MC must happen between pixels in the same field. */
@@ -593,9 +613,10 @@ void x264_frame_filter( x264_t *h, x264_frame_t *frame, int mb_y, int b_end )
      * frame->integral contains 2 planes. in the upper plane, each element is
      * the sum of an 8x8 pixel region with top-left corner on that point.
      * in the lower plane, 4x4 sums (needed only with --partitions p4x4). */
-
+  
     if( frame->integral )
     {
+
         int stride = frame->i_stride[0];
         if( start < 0 )
         {
@@ -625,4 +646,5 @@ void x264_frame_filter( x264_t *h, x264_frame_t *frame, int mb_y, int b_end )
             }
         }
     }
+	
 }

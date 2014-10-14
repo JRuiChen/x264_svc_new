@@ -1947,7 +1947,7 @@ static int encode( x264_param_t *param, cli_opt_t *opt )
 
         if( opt->qpfile )
             parse_qpfile( opt, &pic, i_frame + opt->i_seek );
-		printf ("encode i_frame = %d------------>\n", i_frame);
+		//printf ("encode i_frame = %d------------>\n", i_frame);
         prev_dts = last_dts;
 
 
@@ -1975,10 +1975,10 @@ static int encode( x264_param_t *param, cli_opt_t *opt )
     }
     /* Flush delayed frames */
 
-    printf (" out  x264_encoder_delayed_frames ---------------\n");
+   // printf (" out  x264_encoder_delayed_frames ---------------\n");
     while( !b_ctrl_c && x264_encoder_delayed_frames( h ) )
     {
-        printf (" in  x264_encoder_delayed_frames ---------------\n");
+      //  printf (" in  x264_encoder_delayed_frames ---------------\n");
         prev_dts = last_dts;
         i_frame_size = encode_frame( h, opt->hout, NULL, &last_dts );
         if( i_frame_size < 0 )

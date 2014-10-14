@@ -657,7 +657,7 @@ void x264_pps_write( bs_t *s, x264_sps_t *sps, x264_pps_t *pps )
     bs_write1( s, pps->b_deblocking_filter_control );
     bs_write1( s, pps->b_constrained_intra_pred );
     bs_write1( s, pps->b_redundant_pic_cnt );
-  printf("pps->b_transform_8x8_mode:%d",pps->b_transform_8x8_mode);
+  //printf("pps->b_transform_8x8_mode:%d",pps->b_transform_8x8_mode);
     if( pps->b_transform_8x8_mode || pps->i_cqm_preset != X264_CQM_FLAT )
     {
         bs_write1( s, pps->b_transform_8x8_mode );

@@ -754,7 +754,7 @@ int x264_frame_copy_picture( x264_t *h, x264_frame_t *dst, x264_picture_t *src )
 	h->fenc->cPP.m_iRefLayerChromaPhaseX = h->cRP.m_iRefLayerChromaPhaseX;
 	h->fenc->cPP.m_iRefLayerChromaPhaseY = h->cRP.m_iRefLayerChromaPhaseY;
     }
-	printf("copy end!\n");
+	//printf("copy end!\n");
 
     return 0;
 }
@@ -881,7 +881,7 @@ void x264_frame_expand_border( x264_t *h, x264_frame_t *frame, int mb_y )
 
 void x264_frame_expand_border_filtered( x264_t *h, x264_frame_t *frame, int mb_y, int b_end )
 {
-	//printf("x264_frame_expand_border_filtered\n");
+	printf("x264_frame_expand_border_filtered is called \n");
     /* during filtering, 8 extra pixels were filtered on each edge,
      * but up to 3 of the horizontal ones may be wrong.
        we want to expand border from the last filtered pixel */

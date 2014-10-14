@@ -1233,8 +1233,10 @@ struct x264_t
     pixel *intra_border_backup[5][3]; /* bottom pixels of the previous mb row, used for intra prediction after the framebuffer has been deblocked */
     /* Deblock strength values are stored for each 4x4 partition. In MBAFF
      * there are four extra values that need to be stored, located in [4][i]. */
+     /*sky deblock_strength*/
     uint8_t (*deblock_strength[2])[2][8][4];
-
+	/*sky add el1*/
+   uint8_t (*deblock_strengthEL1[2])[2][8][4];
     /* CPU functions dependents */
     x264_predict_t      predict_16x16[4+3];
     x264_predict8x8_t   predict_8x8[9+3];
