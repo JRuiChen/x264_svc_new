@@ -3362,16 +3362,7 @@ else
 reencode:
         x264_macroblock_encode( h );
 		
-		//printf("when i_layer_id == 1,then show the mb_type:%s	  i_mb_x:%d 	i_mb_y%d   i_frame:%d	 i_ref:%d   %d    %d     %d   i_partition:%s\n",mb_class_name[h->mb.i_type],i_mb_x,i_mb_y,h->i_frame,
-	//		h->mb.cache.ref[1][x264_scan8[0]],h->mb.cache.ref[1][x264_scan8[4]],h->mb.cache.ref[1][x264_scan8[8]],h->mb.cache.ref[1][x264_scan8[12]],h->mb.i_partition >=0&&h->mb.i_partition<17?mb_partition_name[h->mb.i_partition]:"NULL");
-
-
-        
-    //    DEBUG_TEST
-/*..........................*/
-
-
-         
+	         
         if( h->param.b_cabac )
         {
         //mb_xy == 1Ö´ÐÐ end_of_slice_flag 
@@ -4018,7 +4009,8 @@ static void *x264_slices_write( x264_t *h )
 	else
 	{
 		//printf (" Call up-sampling function!!!!!!!!!!!!!!!!!!!!\n");
-
+		
+        if(h->i_layer_id == 0)
 		x264_layer_upsample(h,h->fdec,0);
 
 		//printf("h->sh.i_type:%d JJJJJJJJJJJJJJ \n",h->sh.i_type);

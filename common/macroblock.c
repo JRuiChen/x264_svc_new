@@ -620,11 +620,11 @@ int x264_macroblock_thread_allocate( x264_t *h, int b_lookahead )
                 	CHECKED_MALLOC( h->deblock_strength[i], sizeof(**h->deblock_strength) *h->mbEL1.i_mb_width  );
 			/*sky20141013 add el1*/
 			//printf("!!!!!!!!!!!!!!h->mb.i_mb_width is %d \n",h->mb.i_mb_width);
-			CHECKED_MALLOC( h->deblock_strengthEL1[i], sizeof(**h->deblock_strengthEL1) * h->mbEL1.i_mb_width );
+		//	CHECKED_MALLOC( h->deblock_strengthEL1[i], sizeof(**h->deblock_strengthEL1) * h->mbEL1.i_mb_width );
 		   }
 			h->deblock_strength[1] = h->deblock_strength[i];
 			/*sky20141013 add el1*/
-			h->deblock_strengthEL1[1] = h->deblock_strengthEL1[i];
+			//h->deblock_strengthEL1[1] = h->deblock_strengthEL1[i];
         }
     }
 
@@ -663,7 +663,7 @@ void x264_macroblock_thread_free( x264_t *h, int b_lookahead )
                 {
                 	x264_free( h->deblock_strength[i] );
 		/*sky 1013 add free el1*/
-			x264_free( h->deblock_strengthEL1[i] );
+		//	x264_free( h->deblock_strengthEL1[i] );
 			}
         for( int i = 0; i < (PARAM_INTERLACED ? 5 : 2); i++ )
             for( int j = 0; j < (CHROMA444 ? 3 : 2); j++ )
@@ -1179,16 +1179,6 @@ static void ALWAYS_INLINE x264_macroblock_load_pic_pointers( x264_t *h, int mb_x
 	  if(IS_INTRA(h->mb.i_type))
 	  {
 	    plane_fdec = &h->fdec->planeUpsampleEL1[i][i_pix_offset];
-         
-		//intra_fdec = &h->fdec->planeUpsampleEL1[i][i_pix_offset];
-		if(b_chroma)
-		{
-		/*  h->mc.load_deinterleave_chroma_fdec(h->h->mb.pic.p_denc[1],plane_fdec,i_stride2,height);
-		  int backup_dst = !b_mbaff ? (mb_y & 1):(mb_y&1)?1: MB_INTERLACED?0:2;
-		  //memcpy(&h->intra_border_backup[backup_dst][1][mb_x*16  ],h->mb.pic.fdec[1] + backup_dst
-		  h->mc.plane_copy_interleave(intra_fdec,h->fdec->i_strideEL[1],plane_fdec,
-		  	                                 h->param.i_width,plane_fdec,h->param.i_height,*/
-		}
 	  }
 	  	
 	}
@@ -1198,13 +1188,27 @@ static void ALWAYS_INLINE x264_macroblock_load_pic_pointers( x264_t *h, int mb_x
 	if( b_chroma )
     {
         h->mc.load_deinterleave_chroma_fenc( h->mb.pic.p_fenc[1], h->mb.pic.p_fenc_plane[1], i_stride2, height );
-        memcpy( h->mb.pic.p_fdec[1]-FDEC_STRIDE, intra_fdec, 8*sizeof(pixel) );
+
+        if(h->mb.i_type != I_BL)
+        {
+		memcpy( h->mb.pic.p_fdec[1]-FDEC_STRIDE, intra_fdec, 8*sizeof(pixel) );
         memcpy( h->mb.pic.p_fdec[2]-FDEC_STRIDE, intra_fdec+8, 8*sizeof(pixel) );
         h->mb.pic.p_fdec[1][-FDEC_STRIDE-1] = intra_fdec[-1-8];
         h->mb.pic.p_fdec[2][-FDEC_STRIDE-1] = intra_fdec[-1];
-/*BY MING*/
-		//if(h->mb.i_type == I_BL)
-			//h->mc.load_deinterleave_chroma_fenc( h->mb.pic.p_fdec[1], plane_fdec, i_stride2, height );
+        }
+
+		else
+	    {      
+	        plane_fdec = &h->fdec->planeUpsampleEL1[1][i_pix_offset];
+			h->mc.load_deinterleave_chroma_fdec( h->mb.pic.p_fdec[1],  plane_fdec, i_stride2, height);
+			//memcpy(h->mb.pic.p_fdec[2],h->mb.pic.p_fdec[1] + FDEC_STRIDE/2,sizeof(pixel)*16);
+			//h->mb.pic.p_fdec[2] = h->mb.pic.p_fdec[1] + FDEC_STRIDE/2;
+			//h->mc.load_deinterleave_chroma_fdec( h->mb.pic.p_fdec[2], plane_fdec, i_stride2, height);
+			//h->mc.load_deinterleave_chroma_fdec_uv(h->mb.pic.p_fdec[1],h->mb.pic.p_fdec[2],plane_fdec,i_stride2,height);
+			//x264_plane_copy_deinterleave_c(h->mb.pic.p_fdec[1],FDEC_STRIDE,h->mb.pic.p_fdec[2],FDEC_STRIDE,plane_fdec,i_stride2,8,height);
+		
+	    }
+
     }
     else
     {
@@ -1212,12 +1216,29 @@ static void ALWAYS_INLINE x264_macroblock_load_pic_pointers( x264_t *h, int mb_x
         memcpy( h->mb.pic.p_fdec[i]-FDEC_STRIDE, intra_fdec, 24*sizeof(pixel) );
         h->mb.pic.p_fdec[i][-FDEC_STRIDE-1] = intra_fdec[-1];
 
-	   // if(h->mb.i_type == I_BL)
-			//h->mc.copy[PIXEL_16x16]( h->mb.pic.p_fdec[i], FDEC_STRIDE, plane_fdec, i_stride2, 16 );
+	    if(h->mb.i_type == I_BL)
+	    {
+	 
+			h->mc.copy[PIXEL_16x16]( h->mb.pic.p_fdec[i], FDEC_STRIDE, plane_fdec, i_stride2, 16 );
+		
+	    }
 
     }
 
-	
+
+    
+   /* if(h->i_layer_id && h->mb.i_mb_xy == 52)
+    {
+    printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n");
+	for(int k = 0;k < 16;k++)
+    {
+        printf("\n");
+		for(int l = 0;l < 16;l++)
+	    {
+	       printf("%d   ",h->mb.pic.p_fdec[i][k*16 + l]);
+	    }
+	}
+    }*/
     if( b_mbaff || h->mb.b_reencode_mb )
     {
         for( int j = 0; j < height; j++ )
@@ -1506,7 +1527,8 @@ static void ALWAYS_INLINE x264_macroblock_cache_load_EL(x264_t* h,int mb_x,int m
 	int16_t *cbp = h->mb.cbp;
 	const x264_left_table_t *left_index_table = h->mb.left_index_table;
 
-
+	h->mb.cache.deblock_strength = h->deblock_strength[mb_y&1][h->param.b_sliced_threads?h->mb.i_mb_xy:mb_x];
+	
 
     if(b_mbaff)
     {
@@ -1922,15 +1944,10 @@ static void ALWAYS_INLINE x264_macroblock_cache_load( x264_t *h, int mb_x, int m
     int16_t *cbp = h->mb.cbp;
 
     const x264_left_table_t *left_index_table = h->mb.left_index_table;
-/*sky1014 add el1 if else
-	if(h->i_layer_id )
-    h->mb.cache.deblock_strength = h->deblock_strengthEL1[mb_y&1][h->param.b_sliced_threads?h->mb.i_mb_xy:mb_x];
-		else*/
+
     h->mb.cache.deblock_strength = h->deblock_strength[mb_y&1][h->param.b_sliced_threads?h->mb.i_mb_xy:mb_x];
 
-
-
-    /* load cache */
+   /* load cache */
     if( h->mb.i_neighbour & MB_TOP )
     {
         h->mb.cache.i_cbp_top = cbp[top];
@@ -2534,17 +2551,9 @@ static void x264_macroblock_deblock_strength_mbaff( x264_t *h, uint8_t (*bs)[8][
 
 void x264_macroblock_deblock_strength( x264_t *h )
 {
-	printf("x264_macroblock_deblock_strength is called h->i_layer_id Is %d \n",h->i_layer_id );
+	
     uint8_t (*bs)[8][4] = h->mb.cache.deblock_strength;
-	if(h->i_layer_id)
-		{
-			int i,j;
-			for(i = 0 ; i < 8 ; i++ )
-				for(j = 0 ; j < 4; j++  )
-					printf("(*bs[%d][%d]) is %d \n ", i ,j ,(*bs)[i][j]);
-		}
-
-    if( IS_INTRA( h->mb.i_type ) )
+	    if( IS_INTRA( h->mb.i_type ) )
     {
         memset( bs[0][1], 3, 3*4*sizeof(uint8_t) );
         memset( bs[1][1], 3, 3*4*sizeof(uint8_t) );
@@ -2721,13 +2730,7 @@ void x264_macroblock_deblock_strength( x264_t *h )
     printf("h->loopf.deblock_strength,h->i_layer_id is %d \n",h->i_layer_id);
     if( SLICE_MBAFF )
         x264_macroblock_deblock_strength_mbaff( h, bs );
-		if(h->i_layer_id)
-		{
-			int i,j;
-			for(i = 0 ; i < 8 ; i++ )
-				for(j = 0 ; j < 4; j++  )
-					printf("(*bs[%d][%d]) is %d \n ", i ,j ,(*bs)[i][j]);
-		}
+
 }
 
 static void ALWAYS_INLINE x264_macroblock_store_pic( x264_t *h, int mb_x, int mb_y, int i, int b_chroma, int b_mbaff )

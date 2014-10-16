@@ -103,7 +103,7 @@ void x264_param_default( x264_param_t *param )
     param->i_bframe_bias = 0;
     param->i_bframe_pyramid = X264_B_PYRAMID_NORMAL;
     param->b_interlaced = 0;
-    param->b_constrained_intra = 0;
+    param->b_constrained_intra = 1;/*BY MINGÔ­À´ÊÇ0*/
 
     param->b_deblocking_filter = 1;
     param->i_deblocking_filter_alphac0 = 0;
