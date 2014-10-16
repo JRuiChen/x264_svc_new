@@ -306,7 +306,11 @@ static void deblock_strength_c( uint8_t nnz[X264_SCAN8_SIZE], int8_t ref[2][X264
 static ALWAYS_INLINE void deblock_edge( x264_t *h, pixel *pix, intptr_t i_stride, uint8_t bS[4], int i_qp,
                                         int a, int b, int b_chroma, x264_deblock_inter_t pf_inter )
 {
-
+printf(" deblock_edge is called, h->i_layer_id = %d,h->i_frame_num = %d \n ",h->i_layer_id ,h->i_frame_num );
+ printf("bs[0] is %d \n",bS[0]);
+    printf("bs[1] is %d \n",bS[1]);
+   printf("bs[2] is %d \n",bS[2]);
+    printf("bs[3] is %d \n",bS[3]);
     int index_a = i_qp + a;
     int index_b = i_qp + b;
     int alpha = alpha_table(index_a) << (BIT_DEPTH-8);
@@ -321,15 +325,18 @@ static ALWAYS_INLINE void deblock_edge( x264_t *h, pixel *pix, intptr_t i_stride
     tc[2] = (tc0_table(index_a)[bS[2]] << (BIT_DEPTH-8)) + b_chroma;
     tc[3] = (tc0_table(index_a)[bS[3]] << (BIT_DEPTH-8)) + b_chroma;
 
-
+   printf("tc[0] is %d \n",tc[0]);
+    printf("tc[1] is %d \n",tc[1]);
+   printf("tc[2] is %d \n",tc[2]);
+    printf("tc[3] is %d \n",tc[3]);
     pf_inter( pix, i_stride, alpha, beta, tc );
-	
+	printf(" deblock_edge 22222222222 is called, h->i_layer_id = %d,h->i_frame_num = %d \n ",h->i_layer_id ,h->i_frame_num );
 }
 
 static ALWAYS_INLINE void deblock_edge_intra( x264_t *h, pixel *pix, intptr_t i_stride, uint8_t bS[4], int i_qp,
                                               int a, int b, int b_chroma, x264_deblock_intra_t pf_intra )
 {
-
+printf(" deblock_edge_intra 1111111111is called, h->i_layer_id = %d,h->i_frame_num = %d \n ",h->i_layer_id ,h->i_frame_num );
     int index_a = i_qp + a;
     int index_b = i_qp + b;
     int alpha = alpha_table(index_a) << (BIT_DEPTH-8);
@@ -339,12 +346,12 @@ static ALWAYS_INLINE void deblock_edge_intra( x264_t *h, pixel *pix, intptr_t i_
         return;
 
     pf_intra( pix, i_stride, alpha, beta );
-	
+	printf(" deblock_edge_intra  2222222222222 is called , h->i_layer_id = %d,h->i_frame_num = %d \n ",h->i_layer_id ,h->i_frame_num );
 }
 
 static ALWAYS_INLINE void x264_macroblock_cache_load_neighbours_deblock( x264_t *h, int mb_x, int mb_y )
 {
-//printf(" x264_macroblock_cache_load_neighbours_deblock is called ,the fame is %d  the h->i_layer_id = %d,the mb_x = %d ,the mb_y = %d,the mb_x_2 %d the mb_y_2 %d \n",h->i_frame_num, h->i_layer_id,h->mb.i_mb_x ,h->mb.i_mb_y,mb_x,mb_y); 
+printf(" x264_macroblock_cache_load_neighbours_deblock is called ,the fame is %d  the h->i_layer_id = %d,the mb_x = %d ,the mb_y = %d,the mb_x_2 %d the mb_y_2 %d \n",h->i_frame_num, h->i_layer_id,h->mb.i_mb_x ,h->mb.i_mb_y,mb_x,mb_y); 
     int deblock_on_slice_edges = h->sh.i_disable_deblocking_filter_idc != 2;
 
     h->mb.i_neighbour = 0;
@@ -376,7 +383,7 @@ static ALWAYS_INLINE void x264_macroblock_cache_load_neighbours_deblock( x264_t 
     if( mb_x > 0 && (deblock_on_slice_edges ||
         h->mb.slice_table[h->mb.i_mb_left_xy[0]] == h->mb.slice_table[h->mb.i_mb_xy]) )
        {
-		
+		printf("h->mb.slice_table[h->mb.i_mb_left_xy[0]] = %d",h->mb.slice_table[h->mb.i_mb_left_xy[0]]);
 		h->mb.i_neighbour |= MB_LEFT;
     	}
     if( mb_y > MB_INTERLACED && (deblock_on_slice_edges
@@ -405,7 +412,8 @@ void x264_frame_deblock_row( x264_t *h, int mb_y )
         x264_macroblock_cache_load_neighbours_deblock( h, mb_x, mb_y );
 
         int mb_xy = h->mb.i_mb_xy;
-	
+		/*sky 1011 */
+		printf("h->mb.i_mb_xy is %d ,mb_y is %d \n",h->mb.i_mb_xy,mb_y);
         int transform_8x8 = h->mb.mb_transform_size[mb_xy];
 		
         int intra_cur = IS_INTRA( h->mb.type[mb_xy] );
@@ -423,15 +431,15 @@ void x264_frame_deblock_row( x264_t *h, int mb_y )
  	(*bs)[8][4] = h->deblock_strength[mb_y&1][h->param.b_sliced_threads?mb_xy:mb_x];
 */
 		uint8_t 	(*bs)[8][4] = h->deblock_strength[mb_y&1][h->param.b_sliced_threads?mb_xy:mb_x];			
-		printf("h->i_layer_id is %d,h->mb.i_mb_xy is %d\n",h->i_layer_id ,h->mb.i_mb_xy );
-		for(int i = 0 ;i < 8 ; i++ )
-			for(int j = 0; j < 4 ;j++)
-			{
-				printf("(*bs)[%d][%d] is %d  \n ",i,j,(*bs[i][j]));
-			}
+		printf("h->param.b_sliced_threads is %d,mb_y is %d ,mb_x is %d\n  ", h->param.b_sliced_threads,mb_y,mb_x);	
 			
 				
+//skytest 1013
 
+
+for(int i = 0 ; i < 8; i++)
+	for(int  j= 0 ;j < 4;j++)
+   		printf("uint8_t (*bs)[%d][%d] is %d \n", i,j,(*bs)[i][j] );
  
         pixel *pixy = h->i_layer_id ? h->fdec->planeEL1[0]:h->fdec->plane[0] + 16*mb_y*stridey  + 16*mb_x;
         pixel *pixuv = h->i_layer_id ? h->fdec->planeEL1[1]:h->fdec->plane[1] + chroma_height*mb_y*strideuv + 16*mb_x;
@@ -483,10 +491,10 @@ void x264_frame_deblock_row( x264_t *h, int mb_y )
 
         if( h->mb.i_neighbour & MB_LEFT )
         {
-        	
+        	printf("this is the left h->i_layer_id = %d ,h->mb.i_mb_left_xy = %d\n",h->i_layer_id ,h->mb.i_mb_left_xy[0]);
             if( b_interlaced && h->mb.field[h->mb.i_mb_left_xy[0]] != MB_INTERLACED )
             {
-            
+            printf("this is if( b_interlaced && h->mb.field[h->mb.i_mb_left_xy[0]] != MB_INTERLACED ) h->i_layer_id = %d \n",h->i_layer_id );
                 int luma_qp[2];
                 int chroma_qp[2];
                 int left_qp[2];
@@ -536,7 +544,7 @@ void x264_frame_deblock_row( x264_t *h, int mb_y )
             }
             else
             {
-           
+            printf("this is else if( b_interlaced && h->mb.field[h->mb.i_mb_left_xy[0]] != MB_INTERLACED ) h->i_layer_id = %d \n",h->i_layer_id );
                 int qpl = h->mb.qp[h->mb.i_mb_xy-1];
                 int qp_left = (qp + qpl + 1) >> 1;
                 int qpc_left = (qpc + h->chroma_qp_table[qpl] + 1) >> 1;
@@ -548,7 +556,7 @@ void x264_frame_deblock_row( x264_t *h, int mb_y )
                  * So reset their effective QP to max, to indicate that lack of guarantee. */
                 if(h->fdec->mb_info && M32( bs[0][0] ) )
                 {
-             
+                printf("this is    if( h->fdec->mb_info && M32( bs[0][0] ) ) h->i_layer_id = %d\n",h->i_layer_id);
 			
 		#define RESET_EFFECTIVE_QP(xy)  h->fdec->effective_qp[xy] |= 0xff * !!(h->fdec->mb_info[xy] & X264_MBINFO_CONSTANT);
                     RESET_EFFECTIVE_QP(mb_xy);
@@ -558,30 +566,30 @@ void x264_frame_deblock_row( x264_t *h, int mb_y )
                 if( intra_deblock )
                 	{
                     		FILTER( _intra, 0, 0, qp_left, qpc_left );
-							
+							printf("this is if (intra_deblock , h->i_layer_id = %d,h->i_frame_num = %d \n)",h->i_layer_id,h->i_frame_num);
                 	}
                 else
                 	{
-                	
+                	printf("this is else if (intra_deblock , h->i_layer_id = %d,h->i_frame_num = %d \n)",h->i_layer_id,h->i_frame_num);
                     		FILTER(       , 0, 0, qp_left, qpc_left );
                 	}
             }
         }
         if( !first_edge_only )
         {
-        
+        printf("this is !first_edge_only, h->i_layer_id = %d,h->i_frame_num = %d \n)",h->i_layer_id,h->i_frame_num);
             FILTER( , 0, 1, qp, qpc );
-	
+			printf("11111\n");
             FILTER( , 0, 2, qp, qpc );
-		
+			printf("22222\n");
            FILTER( , 0, 3, qp, qpc );
-	
+		   printf("33333\n");
         }
-
+	printf("the left is over\n");
 
         if( h->mb.i_neighbour & MB_TOP )
         {
-        	
+        	printf("this is the top h->i_layer_id = %d ,h->mb.i_mb_top_xy = %d\n",h->i_layer_id ,h->mb.i_mb_top_xy);
             if( b_interlaced && !(mb_y&1) && !MB_INTERLACED && h->mb.field[h->mb.i_mb_top_xy] )
             {
                 int mbn_xy = mb_xy - 2 * h->mb.i_mb_stride;
@@ -608,7 +616,7 @@ void x264_frame_deblock_row( x264_t *h, int mb_y )
             }
             else
             {
-            
+            	printf("this is b_interlaced  else\n");
                 int qpt = h->mb.qp[h->mb.i_mb_top_xy];
                 int qp_top = (qp + qpt + 1) >> 1;
                 int qpc_top = (qpc + h->chroma_qp_table[qpt] + 1) >> 1;
@@ -637,13 +645,13 @@ void x264_frame_deblock_row( x264_t *h, int mb_y )
 
         if( !first_edge_only )
         {
-        
+        	printf(" if( !first_edge_only )\n")	;
             FILTER( , 1, 1, qp, qpc );
-	
+			printf("111111\n");
             FILTER( , 1, 2, qp, qpc );
-		
+			printf("2222222\n");
             FILTER( , 1, 3, qp, qpc );
-	
+			printf("333333\n");
         }
 
 
@@ -674,7 +682,6 @@ printf(" x264_macroblock_deblock is called ,the fame is %d  the h->i_layer_id = 
         return;
 
     uint8_t (*bs)[8][4] = h->mb.cache.deblock_strength;
-	
 //	printf("x264_macroblock_deblock h->mb.cache.deblock_strength %d \n",h->mb.cache.deblock_strength);
     if( intra_cur )
     {
